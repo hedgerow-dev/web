@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rowan — Source Code Analysis for AI Security</title>
+<link rel="stylesheet" href="../hedgerow.css">
+<style>
+.rowan-hero {
+  background:var(--navy);
+  padding:8rem 0 7rem;
+}
+.rowan-hero h1 { color:#fff }
+.rowan-hero .hero-sub { color:rgba(255,255,255,.62); font-size:1.1rem; max-width:540px; margin-bottom:2.5rem }
+.rowan-hero .section-label { color:rgba(255,255,255,.4) }
+
+.cap-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:1.25rem; margin-top:2rem;
+}
+.cap-card {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:6px; padding:1.75rem;
+}
+.cap-card h3 { font-size:1.05rem; margin-bottom:.4rem }
+.cap-card p  { font-size:.9rem; margin:0 }
+
+.coming-soon {
+  display:inline-block;
+  font-size:.65rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+  padding:.2rem .6rem; border-radius:3px;
+  background:rgba(90,122,85,.15); color:var(--sage);
+  margin-bottom:1.25rem;
+}
+</style>
+</head>
+<body>
+
+<!-- ── Nav ── -->
+<nav>
+  <a class="nav-logo" href="../index.html">
+    <span class="logo-word">Hedgerow</span>
+    <span class="logo-tag">Rowan</span>
+  </a>
+  <div class="nav-links">
+    <a href="index.html" class="active">Rowan</a>
+    <a href="../thicket/index.html">Thicket</a>
+    <a href="mailto:hello@hedgerow.dev" class="nav-cta">Contact</a>
+  </div>
+  <button class="nav-hamburger" id="navToggle"
+    onclick="document.getElementById('navDrawer').classList.toggle('open');this.classList.toggle('open')"
+    aria-label="Toggle menu"><span></span><span></span><span></span></button>
+</nav>
+<div class="nav-drawer" id="navDrawer">
+  <a href="index.html">Rowan</a>
+  <a href="../thicket/index.html">Thicket</a>
+  <a href="mailto:hello@hedgerow.dev" class="nav-drawer-cta">Contact →</a>
+</div>
+
+<!-- ── Hero ── -->
+<section class="rowan-hero">
+  <div class="wrap">
+    <div class="section-label">Rowan by Hedgerow</div>
+    <h1>Find vulnerabilities<br>before deployment.</h1>
+    <p class="hero-sub">Source code analysis built for AI applications. Taint tracking, supply chain analysis, and SARIF output for CI pipelines — understanding the attack surfaces that general-purpose SAST tools miss.</p>
+    <div style="display:flex;gap:1rem;flex-wrap:wrap">
+      <a href="mailto:hello@hedgerow.dev" class="btn" style="background:#fff;color:var(--navy)">Request early access</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── What Rowan covers ── -->
+<section style="background:var(--bg)">
+  <div class="wrap">
+    <div class="section-label">Capabilities</div>
+    <h2>AI-aware static analysis.</h2>
+    <p class="section-intro">General-purpose SAST tools don't understand the AI stack. Rowan was built specifically for it — tracking taint flows through LLM SDKs, agent frameworks, and model loading paths.</p>
+
+    <div class="cap-grid">
+      <div class="cap-card">
+        <h3>AI-native taint tracking</h3>
+        <p>Follows user-controlled data through LangChain, LlamaIndex, and direct LLM SDK calls — identifying paths from model output to dangerous execution.</p>
+      </div>
+      <div class="cap-card">
+        <h3>Supply chain analysis</h3>
+        <p>Scans dependencies for typosquatted AI packages, checks model provenance signals, and generates CycloneDX SBOMs for compliance workflows.</p>
+      </div>
+      <div class="cap-card">
+        <h3>Dangerous sink detection</h3>
+        <p>Finds user-controlled inputs reaching command execution, deserialization, SSRF-prone HTTP calls, file access, and AI orchestration entry points.</p>
+      </div>
+      <div class="cap-card">
+        <h3>SARIF output</h3>
+        <p>Results integrate directly with GitHub Code Scanning, VS Code, JetBrains, and any CI pipeline that accepts the standard SARIF format.</p>
+      </div>
+      <div class="cap-card">
+        <h3>Thicket runtime integration</h3>
+        <p>Static findings feed directly into Thicket's runtime engine — code paths Rowan flags automatically receive elevated monitoring at runtime.</p>
+      </div>
+      <div class="cap-card">
+        <h3>Multi-language support</h3>
+        <p>Python-first, with JavaScript support. Covers FastAPI, Flask, Django, Gradio, Streamlit, and the major AI framework surface areas.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Early access ── -->
+<section style="background:var(--navy);padding:6rem 0;text-align:center">
+  <div class="wrap">
+    <div class="coming-soon">Early access</div>
+    <h2 style="color:#fff;font-size:clamp(1.8rem,4vw,3rem)"><em>Rowan is in active development.</em></h2>
+    <p style="color:rgba(255,255,255,.6);max-width:480px;margin:1rem auto 2.5rem;font-size:1.05rem">We're onboarding a small number of early access customers now. If you're building AI applications and want to run Rowan against your codebase, get in touch.</p>
+    <a href="mailto:hello@hedgerow.dev" class="btn" style="background:#fff;color:var(--navy);font-size:1rem;padding:.875rem 2.25rem">hello@hedgerow.dev</a>
+  </div>
+</section>
+
+<!-- ── Footer ── -->
+<footer>
+  <div class="wrap">
+    <div>
+      <div class="footer-brand">Hedgerow</div>
+      <div class="footer-sub">Rowan — Source code analysis for AI security.</div>
+      <div class="footer-links" style="justify-content:flex-start">
+        <a href="../index.html">Hedgerow</a>
+        <a href="../thicket/index.html">Thicket</a>
+        <a href="mailto:hello@hedgerow.dev">Contact</a>
+      </div>
+    </div>
+    <div></div>
+  </div>
+  <div class="wrap">
+    <div class="footer-patent">
+      Hedgerow &middot; hedgerow.dev &middot; hello@hedgerow.dev<br>
+      Commercially licensed. Technology protected by pending patent applications.
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

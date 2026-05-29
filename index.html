@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hedgerow — Security tools for the AI era</title>
+<link rel="stylesheet" href="hedgerow.css">
+<style>
+.company-hero {
+  padding:9rem 0 7rem;
+  border-bottom:1px solid var(--border);
+}
+.company-hero h1 {
+  font-size:clamp(3rem,7vw,5.5rem);
+  max-width:820px;
+  margin-bottom:1.5rem;
+}
+.company-hero .hero-sub {
+  font-size:1.15rem; max-width:520px; margin-bottom:2.5rem;
+}
+
+.product-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
+  gap:1.5rem;
+  margin-top:3rem;
+}
+.product-card {
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:6px;
+  padding:2.5rem;
+  display:flex; flex-direction:column;
+  text-decoration:none; color:inherit;
+  transition:border-color .2s, box-shadow .2s;
+  position:relative; overflow:hidden;
+}
+.product-card:hover {
+  border-color:var(--navy);
+  box-shadow:0 8px 32px rgba(24,41,26,.1);
+}
+.product-card::before {
+  content:'';
+  position:absolute; top:0; left:0; right:0;
+  height:2px; background:var(--navy);
+  transform:scaleX(0); transform-origin:left;
+  transition:transform .25s ease;
+}
+.product-card:hover::before { transform:scaleX(1) }
+.product-label {
+  font-size:.65rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--sage); margin-bottom:1rem;
+}
+.product-name {
+  font-family:'Cormorant Garamond', Georgia, serif;
+  font-size:2rem; font-weight:400; font-style:italic;
+  color:var(--navy); margin-bottom:.75rem; line-height:1.1;
+}
+.product-desc { font-size:.925rem; line-height:1.7; margin-bottom:1.75rem; flex:1 }
+.product-arrow {
+  font-size:.8rem; font-weight:600;
+  color:var(--navy); letter-spacing:.02em;
+  display:inline-flex; align-items:center; gap:.4rem;
+  transition:gap .2s;
+}
+.product-card:hover .product-arrow { gap:.7rem }
+
+.product-card.rowan-card { background:var(--navy); border-color:var(--navy) }
+.product-card.rowan-card .product-label { color:rgba(255,255,255,.45) }
+.product-card.rowan-card .product-name  { color:#fff }
+.product-card.rowan-card .product-desc  { color:rgba(255,255,255,.6) }
+.product-card.rowan-card .product-arrow { color:#fff }
+.product-card.rowan-card::before { background:var(--sage) }
+.product-card.rowan-card:hover { border-color:var(--navy-light) }
+
+.tag-row { display:flex; flex-wrap:wrap; gap:.5rem; margin-bottom:1.5rem }
+.tag {
+  font-size:.7rem; font-weight:600; letter-spacing:.04em;
+  padding:.25rem .65rem; border-radius:3px;
+  background:rgba(24,41,26,.08); color:var(--navy);
+}
+.rowan-card .tag { background:rgba(255,255,255,.1); color:rgba(255,255,255,.7) }
+</style>
+</head>
+<body>
+
+<!-- ── Nav ── -->
+<nav>
+  <a class="nav-logo" href="index.html">
+    <span class="logo-word">Hedgerow</span>
+  </a>
+  <div class="nav-links">
+    <a href="thicket/index.html">Thicket</a>
+    <a href="rowan/index.html">Rowan</a>
+    <a href="mailto:hello@hedgerow.dev" class="nav-cta">Contact</a>
+  </div>
+  <button class="nav-hamburger" id="navToggle"
+    onclick="document.getElementById('navDrawer').classList.toggle('open');this.classList.toggle('open')"
+    aria-label="Toggle menu"><span></span><span></span><span></span></button>
+</nav>
+<div class="nav-drawer" id="navDrawer">
+  <a href="thicket/index.html">Thicket</a>
+  <a href="rowan/index.html">Rowan</a>
+  <a href="mailto:hello@hedgerow.dev" class="nav-drawer-cta">Contact →</a>
+</div>
+
+<!-- ── Hero ── -->
+<section class="company-hero">
+  <div class="wrap">
+    <div class="section-label">Hedgerow</div>
+    <h1>Security tools<br>for the AI era.</h1>
+    <p class="hero-sub">We build software that protects AI applications — at runtime and at the source code level.</p>
+    <div style="display:flex;gap:1rem;flex-wrap:wrap">
+      <a href="thicket/index.html" class="btn btn-primary">Explore Thicket</a>
+      <a href="rowan/index.html"   class="btn btn-outline">Explore Rowan</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── Products ── -->
+<section style="background:var(--surface)">
+  <div class="wrap">
+    <div class="section-label">Our products</div>
+    <h2>Two tools. One mission.</h2>
+    <p class="section-intro" style="margin-bottom:0">Runtime enforcement and source-level analysis — covering the full lifecycle of AI application security.</p>
+
+    <div class="product-grid">
+
+      <a href="thicket/index.html" class="product-card">
+        <div class="product-label">Runtime security</div>
+        <div class="product-name">Thicket</div>
+        <div class="tag-row">
+          <span class="tag">No AI Inside&#8482;</span>
+          <span class="tag">In-process</span>
+          <span class="tag">Air-gap ready</span>
+        </div>
+        <p class="product-desc">Wraps your AI application in four independent enforcement layers. Blocks SSRF, deserialization RCE, prompt injection, and agent exploits — deterministically, with no external API and no data leaving your environment.</p>
+        <span class="product-arrow">Explore Thicket →</span>
+      </a>
+
+      <a href="rowan/index.html" class="product-card rowan-card">
+        <div class="product-label">Source code analysis</div>
+        <div class="product-name">Rowan</div>
+        <div class="tag-row">
+          <span class="tag">Static analysis</span>
+          <span class="tag">SARIF output</span>
+          <span class="tag">AI-aware</span>
+        </div>
+        <p class="product-desc">Scans your AI application codebase for vulnerabilities before deployment. AI-native taint tracking, supply chain analysis, and SARIF export for CI pipelines and code review tooling.</p>
+        <span class="product-arrow">Explore Rowan →</span>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── About ── -->
+<section style="background:var(--bg)">
+  <div class="wrap">
+    <div class="section-label">About</div>
+    <h2>Built for environments where<br>data control is non-negotiable.</h2>
+    <div class="card-grid" style="margin-top:2.5rem">
+      <div class="card">
+        <h3>Deterministic, always</h3>
+        <p>No machine learning makes blocking decisions. Every enforcement action traces to a rule, a patch, or a kernel control — auditable and explainable to compliance teams.</p>
+      </div>
+      <div class="card">
+        <h3>Zero external dependencies</h3>
+        <p>Both products run entirely in your environment. No outbound calls, no API keys, no cloud services. Designed from the start for air-gapped and regulated deployments.</p>
+      </div>
+      <div class="card">
+        <h3>EU regulatory alignment</h3>
+        <p>AI Act, NIS2, DORA, GDPR — all scanning and enforcement happens on-premise, inside your process. No AI input or output ever reaches an external API.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Contact ── -->
+<section style="background:var(--navy);padding:6rem 0;text-align:center">
+  <div class="wrap">
+    <div class="section-label" style="color:rgba(255,255,255,.4)">Get in touch</div>
+    <h2 style="color:#fff;font-size:clamp(2rem,5vw,3.5rem)"><em>Let's talk.</em></h2>
+    <p style="color:rgba(255,255,255,.6);max-width:440px;margin:1rem auto 2.5rem;font-size:1.05rem">Enterprise contracts. No per-seat pricing. No usage caps. Dedicated support.</p>
+    <a href="mailto:hello@hedgerow.dev" class="btn" style="background:#fff;color:var(--navy);font-size:1rem;padding:.875rem 2.25rem">hello@hedgerow.dev</a>
+  </div>
+</section>
+
+<!-- ── Footer ── -->
+<footer>
+  <div class="wrap">
+    <div>
+      <div class="footer-brand">Hedgerow</div>
+      <div class="footer-sub">Security tools for the AI era.</div>
+      <div class="footer-links" style="justify-content:flex-start">
+        <a href="thicket/index.html">Thicket</a>
+        <a href="rowan/index.html">Rowan</a>
+        <a href="mailto:hello@hedgerow.dev">Contact</a>
+      </div>
+    </div>
+    <div></div>
+  </div>
+  <div class="wrap">
+    <div class="footer-patent">
+      Hedgerow &middot; hedgerow.dev &middot; hello@hedgerow.dev<br>
+      Commercially licensed. Technology protected by pending patent applications.
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
