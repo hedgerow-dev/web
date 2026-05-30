@@ -174,4 +174,18 @@
     await Promise.all([play('sl', SL), play('sr', SR)]);
     resetBtn(btn, ['sl','sr'], st, 'CVSS 8.6 — SSRF via redirect bypass', window.runSsrf);
   };
+
+  /* Bind all buttons via addEventListener — no inline onclick needed */
+  document.addEventListener('DOMContentLoaded', function () {
+    /* Tab switchers */
+    document.querySelectorAll('.tab[data-tab]').forEach(function (btn) {
+      btn.addEventListener('click', function () { switchTab(btn.getAttribute('data-tab')); });
+    });
+    /* Run buttons */
+    var map = { 'btn-deser': window.runDeser, 'btn-langflow': window.runLangflow, 'btn-ssrf': window.runSsrf };
+    Object.keys(map).forEach(function (id) {
+      var btn = document.getElementById(id);
+      if (btn) { btn.addEventListener('click', map[id]); }
+    });
+  });
 })();
