@@ -57,7 +57,17 @@
         "type": 301
       },
       {
+        "source": "/compare.html",
+        "destination": "/thicket/compare.html",
+        "type": 301
+      },
+      {
         "source": "/how-it-works",
+        "destination": "/thicket/how-it-works.html",
+        "type": 301
+      },
+      {
+        "source": "/how-it-works.html",
         "destination": "/thicket/how-it-works.html",
         "type": 301
       }
