@@ -55,38 +55,18 @@
   <div class="wrap">
     <p class="section-label">The limitation</p>
     <h2>Real vulnerabilities don&rsquo;t stay in one file.</h2>
-    <p style="color:var(--muted);max-width:680px;line-height:1.8;margin-bottom:2rem">An SSRF that spans two files and an async class method won&rsquo;t appear in a single-file regex scan. Rowan follows the full chain.</p>
-
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;max-width:860px">
-      <div>
-        <code style="font-family:'SF Mono','Fira Code',monospace;font-size:.73rem;color:var(--muted);display:block;margin-bottom:.625rem">api/endpoints.py</code>
-        <div class="code-block" style="display:block;width:100%;font-size:.78rem">
-          <div style="color:var(--faint)"># HTTP entry point</div>
-          <div><span class="flag">@router</span>.get(<span style="color:#E6A87C">'/fetch'</span>)</div>
-          <div><span class="flag">async def</span> <span class="cmd">fetch_resource</span>(url: str):</div>
-          <div>&nbsp;&nbsp;<span class="flag">return await</span> client.<span class="cmd">get</span>(url)</div>
-          <div style="color:var(--faint);margin-top:.5rem"># leaves unsanitized</div>
-        </div>
+    <p style="color:var(--muted);max-width:640px;line-height:1.8;margin-bottom:2.5rem">An SSRF that spans two files and an async method won&rsquo;t appear in a single-file regex scan. Rowan follows the full chain and shows exactly where it breaks.</p>
+    <div class="code-block" style="display:block;max-width:680px">
+      <div style="color:#E87070;font-weight:600;margin-bottom:1.25rem">[CRITICAL] Server-Side Request Forgery &mdash; confidence: 89%</div>
+      <div style="display:grid;grid-template-columns:4.5rem 1fr;row-gap:.55rem;align-items:baseline">
+        <span style="color:var(--faint);font-size:.7rem;text-transform:uppercase;letter-spacing:.07em">Source</span>
+        <span style="font-size:.8rem"><span style="color:#8FA3AC">api/endpoints.py:3</span><span style="color:var(--faint)"> &nbsp; url = request.args.get(&lsquo;url&rsquo;)</span></span>
+        <span style="color:var(--faint);font-size:.7rem;text-transform:uppercase;letter-spacing:.07em">Via</span>
+        <span style="font-size:.8rem"><span style="color:#8FA3AC">api/endpoints.py:5</span><span style="color:var(--faint)"> &nbsp; return await client.get(url)</span></span>
+        <span style="color:var(--faint);font-size:.7rem;text-transform:uppercase;letter-spacing:.07em">Sink</span>
+        <span style="font-size:.8rem"><span style="color:#8FA3AC">clients/resource.py:9</span><span style="color:#E87070"> &nbsp; httpx.get(url) &mdash; no validation</span></span>
       </div>
-      <div>
-        <code style="font-family:'SF Mono','Fira Code',monospace;font-size:.73rem;color:var(--muted);display:block;margin-bottom:.625rem">clients/resource.py</code>
-        <div class="code-block" style="display:block;width:100%;font-size:.78rem">
-          <div style="color:var(--faint)"># downstream — different file</div>
-          <div><span class="flag">class</span> <span class="cmd">ResourceClient</span>:</div>
-          <div>&nbsp;&nbsp;<span class="flag">async def</span> <span class="cmd">get</span>(self, url: str):</div>
-          <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="flag">return await</span> httpx.<span class="cmd">get</span>(url)</div>
-          <div style="color:#E87070;margin-top:.5rem"># SINK — no validation</div>
-        </div>
-      </div>
-    </div>
-
-    <div style="margin-top:2rem;max-width:860px">
-      <div class="code-block" style="display:block;width:100%;font-size:.78rem">
-        <div style="color:#E87070;font-weight:600">[CRITICAL] Server-Side Request Forgery &mdash; confidence: 89%</div>
-        <div style="color:var(--faint);margin-top:.4rem">Taint path: url param &rarr; client.get() &rarr; httpx.get()</div>
-        <div style="color:var(--faint)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;endpoints.py:3 &rarr; endpoints.py:4 &rarr; clients/resource.py:9</div>
-        <div style="color:var(--faint);margin-top:.2rem">Note: No URL validation, scheme restriction, or allowlist detected</div>
-      </div>
+      <div style="margin-top:1.25rem;padding-top:1rem;border-top:1px solid rgba(255,255,255,.07);color:var(--faint);font-size:.78rem">No URL validation, scheme restriction, or allowlist detected.</div>
     </div>
   </div>
 </section>
@@ -95,39 +75,32 @@
 <section id="coverage" style="background:var(--surface);padding:5rem 0;border-bottom:1px solid var(--border)">
   <div class="wrap">
     <p class="section-label">Coverage</p>
-    <h2>What Rowan scans.</h2>
-    <div class="card-grid" style="margin-top:2.5rem">
-
-      <div class="card">
-        <h3>Cross-file taint analysis</h3>
-        <p>Tracks user-controlled data from HTTP parameters, CLI arguments, environment variables, and file reads through function and import boundaries to dangerous sinks. A 4-hop chain from <code>request.json</code> to <code>subprocess.run</code> across three files is caught the same way as a direct call.</p>
+    <h2>What Rowan tracks.</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;margin-top:2.5rem;max-width:860px;border-top:1px solid var(--border)">
+      <div style="padding:1.25rem 2rem 1.25rem 0;border-bottom:1px solid var(--border);border-right:1px solid var(--border)">
+        <p style="font-weight:600;color:var(--navy);font-size:.9rem;margin-bottom:.3rem">Cross-file taint</p>
+        <p style="font-size:.875rem;margin:0">HTTP params, CLI args, env vars &mdash; followed to dangerous sinks across files and function boundaries.</p>
       </div>
-
-      <div class="card">
-        <h3>AI/ML-specific sink models</h3>
-        <p>Serialization-based model loaders are treated as code execution primitives. <code>trust_remote_code=True</code> flags a trust boundary. <code>apply_chat_template()</code> is a prompt injection sink. Rowan models the full attack surface of SGLang, vLLM, LangChain, Letta, Gradio, and HuggingFace Transformers explicitly.</p>
+      <div style="padding:1.25rem 0 1.25rem 2rem;border-bottom:1px solid var(--border)">
+        <p style="font-weight:600;color:var(--navy);font-size:.9rem;margin-bottom:.3rem">AI/ML sink models</p>
+        <p style="font-size:.875rem;margin:0"><code>torch.load()</code>, <code>trust_remote_code=True</code>, <code>apply_chat_template()</code> &mdash; modelled as distinct attack surfaces.</p>
       </div>
-
-      <div class="card">
-        <h3>Static model file scanning</h3>
-        <p>Analysis runs on the model files themselves, not just the Python code that loads them. Covers serialized checkpoint files, GGUF, SafeTensors, and Keras <code>.h5</code> formats. Detects backdoored payloads and unsafe embedded code before the file is loaded.</p>
+      <div style="padding:1.25rem 2rem 1.25rem 0;border-bottom:1px solid var(--border);border-right:1px solid var(--border)">
+        <p style="font-weight:600;color:var(--navy);font-size:.9rem;margin-bottom:.3rem">Model file scanning</p>
+        <p style="font-size:.875rem;margin:0">Static analysis of checkpoint files, GGUF, SafeTensors, and Keras <code>.h5</code> before they are loaded.</p>
       </div>
-
-      <div class="card">
-        <h3>Reachability-aware supply chain</h3>
-        <p>Most SCA tools flag every CVE in every installed package. Rowan builds a call graph from your entry points and checks whether your code actually calls the vulnerable function. Only surfaces CVEs that are reachable. Suppresses the rest.</p>
+      <div style="padding:1.25rem 0 1.25rem 2rem;border-bottom:1px solid var(--border)">
+        <p style="font-weight:600;color:var(--navy);font-size:.9rem;margin-bottom:.3rem">Reachability-aware SCA</p>
+        <p style="font-size:.875rem;margin:0">Only surfaces CVEs your code can actually trigger. Unreachable vulnerabilities are suppressed.</p>
       </div>
-
-      <div class="card">
-        <h3>Prompt injection tracking</h3>
-        <p>Taint flows from user-controlled input into LLM system prompts, RAG contexts, and Jinja2 template rendering are flagged as a distinct sink category. Tracked across multiple hops.</p>
+      <div style="padding:1.25rem 2rem 1.25rem 0;border-right:1px solid var(--border)">
+        <p style="font-weight:600;color:var(--navy);font-size:.9rem;margin-bottom:.3rem">Prompt injection</p>
+        <p style="font-size:.875rem;margin:0">Taint flows into LLM system prompts, RAG contexts, and Jinja2 template rendering.</p>
       </div>
-
-      <div class="card">
-        <h3>Framework CVE patterns</h3>
-        <p>Dedicated rules for known vulnerability classes in the ML ecosystem: LangChain serialization injection, Keras importlib RCE, OmegaConf config injection, ONNX Hub path traversal, Gradio file read, and others.</p>
+      <div style="padding:1.25rem 0 1.25rem 2rem">
+        <p style="font-weight:600;color:var(--navy);font-size:.9rem;margin-bottom:.3rem">Framework patterns</p>
+        <p style="font-size:.875rem;margin:0">Named rules for LangChain, Keras importlib, OmegaConf, ONNX Hub, Gradio, and others.</p>
       </div>
-
     </div>
   </div>
 </section>
@@ -136,43 +109,28 @@
 <section id="architecture" style="background:var(--bg);padding:5rem 0;border-bottom:1px solid var(--border)">
   <div class="wrap">
     <p class="section-label">Architecture</p>
-    <h2>Four engines. One scan.</h2>
-    <p style="color:var(--muted);max-width:640px;line-height:1.8;margin-bottom:2.5rem">Each engine targets a different class of vulnerability. They run in parallel. Findings are deduplicated and confidence-scored before output.</p>
-
-    <div style="display:flex;flex-direction:column;gap:0;border-top:1px solid var(--border);max-width:860px;border-left:none">
-
-      <div style="display:grid;grid-template-columns:10rem 1fr;gap:2rem;padding:2rem 0;border-bottom:1px solid var(--border);padding-left:1rem;border-left:2px solid var(--celeste)">
-        <div>
-          <p style="font-weight:700;color:var(--navy);font-size:.95rem;margin-bottom:.25rem">CodeGuard</p>
-          <p style="font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--sage);margin:0">Taint analysis</p>
-        </div>
-        <p style="color:var(--muted);font-size:.9rem;line-height:1.75;margin:0">Inter-procedural taint analysis with control flow graphs. Tracks user input across file and function boundaries. Python has full cross-file support. Java, JavaScript, Go, and C# use CFG-based taint within files.</p>
+    <h2>Four engines, running in parallel.</h2>
+    <div style="display:flex;flex-direction:column;margin-top:2.5rem;max-width:780px;border-top:1px solid var(--border)">
+      <div style="display:grid;grid-template-columns:2rem 8rem 1fr;gap:0 1.5rem;padding:1.25rem 0;border-bottom:1px solid var(--border);align-items:baseline">
+        <span style="font-size:.82rem;font-weight:700;color:var(--sage)">1</span>
+        <span style="font-weight:600;color:var(--navy);font-size:.9rem">CodeGuard</span>
+        <span style="font-size:.9rem;color:var(--muted)">Inter-procedural taint &mdash; follows user input across files, imports, and function calls.</span>
       </div>
-
-      <div style="display:grid;grid-template-columns:10rem 1fr;gap:2rem;padding:2rem 0;border-bottom:1px solid var(--border);padding-left:1rem;border-left:2px solid var(--celeste)">
-        <div>
-          <p style="font-weight:700;color:var(--navy);font-size:.95rem;margin-bottom:.25rem">NeuroScan</p>
-          <p style="font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--sage);margin:0">Pattern matching</p>
-        </div>
-        <p style="color:var(--muted);font-size:.9rem;line-height:1.75;margin:0">125+ detection rules using tree-sitter AST parsing. Fast and language-agnostic. Catches hardcoded secrets, weak configurations, missing auth decorators, and AI-specific sink patterns without a full call graph.</p>
+      <div style="display:grid;grid-template-columns:2rem 8rem 1fr;gap:0 1.5rem;padding:1.25rem 0;border-bottom:1px solid var(--border);align-items:baseline">
+        <span style="font-size:.82rem;font-weight:700;color:var(--sage)">2</span>
+        <span style="font-weight:600;color:var(--navy);font-size:.9rem">NeuroScan</span>
+        <span style="font-size:.9rem;color:var(--muted)">125+ AST pattern rules &mdash; secrets, missing auth, AI framework misconfigurations, known CVE patterns.</span>
       </div>
-
-      <div style="display:grid;grid-template-columns:10rem 1fr;gap:2rem;padding:2rem 0;border-bottom:1px solid var(--border);padding-left:1rem;border-left:2px solid var(--celeste)">
-        <div>
-          <p style="font-weight:700;color:var(--navy);font-size:.95rem;margin-bottom:.25rem">DepGuard</p>
-          <p style="font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--sage);margin:0">Supply chain</p>
-        </div>
-        <p style="color:var(--muted);font-size:.9rem;line-height:1.75;margin:0">Parses <code>requirements.txt</code>, <code>poetry.lock</code>, or <code>pyproject.toml</code> and queries the OSV database. Then checks reachability: only surfaces a CVE if your code actually calls the vulnerable function via a traceable import path.</p>
+      <div style="display:grid;grid-template-columns:2rem 8rem 1fr;gap:0 1.5rem;padding:1.25rem 0;border-bottom:1px solid var(--border);align-items:baseline">
+        <span style="font-size:.82rem;font-weight:700;color:var(--sage)">3</span>
+        <span style="font-weight:600;color:var(--navy);font-size:.9rem">DepGuard</span>
+        <span style="font-size:.9rem;color:var(--muted)">Supply chain with reachability &mdash; only reports CVEs your code can actually trigger.</span>
       </div>
-
-      <div style="display:grid;grid-template-columns:10rem 1fr;gap:2rem;padding:2rem 0;padding-left:1rem;border-left:2px solid var(--celeste)">
-        <div>
-          <p style="font-weight:700;color:var(--navy);font-size:.95rem;margin-bottom:.25rem">Huntr Agent</p>
-          <p style="font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--sage);margin:0">Agentic hunt</p>
-        </div>
-        <p style="color:var(--muted);font-size:.9rem;line-height:1.75;margin:0">An 8-stage autonomous pipeline: recon, dependency scan, hypothesis generation, deep-dive re-scan, exploit confirmation, live web probing (SSRF, path traversal, command injection), variant expansion, and full write-up with attacker steps. Works with Gemini, Claude, OpenAI, or MiniMax.</p>
+      <div style="display:grid;grid-template-columns:2rem 8rem 1fr;gap:0 1.5rem;padding:1.25rem 0;align-items:baseline">
+        <span style="font-size:.82rem;font-weight:700;color:var(--sage)">4</span>
+        <span style="font-weight:600;color:var(--navy);font-size:.9rem">Huntr Agent</span>
+        <span style="font-size:.9rem;color:var(--muted)">Autonomous hypothesis generation, exploit confirmation, and full write-up &mdash; no manual triage.</span>
       </div>
-
     </div>
   </div>
 </section>
