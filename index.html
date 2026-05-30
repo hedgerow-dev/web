@@ -6,8 +6,8 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self'; img-src 'self' data:; connect-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta name="referrer" content="strict-origin-when-cross-origin">
-<title>Hedgerow &mdash; Security infrastructure for AI applications</title>
-<meta name="description" content="Hedgerow builds security products for AI applications. Thicket provides runtime enforcement. Rowan provides source code analysis. On-premise. Deterministic. No external API.">
+<title>Hedgerow &mdash; Security for AI infrastructure</title>
+<meta name="description" content="Hedgerow builds security products for AI infrastructure. Runtime enforcement and source code analysis.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,300;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -16,252 +16,76 @@
 </head>
 <body>
 
-<!-- Nav -->
 <nav>
   <a class="nav-logo" href="index.html">
     <span class="logo-word">Hedgerow</span>
   </a>
   <div class="nav-links">
-    <div class="nav-item">
-      <a href="thicket/index.html">Thicket</a>
-      <div class="nav-dropdown">
-        <a href="thicket/index.html">Overview</a>
-        <a href="thicket/how-it-works.html">How it works</a>
-        <a href="thicket/compare.html">Compare</a>
-        <a href="thicket/demos.html">Live demos</a>
-      </div>
-    </div>
-    <div class="nav-item">
-      <a href="rowan/index.html">Rowan</a>
-      <div class="nav-dropdown">
-        <a href="rowan/index.html">Overview</a>
-        <a href="rowan/product.html">Product</a>
-        <a href="rowan/how-it-works.html">How it works</a>
-        <a href="rowan/benchmarks.html">Benchmarks</a>
-        <a href="rowan/docs.html">Docs</a>
-      </div>
-    </div>
     <a href="mailto:hello@hedgerow.dev" class="nav-cta">Contact</a>
   </div>
   <button class="nav-hamburger" id="navToggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
 </nav>
 <div class="nav-drawer" id="navDrawer">
-  <div class="drawer-section">
-    <div class="drawer-section-label">Thicket</div>
-    <a href="thicket/index.html">Overview</a>
-    <a href="thicket/how-it-works.html">How it works</a>
-    <a href="thicket/compare.html">Compare</a>
-    <a href="thicket/demos.html">Live demos</a>
-  </div>
-  <div class="drawer-section">
-    <div class="drawer-section-label">Rowan</div>
-    <a href="rowan/index.html">Overview</a>
-    <a href="rowan/product.html">Product</a>
-    <a href="rowan/how-it-works.html">How it works</a>
-    <a href="rowan/benchmarks.html">Benchmarks</a>
-    <a href="rowan/docs.html">Docs</a>
-  </div>
   <a href="mailto:hello@hedgerow.dev" class="nav-drawer-cta">Contact &rarr;</a>
 </div>
 
-<!-- 1. HERO -->
-<section class="s-hero">
+<!-- Problem statement -->
+<section class="s-problem">
   <div class="wrap">
-    <p class="kicker">Hedgerow</p>
-    <h1>Security infrastructure<br>for AI applications.</h1>
-    <p class="hero-body">Runtime enforcement that stops attacks as they execute. Source analysis that finds what general-purpose SAST misses. On-premise. Deterministic. No external API. No AI making security decisions.</p>
-    <div class="hero-product-links" role="navigation" aria-label="Products">
-      <a href="thicket/index.html">Thicket <span class="hpl-sub">&mdash; Runtime security</span> &rarr;</a>
-      <a href="rowan/index.html">Rowan <span class="hpl-sub">&mdash; Source code analysis</span> &rarr;</a>
+    <p class="kicker">The problem</p>
+    <h1>AI applications introduced attack surfaces security tooling wasn&rsquo;t built to find.</h1>
+    <div class="problem-body">
+      <p>Model files are executable. LLM output reaches code execution. Tool calls cross trust boundaries. Multi-hop exploit chains don&rsquo;t appear in file-level pattern scans.</p>
+      <p>Confirmed critical RCEs in production AI frameworks &mdash; in SGLang, in Letta &mdash; missed by CodeQL and Semgrep. Found by ours.</p>
     </div>
   </div>
 </section>
 
-<!-- 2. COMPANY POSITIONING -->
-<section class="s-position">
+<!-- What we do -->
+<section class="s-what">
   <div class="wrap">
-    <div class="position-inner">
-      <p class="pos-label">About</p>
-      <div class="pos-text">
-        <p>AI infrastructure introduces a class of attack surfaces that traditional security tools were not designed to model: unsafe model loading, prompt injection, trust boundary violations, multi-hop exploit chains across LLM frameworks.</p>
-        <p>Our position: security controls for AI applications should be deterministic, deployable without external API calls, and fully auditable &mdash; regardless of the environment they run in.</p>
+    <div class="what-inner">
+      <p class="what-label">Hedgerow</p>
+      <p class="what-text">We build security products for the infrastructure AI runs on. Runtime enforcement that stops attacks as they execute. Source code analysis that finds what general-purpose scanners miss. On-premise. Deterministic. No AI making security decisions.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Products -->
+<section class="s-products-minimal">
+  <div class="wrap">
+    <div class="pm-row">
+      <div class="pm-entry">
+        <div class="pm-accent pm-accent--thicket"></div>
+        <span class="pm-name">Thicket</span>
+        <span class="pm-desc">Runtime security for AI applications. Four independent enforcement layers. Production-ready.</span>
+        <a href="thicket/index.html" class="pm-link">Learn more &rarr;</a>
+      </div>
+      <div class="pm-divider"></div>
+      <div class="pm-entry">
+        <div class="pm-accent pm-accent--rowan"></div>
+        <span class="pm-name">Rowan</span>
+        <span class="pm-desc">Source code analysis that finds what general-purpose SAST misses. Confirmed critical RCEs in production AI frameworks. Private beta.</span>
+        <a href="rowan/index.html" class="pm-link">Learn more &rarr;</a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- 3. PRODUCTS -->
-<section class="s-products">
-  <div class="wrap">
-    <p class="section-label">Products</p>
-    <div class="products-listing">
-
-      <div class="product-row">
-        <div class="product-row-id">
-          <div class="pr-accent pr-accent--thicket"></div>
-          <span class="pr-name">Thicket</span>
-          <span class="pr-role">Runtime security</span>
-        </div>
-        <div class="product-row-body">
-          <p class="prb-text">Four independent enforcement layers active inside your Python application. Blocks attacks at the execution boundary &mdash; network calls, file writes, process spawning &mdash; before they complete. An attacker who bypasses one layer immediately hits the next.</p>
-          <ul class="prb-facts">
-            <li>Blocks SSRF, deserialization RCE, prompt injection, and agent exploits</li>
-            <li>No AI Inside&trade; &mdash; every block traces to a rule, a patch, or a kernel control</li>
-            <li>No external API. No data leaves the process.</li>
-            <li>OS kernel backstop on Linux &ge; 5.10; eBPF DaemonSet for Kubernetes (early access)</li>
-          </ul>
-        </div>
-        <div class="product-row-meta">
-          <span class="pr-status pr-status--ready">Production-ready</span>
-          <a href="thicket/index.html" class="pr-link">Thicket overview &rarr;</a>
-          <a href="thicket/demos.html" class="pr-link">Live demos &rarr;</a>
-        </div>
-      </div>
-
-      <div class="product-row">
-        <div class="product-row-id">
-          <div class="pr-accent pr-accent--rowan"></div>
-          <span class="pr-name">Rowan</span>
-          <span class="pr-role">Source code analysis</span>
-        </div>
-        <div class="product-row-body">
-          <p class="prb-text">Cross-file taint propagation and AI-specific sink models across four parallel engines. Finds unsafe model loading paths, prompt injection chains, and multi-hop exploit patterns that pattern-based scanners miss. Confirmed critical RCEs in production AI frameworks.</p>
-          <ul class="prb-facts">
-            <li>CodeGuard (taint), NeuroScan (patterns), DepGuard (supply chain), Huntr Agent (agentic)</li>
-            <li>Confirmed critical RCEs in SGLang, Letta; 100% recall on LangChain CVE-2025-68664</li>
-            <li>SARIF 2.1 output, CI/CD integration, confidence scoring per finding</li>
-            <li>Python-first; Go, Java, JavaScript, C# in progress</li>
-          </ul>
-        </div>
-        <div class="product-row-meta">
-          <span class="pr-status pr-status--beta">Private beta</span>
-          <a href="rowan/index.html" class="pr-link">Rowan overview &rarr;</a>
-          <a href="rowan/benchmarks.html" class="pr-link">Benchmarks &rarr;</a>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- 4. THE APPROACH -->
-<section class="s-approach">
-  <div class="wrap">
-    <p class="section-label">The approach</p>
-    <div class="principles">
-
-      <div class="principle">
-        <span class="pr-num">01</span>
-        <div>
-          <h3 class="pr-head">Deterministic enforcement, not probability scores.</h3>
-          <p class="pr-body">Every blocking decision traces to a rule, a patch, or a kernel control. Not a model confidence score. That distinction matters to auditors, compliance teams, and any team that needs to explain a block &mdash; or a miss &mdash; to a regulator.</p>
-        </div>
-      </div>
-
-      <div class="principle">
-        <span class="pr-num">02</span>
-        <div>
-          <h3 class="pr-head">No AI in the security decision path.</h3>
-          <p class="pr-body">Enforcement does not depend on another language model. There is no external API call, no cloud service, no training corpus that includes your production data. The logic that makes blocking decisions runs locally, deterministically, with no network dependency.</p>
-        </div>
-      </div>
-
-      <div class="principle">
-        <span class="pr-num">03</span>
-        <div>
-          <h3 class="pr-head">In-process, in your environment.</h3>
-          <p class="pr-body">Thicket installs inside your application process. Rowan runs on your infrastructure. Neither product requires a network connection or a third-party service. Air-gapped and regulated environments are the design target, not a deployment afterthought.</p>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- 5. DEPLOYMENT & COMPLIANCE -->
-<section class="s-deploy">
-  <div class="wrap">
-    <p class="section-label">Deployment &amp; compliance</p>
-    <div class="deploy-grid">
-
-      <div>
-        <h4 class="dg-head">Deployment environments</h4>
-        <ul class="dg-list">
-          <li>Air-gapped networks</li>
-          <li>Classified infrastructure</li>
-          <li>On-premise</li>
-          <li>Regulated cloud</li>
-          <li>Multi-tenant SaaS (Thicket per-tenant isolation)</li>
-        </ul>
-      </div>
-
-      <div>
-        <h4 class="dg-head">Regulatory alignment</h4>
-        <ul class="dg-list">
-          <li>EU AI Act</li>
-          <li>NIS2</li>
-          <li>DORA</li>
-          <li>GDPR</li>
-        </ul>
-        <p class="dg-note">All enforcement runs on-premise, inside your process. No AI input or output reaches an external API. Data sovereignty requirements are met by design.</p>
-      </div>
-
-      <div>
-        <h4 class="dg-head">Language &amp; platform support</h4>
-        <ul class="dg-list">
-          <li>Python &mdash; full (Thicket + Rowan)</li>
-          <li>Go, Java, JavaScript, C# &mdash; Rowan, in progress</li>
-          <li>Linux kernel &ge; 5.10 &mdash; Thicket kernel backstop</li>
-          <li>Kubernetes &mdash; eBPF DaemonSet (early access)</li>
-          <li>FastAPI, Flask, Django, LangChain, HuggingFace, and others</li>
-        </ul>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- 6. OPERATING MODEL -->
-<section class="s-trust">
-  <div class="wrap">
-    <p class="section-label">How we work</p>
-    <div class="trust-grid">
-
-      <div>
-        <h4 class="tg-head">Contracts</h4>
-        <p class="tg-body">Enterprise agreements. No per-seat pricing, no per-token meters, no usage caps. Agreements include SLA guarantees, custom policy development, and dedicated support.</p>
-      </div>
-
-      <div>
-        <h4 class="tg-head">Product status</h4>
-        <p class="tg-body">Thicket is production-ready and deployed in enterprise environments.</p>
-        <p class="tg-body">Rowan is in private beta. We are onboarding AI infrastructure teams who want to find vulnerabilities before they ship. A research report and diligence pack are available under NDA.</p>
-      </div>
-
-      <div>
-        <h4 class="tg-head">Transparency</h4>
-        <p class="tg-body">We publish our coverage gaps, benchmark methodology, and known limitations alongside our findings. We do not make claims we cannot back with evidence. See <code>KNOWN_LIMITATIONS.md</code> in the Rowan repository.</p>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- 7. CONTACT -->
+<!-- Contact -->
 <section class="s-contact">
   <div class="wrap">
-    <p class="section-label">Contact</p>
+    <p class="section-label">Get in touch</p>
     <a href="mailto:hello@hedgerow.dev" class="contact-email">hello@hedgerow.dev</a>
-    <p class="contact-note">For enterprise inquiries, early access to Rowan, and security disclosures.</p>
+    <p class="contact-note">Enterprise inquiries, early access to Rowan, and security disclosures.</p>
   </div>
 </section>
 
-<!-- Footer -->
 <footer>
   <div class="wrap">
     <div>
       <div class="footer-brand">Hedgerow</div>
-      <div class="footer-sub">Security infrastructure for AI applications.</div>
+      <div class="footer-sub">Security for AI infrastructure.</div>
       <div class="footer-links" style="justify-content:flex-start">
         <a href="thicket/index.html">Thicket</a>
         <a href="rowan/index.html">Rowan</a>
