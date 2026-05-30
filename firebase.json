@@ -25,6 +25,12 @@
         ]
       }
     ],
+    "redirects": [
+      { "source": "/demos",         "destination": "/thicket/demos.html",        "type": 301 },
+      { "source": "/demos.html",    "destination": "/thicket/demos.html",        "type": 301 },
+      { "source": "/compare",       "destination": "/thicket/compare.html",      "type": 301 },
+      { "source": "/how-it-works",  "destination": "/thicket/how-it-works.html", "type": 301 }
+    ],
     "rewrites": [
       { "source": "/thicket", "destination": "/thicket/index.html" },
       { "source": "/rowan",   "destination": "/rowan/index.html" }

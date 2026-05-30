@@ -50,15 +50,15 @@ h1 {
   font-family:'Avenir Next', 'Avenir', 'Century Gothic', 'Montserrat', sans-serif;
   font-size:clamp(2.2rem,5vw,3.8rem);
   font-weight:700;
-  letter-spacing:-.04em;
-  line-height:1.08;
+  letter-spacing:-.02em;
+  line-height:1.1;
   color:var(--navy);
 }
 h2 {
   font-family:'Avenir Next', 'Avenir', 'Century Gothic', 'Montserrat', sans-serif;
   font-size:clamp(1.4rem,3vw,2rem);
   font-weight:600;
-  letter-spacing:-.025em;
+  letter-spacing:-.015em;
   color:var(--navy);
   margin-bottom:1rem;
 }
@@ -352,26 +352,28 @@ td:first-child { color:var(--text); font-weight:500 }
 /* ── Footer ── */
 footer {
   background:var(--navy);
-  padding:.875rem 0;
+  padding:.75rem 0;
   font-size:.78rem;
 }
-footer .wrap {
+/* Compact single-row layout */
+.footer-inner {
   display:flex; align-items:center;
   justify-content:space-between; gap:2rem; flex-wrap:wrap;
 }
+footer .wrap { display:block }
 .footer-brand {
   font-family:'Avenir Next', 'Avenir', 'Century Gothic', 'Montserrat', sans-serif;
   font-weight:700; font-size:.82rem; letter-spacing:-.01em;
   color:rgba(255,255,255,.7); flex-shrink:0;
 }
 .footer-sub { display:none }
-.footer-links { display:flex; gap:1.5rem; flex-wrap:wrap }
+.footer-links { display:flex; gap:1.5rem; flex-wrap:wrap; margin:0 }
 footer a { color:rgba(255,255,255,.45); text-decoration:none; font-size:.78rem }
 footer a:hover { color:rgba(255,255,255,.85) }
 .footer-patent {
   font-size:.62rem; color:rgba(255,255,255,.28);
   border-top:1px solid rgba(255,255,255,.08);
-  padding-top:.625rem; margin-top:.25rem;
+  padding-top:.5rem; margin-top:.25rem;
 }
 
 /* ── Hamburger ── */
