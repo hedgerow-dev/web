@@ -96,7 +96,7 @@ nav {
   height:4rem;
 }
 .nav-logo-group {
-  display:inline-flex; align-items:center; gap:.75rem;
+  display:inline-flex; align-items:center; gap:1rem;
   margin-right:auto; white-space:nowrap; flex-shrink:0;
 }
 .nav-logo {
@@ -137,9 +137,9 @@ nav {
 .logo-tag-link[aria-current="page"] .logo-tag { color:var(--navy); font-weight:600 }
 .nav-logo .logo-tag {
   font-family:'Inter', system-ui, sans-serif;
-  font-size:.62rem; font-weight:600; color:var(--muted);
-  letter-spacing:.1em; text-transform:uppercase;
-  border-left:1px solid var(--border); padding-left:.65rem;
+  font-size:.75rem; font-weight:600; color:var(--text);
+  letter-spacing:.08em; text-transform:uppercase;
+  border-left:1px solid var(--border); padding-left:.875rem;
 }
 .nav-links { display:none }
 nav a {
