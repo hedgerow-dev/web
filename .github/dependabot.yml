@@ -1,0 +1,15 @@
+version: 2
+updates:
+  # npm — keeps 'serve' and any future deps up to date
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+
+  # GitHub Actions — keeps workflow action versions up to date
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
