@@ -105,9 +105,13 @@ Montserrat is loaded from Google Fonts as the web fallback.
 
 ## Repository
 
-- GitHub: `hedgerow-dev/web`
-- Firebase project: `hedgerow-acc` (acceptance)
+- **Dev repo** (`origin`): `hedgerow-dev/web-dev` — daily work, auto-deploys to acc on every push
+- **Prod repo** (`prod` remote): `hedgerow-dev/web` — promote here when ready for production
+- Firebase project (acc): `hedgerow-acc`
 - Contact: `hello@hedgerow.dev`
+
+**Deploy to acc:** `git push` (pushes to web-dev → Firebase acc)
+**Promote to prod:** `git push prod master` (pushes to web → production when configured)
 
 ---
 
