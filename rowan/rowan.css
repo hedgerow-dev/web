@@ -71,9 +71,9 @@
   position:relative;
 }
 .feature-num {
-  font-family:'Cormorant Garamond',Georgia,serif;
-  font-size:2.5rem; font-weight:300; font-style:italic;
-  color:var(--border); line-height:1;
+  font-family:'Inter', system-ui, sans-serif;
+  font-size:1.5rem; font-weight:300;
+  color:var(--border); letter-spacing:-.02em; line-height:1;
   position:absolute; top:1.25rem; right:1.5rem;
   user-select:none;
 }
@@ -91,9 +91,8 @@
   margin-bottom:1.25rem; flex-wrap:wrap;
 }
 .proof-project {
-  font-family:'Cormorant Garamond',Georgia,serif;
-  font-size:1.5rem; font-weight:400; font-style:italic;
-  color:var(--navy);
+  font-family:'Inter', system-ui, sans-serif;
+  font-size:1.2rem; font-weight:700; letter-spacing:-.02em; color:var(--navy);
 }
 .proof-date {
   font-size:.72rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase;
@@ -138,9 +137,8 @@
   border-top:3px solid var(--sage);
 }
 .engine-name {
-  font-family:'Cormorant Garamond',Georgia,serif;
-  font-size:1.2rem; font-weight:600; font-style:italic;
-  color:var(--navy); margin-bottom:.35rem;
+  font-family:'Inter', system-ui, sans-serif;
+  font-size:.95rem; font-weight:700; letter-spacing:-.01em; color:var(--navy); margin-bottom:.35rem;
 }
 .engine-subtitle { font-size:.72rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--sage); margin-bottom:.75rem }
 .engine-card p { font-size:.875rem; margin:0; line-height:1.65 }

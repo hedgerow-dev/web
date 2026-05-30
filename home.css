@@ -93,10 +93,10 @@
 .pm-accent--thicket { background:var(--marigold) }
 .pm-accent--rowan   { background:var(--celeste) }
 .pm-name {
-  font-family:'Cormorant Garamond',Georgia,serif;
-  font-size:1.6rem;
-  font-weight:400;
-  font-style:italic;
+  font-family:'Inter', system-ui, sans-serif;
+  font-size:1.5rem;
+  font-weight:600;
+  letter-spacing:-.02em;
   color:var(--navy);
   line-height:1;
 }
@@ -127,10 +127,10 @@
   margin-bottom:1.25rem;
 }
 .contact-email {
-  font-family:'Cormorant Garamond',Georgia,serif;
-  font-size:clamp(1.75rem,3.5vw,2.6rem);
-  font-weight:400;
-  font-style:italic;
+  font-family:'Inter', system-ui, sans-serif;
+  font-size:clamp(1.4rem,3vw,2.2rem);
+  font-weight:300;
+  letter-spacing:-.02em;
   color:#fff;
   text-decoration:none;
   display:inline-block;

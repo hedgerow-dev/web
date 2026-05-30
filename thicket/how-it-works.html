@@ -9,7 +9,7 @@
 <title>How Thicket Works</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,300;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../hedgerow.css">
 <link rel="stylesheet" href="product.css">
 </head>
@@ -43,7 +43,7 @@
     <div style="max-width:780px;border-top:1px solid var(--border)">
 
       <div style="display:grid;grid-template-columns:2.5rem 1fr;gap:1.5rem;padding:2rem 0;border-bottom:1px solid var(--border)">
-        <span style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.5rem;font-style:italic;color:var(--celeste);font-weight:300">1</span>
+        <span style="font-family:'Inter',system-ui,sans-serif;font-size:1rem;font-weight:700;color:var(--sage);letter-spacing:-.01em">1</span>
         <div>
           <h3 style="font-size:1rem;margin-bottom:.4rem">Prompt &amp; content scanning</h3>
           <p style="font-size:.9rem;color:var(--muted);margin:0;line-height:1.7">Every prompt, tool call, and model output is scanned before it reaches the model or triggers downstream execution. Runs in-process against deterministic pattern sets. No content leaves your environment.</p>
@@ -51,7 +51,7 @@
       </div>
 
       <div style="display:grid;grid-template-columns:2.5rem 1fr;gap:1.5rem;padding:2rem 0;border-bottom:1px solid var(--border)">
-        <span style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.5rem;font-style:italic;color:var(--celeste);font-weight:300">2</span>
+        <span style="font-family:'Inter',system-ui,sans-serif;font-size:1rem;font-weight:700;color:var(--sage);letter-spacing:-.01em">2</span>
         <div>
           <h3 style="font-size:1rem;margin-bottom:.4rem">Runtime enforcement</h3>
           <p style="font-size:.9rem;color:var(--muted);margin:0;line-height:1.7">Intercepts operations at the moment of execution &mdash; network calls, file writes, process spawning &mdash; before they complete. No amount of prompt obfuscation bypasses a hook on the operation itself.</p>
@@ -59,7 +59,7 @@
       </div>
 
       <div style="display:grid;grid-template-columns:2.5rem 1fr;gap:1.5rem;padding:2rem 0;border-bottom:1px solid var(--border)">
-        <span style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.5rem;font-style:italic;color:var(--celeste);font-weight:300">3</span>
+        <span style="font-family:'Inter',system-ui,sans-serif;font-size:1rem;font-weight:700;color:var(--sage);letter-spacing:-.01em">3</span>
         <div>
           <h3 style="font-size:1rem;margin-bottom:.4rem">OS kernel backstop</h3>
           <p style="font-size:.9rem;color:var(--muted);margin:0;line-height:1.7">Kernel-level enforcement on Linux &ge; 5.10. Operates independently of the application runtime. Cannot be reversed from application code.</p>
@@ -67,7 +67,7 @@
       </div>
 
       <div style="display:grid;grid-template-columns:2.5rem 1fr;gap:1.5rem;padding:2rem 0">
-        <span style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.5rem;font-style:italic;color:var(--celeste);font-weight:300">4</span>
+        <span style="font-family:'Inter',system-ui,sans-serif;font-size:1rem;font-weight:700;color:var(--sage);letter-spacing:-.01em">4</span>
         <div>
           <h3 style="font-size:1rem;margin-bottom:.4rem">eBPF DaemonSet <small style="font-weight:400;opacity:.55">(early access)</small></h3>
           <p style="font-size:.9rem;color:var(--muted);margin:0;line-height:1.7">Kubernetes only. Extends enforcement node-wide to every container on the host.</p>
