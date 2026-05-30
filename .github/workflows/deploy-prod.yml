@@ -3,7 +3,7 @@ name: Deploy to Firebase Hosting (production)
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   deploy:
@@ -20,6 +20,6 @@ jobs:
         run: npm install -g firebase-tools
 
       - name: Deploy to Firebase Hosting
-        run: firebase deploy --only hosting --project hedgerow --token "$FIREBASE_TOKEN"
+        run: firebase deploy --only hosting --project hedgerow-908c7 --token "$FIREBASE_TOKEN"
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
