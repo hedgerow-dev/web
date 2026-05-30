@@ -107,7 +107,7 @@ Montserrat is loaded from Google Fonts as the web fallback.
 
 - **Dev repo** (`origin`): `hedgerow-dev/web-dev` — daily work, auto-deploys to acc on every push
 - **Prod repo** (`prod` remote): `hedgerow-dev/web` — promote here when ready for production
-- Firebase project (acc): `hedgerow-acc`
+- Firebase project (acc): `hedgerow-dev`
 - Contact: `hello@hedgerow.dev`
 
 **Deploy to acc:** `git push` (pushes to web-dev → Firebase acc)
@@ -126,14 +126,14 @@ git add .
 git commit -m "your message"
 git push
 # → GitHub Actions runs deploy-acc.yml (~30 seconds)
-# → Live at https://hedgerow-acc.web.app
+# → Live at https://hedgerow-dev.web.app
 ```
 
 ### Environment
 
 | Environment | Firebase project | URL | Trigger |
 |---|---|---|---|
-| Acceptance | `hedgerow-acc` | `https://hedgerow-acc.web.app` | push to `master` |
+| Acceptance | `hedgerow-dev` | `https://hedgerow-dev.web.app` | push to `master` |
 
 ### Check deployment status
 
@@ -153,13 +153,13 @@ gh run view <run-id> --repo hedgerow-dev/web --log
 - File: `.github/workflows/deploy-acc.yml`
 - Action: `FirebaseExtended/action-hosting-deploy@v0`
 - Secret required: `FIREBASE_SERVICE_ACCOUNT_HEDGEROW_ACC` (already added to the GitHub repo)
-- Deploys to the `live` channel on `hedgerow-acc`
+- Deploys to the `live` channel on `hedgerow-dev`
 - Node 24 opt-in set to suppress deprecation warnings
 
 ### Firebase config files
 
 - `firebase.json` — defines the public directory (`.`), security headers, clean URLs, and ignore list
-- `.firebaserc` — maps `acc` and `default` aliases to `hedgerow-acc`
+- `.firebaserc` — maps `acc` and `default` aliases to `hedgerow-dev`
 
 ### If a deploy fails
 
