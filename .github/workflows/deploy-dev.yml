@@ -1,15 +1,15 @@
-name: Deploy to Firebase Hosting (dev preview)
+name: Deploy dev preview
 
 on:
   push:
     branches:
-      - master
+      - dev
 
 jobs:
   deploy:
-    name: Deploy to hedgerow-dev preview channel
+    name: Deploy to preview channel (dev)
     runs-on: ubuntu-latest
-    if: github.repository == 'hedgerow-dev/web-dev'
+    if: github.repository == 'hedgerow-dev/web'
     permissions:
       contents: read
 
@@ -22,9 +22,6 @@ jobs:
 
       - name: Deploy to preview channel
         run: |
-          firebase hosting:channel:deploy dev \
-            --project hedgerow-dev \
-            --expires 30d \
-            --token "$FIREBASE_TOKEN"
+          firebase hosting:channel:deploy dev             --project hedgerow-908c7             --expires 30d             --token "$FIREBASE_TOKEN"
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}

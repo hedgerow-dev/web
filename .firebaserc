@@ -1,7 +1,7 @@
 {
   "projects": {
-    "dev": "hedgerow-dev",
-    "default": "hedgerow-dev",
+    "default": "hedgerow-908c7",
+    "dev": "hedgerow-908c7",
     "prod": "hedgerow-908c7"
   }
 }
