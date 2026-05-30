@@ -9,6 +9,6 @@
   },
   "devDependencies": {
     "serve": "^14.2.4",
-    "wait-on": "^8.0.0"
+    "wait-on": "^9.0.10"
   }
 }
