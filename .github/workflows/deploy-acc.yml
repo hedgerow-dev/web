@@ -1,4 +1,4 @@
-name: Deploy to Firebase Hosting
+name: Deploy to Firebase Hosting (dev preview)
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy:
-    name: Deploy to hedgerow-dev
+    name: Deploy to hedgerow-dev preview channel
     runs-on: ubuntu-latest
     if: github.repository == 'hedgerow-dev/web-dev'
     permissions:
@@ -20,7 +20,11 @@ jobs:
       - name: Install Firebase CLI
         run: npm install -g firebase-tools
 
-      - name: Deploy to Firebase Hosting
-        run: firebase deploy --only hosting --project hedgerow-dev --token "$FIREBASE_TOKEN"
+      - name: Deploy to preview channel
+        run: |
+          firebase hosting:channel:deploy dev \
+            --project hedgerow-dev \
+            --expires 30d \
+            --token "$FIREBASE_TOKEN"
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
