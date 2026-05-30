@@ -105,7 +105,7 @@ Montserrat is loaded from Google Fonts as the web fallback.
 
 ## Repository
 
-- GitHub: `kennethkcox/hedgerow.dev`
+- GitHub: `hedgerow-dev/web`
 - Firebase project: `hedgerow-acc` (acceptance)
 - Contact: `hello@hedgerow.dev`
 
@@ -135,13 +135,13 @@ git push
 
 ```bash
 # List recent runs
-gh run list --repo kennethkcox/hedgerow.dev --limit 5
+gh run list --repo hedgerow-dev/web --limit 5
 
 # Watch a specific run live
-gh run watch <run-id> --repo kennethkcox/hedgerow.dev
+gh run watch <run-id> --repo hedgerow-dev/web
 
 # View logs if something failed
-gh run view <run-id> --repo kennethkcox/hedgerow.dev --log
+gh run view <run-id> --repo hedgerow-dev/web --log
 ```
 
 ### How the workflow works
@@ -159,8 +159,8 @@ gh run view <run-id> --repo kennethkcox/hedgerow.dev --log
 
 ### If a deploy fails
 
-1. Run `gh run list --repo kennethkcox/hedgerow.dev --limit 3` to get the run ID
-2. Run `gh run view <id> --repo kennethkcox/hedgerow.dev --log` to read the error
+1. Run `gh run list --repo hedgerow-dev/web --limit 3` to get the run ID
+2. Run `gh run view <id> --repo hedgerow-dev/web --log` to read the error
 3. Common causes: secret missing/expired, `firebase.json` syntax error, file too large
 
 ### To add a production environment later
