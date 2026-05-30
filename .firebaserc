@@ -1,6 +1,7 @@
 {
   "projects": {
-    "acc": "hedgerow-dev",
-    "default": "hedgerow-dev"
+    "dev": "hedgerow-dev",
+    "default": "hedgerow-dev",
+    "prod": "hedgerow"
   }
 }
