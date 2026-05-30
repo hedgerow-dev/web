@@ -15,15 +15,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        env:
-          FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+      - name: Install Firebase CLI
+        run: npm install -g firebase-tools
 
       - name: Deploy to Firebase Hosting
-        uses: FirebaseExtended/action-hosting-deploy@v0
+        run: firebase deploy --only hosting --project hedgerow-acc --token "$FIREBASE_TOKEN"
         env:
-          FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-        with:
-          repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_HEDGEROW_ACC }}
-          projectId: hedgerow-acc
-          channelId: live
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
