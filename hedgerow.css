@@ -2,27 +2,34 @@
 /* Fonts loaded via <link> in each HTML page (not @import) so CSP can apply SRI */
 
 :root {
-  /* Surfaces — warm parchment */
-  --bg:      #F1EDE5;
-  --surface: #E8E3DB;
-  --card:    #EBE7E0;
-  --border:  #D0CBC2;
+  /* Brand palette — Jenny Henderson Studio */
+  --midnight:  #013D5A;   /* primary dark */
+  --lionsmane: #FCF3E3;   /* primary background */
+  --celeste:   #BDD3CE;   /* secondary blue-green */
+  --herb:      #708C69;   /* secondary sage green */
+  --marigold:  #F4A25B;   /* secondary warm amber */
 
-  /* Text */
-  --text:  #0F0F0E;
-  --muted: #68655F;
-  --faint: #ABA8A2;
+  /* Surfaces — Lionsmane-derived */
+  --bg:      #FCF3E3;   /* Lionsmane */
+  --surface: #F3E6CB;   /* Lionsmane darkened */
+  --card:    #F8EDD8;   /* between bg and surface */
+  --border:  #DFD0B4;   /* warm cream border */
 
-  /* Brand palette — deep forest */
-  --navy:       #18291A;
-  --navy-mid:   #213B23;
-  --navy-light: #2A4D2C;
-  --sage:       #5A7A55;
+  /* Text — Midnight-derived */
+  --text:  #011E2D;   /* near-black, Midnight root */
+  --muted: #4A6368;   /* Celeste-influenced mid */
+  --faint: #93AEAD;   /* light Celeste */
+
+  /* Brand roles */
+  --navy:       #013D5A;   /* Midnight */
+  --navy-mid:   #024E72;
+  --navy-light: #025F8A;
+  --sage:       #708C69;   /* Herb */
 
   /* Semantic */
-  --red:   #A84030;
-  --green: #2E6830;
-  --amber: #7A5C1E;
+  --red:   #B83228;   /* danger — kept readable */
+  --green: #3A6B35;   /* success */
+  --amber: #F4A25B;   /* Marigold */
 }
 
 *,*::before,*::after { box-sizing:border-box; margin:0; padding:0 }
@@ -81,7 +88,7 @@ section { padding:5.5rem 0 }
 /* ── Nav ── */
 nav {
   position:sticky; top:0; z-index:100;
-  background:rgba(241,237,229,0.93);
+  background:rgba(252,243,227,0.93);
   backdrop-filter:blur(16px);
   border-bottom:1px solid var(--border);
   padding:0 2.5rem;
@@ -226,7 +233,7 @@ td:first-child { color:var(--text); font-weight:500 }
   padding:.2rem .6rem; border-radius:3px;
   background:var(--navy); color:#fff; margin-bottom:.5rem;
 }
-.layer-tag.k8s { background:var(--amber); color:#fff }
+.layer-tag.k8s { background:var(--marigold); color:#fff }
 
 /* ── Hero ── */
 .hero {
@@ -370,7 +377,7 @@ footer a:hover { color:#fff }
 /* ── Mobile drawer ── */
 .nav-drawer {
   display:none; position:fixed; top:4rem; left:0; right:0;
-  background:rgba(241,237,229,.97);
+  background:rgba(252,243,227,.97);
   backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
   border-bottom:1px solid var(--border);
   z-index:99; flex-direction:column;

@@ -29,12 +29,12 @@
 }
 .product-card:hover {
   border-color:var(--navy);
-  box-shadow:0 8px 32px rgba(24,41,26,.1);
+  box-shadow:0 8px 32px rgba(1,61,90,.12);
 }
 .product-card::before {
   content:'';
   position:absolute; top:0; left:0; right:0;
-  height:2px; background:var(--navy);
+  height:3px; background:var(--marigold);
   transform:scaleX(0); transform-origin:left;
   transition:transform .25s ease;
 }
@@ -62,13 +62,13 @@
 .product-card.rowan-card .product-name  { color:#fff }
 .product-card.rowan-card .product-desc  { color:rgba(255,255,255,.6) }
 .product-card.rowan-card .product-arrow { color:#fff }
-.product-card.rowan-card::before { background:var(--sage) }
+.product-card.rowan-card::before { background:var(--celeste) }
 .product-card.rowan-card:hover { border-color:var(--navy-light) }
 
 .tag-row { display:flex; flex-wrap:wrap; gap:.5rem; margin-bottom:1.5rem }
 .tag {
   font-size:.7rem; font-weight:600; letter-spacing:.04em;
   padding:.25rem .65rem; border-radius:3px;
-  background:rgba(24,41,26,.08); color:var(--navy);
+  background:rgba(1,61,90,.07); color:var(--navy);
 }
 .rowan-card .tag { background:rgba(255,255,255,.1); color:rgba(255,255,255,.7) }

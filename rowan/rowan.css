@@ -66,7 +66,7 @@
   gap:1.25rem; margin-top:2rem;
 }
 .vs-col { border-radius:6px; padding:1.75rem }
-.vs-col.theirs { background:var(--surface); border:1px solid var(--border) }
+.vs-col.theirs { background:rgba(189,211,206,0.18); border:1px solid rgba(189,211,206,0.5) }
 .vs-col.ours   { background:var(--navy); color:#fff }
 .vs-col.ours h3 { color:#fff }
 .vs-col.ours p  { color:rgba(255,255,255,.6) }

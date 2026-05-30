@@ -14,8 +14,8 @@ body{padding:0}
     .run-status{font-size:.78rem;color:var(--muted)}
     .pair{display:grid;grid-template-columns:1fr 1fr;gap:20px}
     @media(max-width:680px){.pair{grid-template-columns:1fr}}
-    .tcard{border:1px solid var(--border);border-radius:4px;overflow:hidden;background:rgba(245,242,236,0.72);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 2px 16px rgba(15,15,14,.06),0 1px 3px rgba(15,15,14,.04)}
-    .tbar{display:flex;align-items:center;padding:10px 16px;border-bottom:1px solid var(--border);background:rgba(241,237,229,0.6);gap:10px}
+    .tcard{border:1px solid var(--border);border-radius:4px;overflow:hidden;background:rgba(252,243,227,0.72);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 2px 16px rgba(15,15,14,.06),0 1px 3px rgba(15,15,14,.04)}
+    .tbar{display:flex;align-items:center;padding:10px 16px;border-bottom:1px solid var(--border);background:rgba(252,243,227,0.6);gap:10px}
     .tbar .dots{display:flex;gap:5px}
     .tbar .dot{width:9px;height:9px;border-radius:50%;border:1px solid var(--border);background:transparent}
     .ttitle-wrap{flex:1;text-align:center}
