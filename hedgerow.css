@@ -162,7 +162,7 @@ nav a:hover, nav a.active { color:var(--navy); border-bottom-color:var(--navy) }
 .card {
   background:var(--card);
   border:1px solid var(--border);
-  border-radius:4px; padding:1.75rem;
+  border-radius:2px; padding:1.75rem;
 }
 .card-grid {
   display:grid;

@@ -109,7 +109,7 @@
 .pm-link {
   font-size:.82rem;
   font-weight:600;
-  color:var(--sage);
+  color:var(--muted);
   text-decoration:none;
   margin-top:.25rem;
   transition:color .15s;

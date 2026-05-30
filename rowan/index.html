@@ -129,11 +129,11 @@
   <div class="wrap">
     <p class="section-label">Architecture</p>
     <h2>Four engines. One scan.</h2>
-    <p style="color:var(--muted);max-width:640px;line-height:1.8;margin-bottom:2.5rem">Each engine targets a different class of vulnerability. They run in parallel and their findings are merged, deduplicated, and scored.</p>
+    <p style="color:var(--muted);max-width:640px;line-height:1.8;margin-bottom:2.5rem">Each engine targets a different class of vulnerability. They run in parallel. Findings are deduplicated and confidence-scored before output.</p>
 
-    <div style="display:flex;flex-direction:column;gap:0;border-top:1px solid var(--border);max-width:860px">
+    <div style="display:flex;flex-direction:column;gap:0;border-top:1px solid var(--border);max-width:860px;border-left:none">
 
-      <div style="display:grid;grid-template-columns:10rem 1fr;gap:2rem;padding:2rem 0;border-bottom:1px solid var(--border)">
+      <div style="display:grid;grid-template-columns:10rem 1fr;gap:2rem;padding:2rem 0;border-bottom:1px solid var(--border);padding-left:1rem;border-left:2px solid var(--celeste)">
         <div>
           <p style="font-weight:700;color:var(--navy);font-size:.95rem;margin-bottom:.25rem">CodeGuard</p>
           <p style="font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--sage);margin:0">Taint analysis</p>
@@ -141,7 +141,7 @@
         <p style="color:var(--muted);font-size:.9rem;line-height:1.75;margin:0">Inter-procedural taint analysis with control flow graphs. Tracks user input across file and function boundaries. Python has full cross-file support. Java, JavaScript, Go, and C# use CFG-based taint within files.</p>
       </div>
 
-      <div style="display:grid;grid-template-columns:10rem 1fr;gap:2rem;padding:2rem 0;border-bottom:1px solid var(--border)">
+      <div style="display:grid;grid-template-columns:10rem 1fr;gap:2rem;padding:2rem 0;border-bottom:1px solid var(--border);padding-left:1rem;border-left:2px solid var(--celeste)">
         <div>
           <p style="font-weight:700;color:var(--navy);font-size:.95rem;margin-bottom:.25rem">NeuroScan</p>
           <p style="font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--sage);margin:0">Pattern matching</p>
@@ -149,7 +149,7 @@
         <p style="color:var(--muted);font-size:.9rem;line-height:1.75;margin:0">125+ detection rules using tree-sitter AST parsing. Fast and language-agnostic. Catches hardcoded secrets, weak configurations, missing auth decorators, and AI-specific sink patterns without a full call graph.</p>
       </div>
 
-      <div style="display:grid;grid-template-columns:10rem 1fr;gap:2rem;padding:2rem 0;border-bottom:1px solid var(--border)">
+      <div style="display:grid;grid-template-columns:10rem 1fr;gap:2rem;padding:2rem 0;border-bottom:1px solid var(--border);padding-left:1rem;border-left:2px solid var(--celeste)">
         <div>
           <p style="font-weight:700;color:var(--navy);font-size:.95rem;margin-bottom:.25rem">DepGuard</p>
           <p style="font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--sage);margin:0">Supply chain</p>
@@ -157,7 +157,7 @@
         <p style="color:var(--muted);font-size:.9rem;line-height:1.75;margin:0">Parses <code>requirements.txt</code>, <code>poetry.lock</code>, or <code>pyproject.toml</code> and queries the OSV database. Then checks reachability: only surfaces a CVE if your code actually calls the vulnerable function via a traceable import path.</p>
       </div>
 
-      <div style="display:grid;grid-template-columns:10rem 1fr;gap:2rem;padding:2rem 0">
+      <div style="display:grid;grid-template-columns:10rem 1fr;gap:2rem;padding:2rem 0;padding-left:1rem;border-left:2px solid var(--celeste)">
         <div>
           <p style="font-weight:700;color:var(--navy);font-size:.95rem;margin-bottom:.25rem">Huntr Agent</p>
           <p style="font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--sage);margin:0">Agentic hunt</p>
