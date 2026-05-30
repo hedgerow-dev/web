@@ -17,23 +17,60 @@
       {
         "source": "**",
         "headers": [
-          { "key": "X-Content-Type-Options",  "value": "nosniff" },
-          { "key": "X-Frame-Options",          "value": "DENY" },
-          { "key": "Referrer-Policy",          "value": "strict-origin-when-cross-origin" },
-          { "key": "Permissions-Policy",       "value": "camera=(), microphone=(), geolocation=(), payment=()" },
-          { "key": "Cross-Origin-Opener-Policy","value": "same-origin" }
+          {
+            "key": "X-Content-Type-Options",
+            "value": "nosniff"
+          },
+          {
+            "key": "X-Frame-Options",
+            "value": "DENY"
+          },
+          {
+            "key": "Referrer-Policy",
+            "value": "strict-origin-when-cross-origin"
+          },
+          {
+            "key": "Permissions-Policy",
+            "value": "camera=(), microphone=(), geolocation=(), payment=()"
+          },
+          {
+            "key": "Cross-Origin-Opener-Policy",
+            "value": "same-origin"
+          }
         ]
       }
     ],
     "redirects": [
-      { "source": "/demos",         "destination": "/thicket/demos.html",        "type": 301 },
-      { "source": "/demos.html",    "destination": "/thicket/demos.html",        "type": 301 },
-      { "source": "/compare",       "destination": "/thicket/compare.html",      "type": 301 },
-      { "source": "/how-it-works",  "destination": "/thicket/how-it-works.html", "type": 301 }
+      {
+        "source": "/demos",
+        "destination": "/thicket/demos.html",
+        "type": 301
+      },
+      {
+        "source": "/demos.html",
+        "destination": "/thicket/demos.html",
+        "type": 301
+      },
+      {
+        "source": "/compare",
+        "destination": "/thicket/compare.html",
+        "type": 301
+      },
+      {
+        "source": "/how-it-works",
+        "destination": "/thicket/how-it-works.html",
+        "type": 301
+      }
     ],
     "rewrites": [
-      { "source": "/thicket", "destination": "/thicket/index.html" },
-      { "source": "/rowan",   "destination": "/rowan/index.html" }
+      {
+        "source": "/thicket",
+        "destination": "/thicket/index.html"
+      },
+      {
+        "source": "/rowan",
+        "destination": "/rowan/index.html"
+      }
     ],
     "cleanUrls": true,
     "trailingSlash": false

@@ -133,7 +133,8 @@ git push
 
 | Environment | Firebase project | URL | Trigger |
 |---|---|---|---|
-| Acceptance | `hedgerow-dev` | `https://hedgerow-dev.web.app` | push to `master` |
+| Dev | `hedgerow-dev` | `https://dev.hedgerow.dev` (Cloudflare Access gated) | push to `master` in `web-dev` |
+| Production | `hedgerow-908c7` | `https://hedgerow.dev` | push to `master` in `web` |
 
 ### Check deployment status
 
