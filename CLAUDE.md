@@ -116,42 +116,40 @@ Montserrat is loaded from Google Fonts as the web fallback.
 
 ## Deployment
 
-### How to deploy
+### Branches
 
-**Every push to `master` deploys automatically.** No manual steps needed once a commit lands on master.
+| Branch | Workflow | URL | Use |
+|---|---|---|---|
+| `dev` | `deploy-dev.yml` | `hedgerow-908c7--dev-*.web.app` | Daily work, preview |
+| `master` | `deploy-prod.yml` | `hedgerow.dev` | Production |
+
+### Day-to-day workflow
 
 ```bash
-git add .
-git commit -m "your message"
-git push
-# → GitHub Actions runs deploy-acc.yml (~30 seconds)
-# → Live at https://hedgerow-dev.web.app
+# Work on dev branch
+git checkout dev
+# make changes
+git push                  # → preview channel deploys automatically
+
+# Ship to production
+git checkout master
+git merge dev
+git push                  # → hedgerow.dev deploys automatically
 ```
-
-### Environment
-
-| Environment | Firebase project | URL | Trigger |
-|---|---|---|---|
-| Dev | `hedgerow-dev` | `https://dev.hedgerow.dev` (Cloudflare Access gated) | push to `master` in `web-dev` |
-| Production | `hedgerow-908c7` | `https://hedgerow.dev` | push to `master` in `web` |
 
 ### Check deployment status
 
 ```bash
-# List recent runs
 gh run list --repo hedgerow-dev/web --limit 5
-
-# Watch a specific run live
 gh run watch <run-id> --repo hedgerow-dev/web
-
-# View logs if something failed
 gh run view <run-id> --repo hedgerow-dev/web --log
 ```
 
-### How the workflow works
+### How the workflows work
 
-- File: `.github/workflows/deploy-acc.yml`
-- Action: `FirebaseExtended/action-hosting-deploy@v0`
+- `deploy-dev.yml` — triggers on `dev` branch push. Deploys to Firebase preview channel `dev` on project `hedgerow-908c7`. Uses `FIREBASE_TOKEN` secret.
+- `deploy-prod.yml` — triggers on `master` branch push. Deploys to live channel on `hedgerow-908c7`. Uses `FIREBASE_TOKEN` secret.
+- Both restricted to `hedgerow-dev/web` repo via `if: github.repository ==`
 - Secret required: `FIREBASE_SERVICE_ACCOUNT_HEDGEROW_ACC` (already added to the GitHub repo)
 - Deploys to the `live` channel on `hedgerow-dev`
 - Node 24 opt-in set to suppress deprecation warnings
