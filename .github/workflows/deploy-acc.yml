@@ -9,6 +9,7 @@ jobs:
   deploy:
     name: Deploy to hedgerow-dev
     runs-on: ubuntu-latest
+    if: github.repository == 'hedgerow-dev/web-dev'
     permissions:
       contents: read
 
