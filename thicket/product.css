@@ -15,13 +15,13 @@
   display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;
   max-width:800px;padding-top:2.5rem;border-top:1px solid var(--border);
 }
-.sp-claim { display:flex;flex-direction:column;gap:.45rem }
-.sp-claim-head { font-size:.82rem;font-weight:700;color:var(--navy) }
+.sp-claim { display:flex;flex-direction:column;gap:.5rem }
+.sp-claim-head { font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--sage);display:block }
 .sp-claim-body { font-size:.875rem;color:var(--muted);line-height:1.65 }
 .sp-contact { background:var(--surface);padding:4rem 0 }
 .sp-contact .section-label { margin-bottom:1rem }
 .contact-email-sm {
-  font-family:'Avenir Next', 'Avenir', 'Century Gothic', 'Montserrat', sans-serif;
+  font-family:'Inter', system-ui, sans-serif;
   font-size:1.3rem; font-weight:400; letter-spacing:-.02em;
   color:var(--navy); text-decoration:none;
   border-bottom:1.5px solid var(--border); padding-bottom:.2rem;

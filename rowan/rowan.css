@@ -16,7 +16,7 @@
 }
 .rowan-hero h1 { color:#fff; font-size:clamp(2.4rem,5.5vw,3.8rem) }
 .rowan-hero .hero-sub {
-  font-family:'Avenir Next', 'Avenir', 'Century Gothic', 'Montserrat', sans-serif; font-style:normal;
+  font-family:'Inter', system-ui, sans-serif; font-style:normal;
   color:rgba(255,255,255,.65); font-size:1.05rem;
   max-width:600px; margin:1.25rem 0 2.5rem; line-height:1.75;
 }
@@ -67,11 +67,11 @@
 }
 .feature-card {
   background:var(--card); border:1px solid var(--border);
-  border-radius:6px; padding:1.75rem;
+  border-radius:4px; padding:1.75rem;
   position:relative;
 }
 .feature-num {
-  font-family:'Avenir Next', 'Avenir', 'Century Gothic', 'Montserrat', sans-serif;
+  font-family:'Inter', system-ui, sans-serif;
   font-size:1.5rem; font-weight:300;
   color:var(--border); letter-spacing:-.02em; line-height:1;
   position:absolute; top:1.25rem; right:1.5rem;
@@ -84,14 +84,14 @@
 .proof-section { display:flex; flex-direction:column; gap:2.5rem; margin-top:2.5rem }
 .proof-block {
   background:var(--card); border:1px solid var(--border);
-  border-radius:6px; padding:2rem;
+  border-radius:4px; padding:2rem;
 }
 .proof-block-header {
   display:flex; align-items:baseline; gap:1rem;
   margin-bottom:1.25rem; flex-wrap:wrap;
 }
 .proof-project {
-  font-family:'Avenir Next', 'Avenir', 'Century Gothic', 'Montserrat', sans-serif;
+  font-family:'Inter', system-ui, sans-serif;
   font-size:1.2rem; font-weight:700; letter-spacing:-.02em; color:var(--navy);
 }
 .proof-date {
@@ -133,11 +133,11 @@
 }
 .engine-card {
   background:var(--card); border:1px solid var(--border);
-  border-radius:6px; padding:1.5rem;
+  border-radius:4px; padding:1.5rem;
   border-top:3px solid var(--sage);
 }
 .engine-name {
-  font-family:'Avenir Next', 'Avenir', 'Century Gothic', 'Montserrat', sans-serif;
+  font-family:'Inter', system-ui, sans-serif;
   font-size:.95rem; font-weight:700; letter-spacing:-.01em; color:var(--navy); margin-bottom:.35rem;
 }
 .engine-subtitle { font-size:.72rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--sage); margin-bottom:.75rem }
@@ -150,7 +150,7 @@
 .output-item {
   display:flex; align-items:baseline; gap:.875rem;
   background:var(--card); border:1px solid var(--border);
-  border-radius:6px; padding:1rem 1.25rem;
+  border-radius:4px; padding:1rem 1.25rem;
 }
 .output-tag {
   font-family:'Courier New',monospace; font-size:.78rem; font-weight:700;
@@ -172,7 +172,7 @@
   background:#111210; color:#C8D4CE;
   font-family:'SF Mono','Fira Code','Cascadia Code',monospace;
   font-size:.8rem; line-height:1.75;
-  padding:2rem 2.25rem; border-radius:6px;
+  padding:2rem 2.25rem; border-radius:4px;
   overflow-x:auto; margin-top:2rem;
 }
 .pl-comment { color:#5A7A69 }
@@ -185,7 +185,7 @@
 }
 .rowan-page-header h1 { color:#fff; font-size:clamp(2rem,4.5vw,3rem) }
 .rowan-page-header .page-sub {
-  font-family:'Avenir Next', 'Avenir', 'Century Gothic', 'Montserrat', sans-serif; font-style:normal;
+  font-family:'Inter', system-ui, sans-serif; font-style:normal;
   color:rgba(255,255,255,.6); font-size:1rem;
   margin-top:.875rem; max-width:600px;
 }
@@ -221,7 +221,7 @@
 .conf-row {
   display:flex; align-items:center; gap:1rem;
   background:var(--card); border:1px solid var(--border);
-  border-radius:6px; padding:.875rem 1.25rem;
+  border-radius:4px; padding:.875rem 1.25rem;
 }
 .conf-range { font-family:'Courier New',monospace; font-size:.82rem; font-weight:700; color:var(--navy); min-width:5.5rem; flex-shrink:0 }
 .conf-label { font-size:.875rem; color:var(--muted) }

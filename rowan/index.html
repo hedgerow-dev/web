@@ -9,7 +9,7 @@
 <title>Rowan &mdash; Source Code Analysis for AI Infrastructure</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../hedgerow.css">
 <link rel="stylesheet" href="rowan.css">
 </head>
@@ -177,17 +177,17 @@
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:3rem;margin-top:2.5rem;max-width:860px">
       <div>
         <h3>Confidence scoring</h3>
-        <p>Every finding is scored 0&ndash;100% based on source clarity, taint path length, and whether known sanitizers were detected in the path. High-confidence findings are direct exploits. Lower scores flag patterns worth reviewing. Filter to 80%+ to separate signal from noise.</p>
+        <p>Every finding is scored 0&ndash;100% based on source clarity, taint path length, and whether known sanitizers were detected in the path. High-confidence findings are direct exploits. Lower scores identify patterns worth reviewing. Filter to 80%+ to separate signal from noise.</p>
       </div>
       <div>
         <h3>Output formats</h3>
-        <div style="display:flex;flex-direction:column;gap:.5rem;margin-top:.75rem">
-          <div style="display:flex;gap:.875rem;align-items:baseline"><code style="font-size:.78rem;font-weight:700;color:var(--navy);background:rgba(1,61,90,.06);padding:.15rem .45rem;border-radius:3px">SARIF 2.1</code><span style="font-size:.875rem;color:var(--muted)">IDE and GitHub Advanced Security</span></div>
-          <div style="display:flex;gap:.875rem;align-items:baseline"><code style="font-size:.78rem;font-weight:700;color:var(--navy);background:rgba(1,61,90,.06);padding:.15rem .45rem;border-radius:3px">JSON</code><span style="font-size:.875rem;color:var(--muted)">Programmatic integration</span></div>
-          <div style="display:flex;gap:.875rem;align-items:baseline"><code style="font-size:.78rem;font-weight:700;color:var(--navy);background:rgba(1,61,90,.06);padding:.15rem .45rem;border-radius:3px">HTML</code><span style="font-size:.875rem;color:var(--muted)">Shareable report</span></div>
-          <div style="display:flex;gap:.875rem;align-items:baseline"><code style="font-size:.78rem;font-weight:700;color:var(--navy);background:rgba(1,61,90,.06);padding:.15rem .45rem;border-radius:3px">CSV</code><span style="font-size:.875rem;color:var(--muted)">Ticket import</span></div>
-          <div style="display:flex;gap:.875rem;align-items:baseline"><code style="font-size:.78rem;font-weight:700;color:var(--navy);background:rgba(1,61,90,.06);padding:.15rem .45rem;border-radius:3px">CycloneDX AI-BOM</code><span style="font-size:.875rem;color:var(--muted)">Supply chain attestation</span></div>
-        </div>
+        <table style="margin-top:.875rem;border-collapse:collapse;width:100%;max-width:400px">
+          <tr><td style="padding:.5rem .75rem .5rem 0;border-bottom:1px solid var(--border);font-family:'SF Mono','Fira Code',monospace;font-size:.78rem;font-weight:600;color:var(--navy);white-space:nowrap">SARIF 2.1</td><td style="padding:.5rem 0;border-bottom:1px solid var(--border);font-size:.875rem;color:var(--muted)">IDE and GitHub Advanced Security</td></tr>
+          <tr><td style="padding:.5rem .75rem .5rem 0;border-bottom:1px solid var(--border);font-family:'SF Mono','Fira Code',monospace;font-size:.78rem;font-weight:600;color:var(--navy)">JSON</td><td style="padding:.5rem 0;border-bottom:1px solid var(--border);font-size:.875rem;color:var(--muted)">Programmatic integration</td></tr>
+          <tr><td style="padding:.5rem .75rem .5rem 0;border-bottom:1px solid var(--border);font-family:'SF Mono','Fira Code',monospace;font-size:.78rem;font-weight:600;color:var(--navy)">HTML</td><td style="padding:.5rem 0;border-bottom:1px solid var(--border);font-size:.875rem;color:var(--muted)">Shareable report</td></tr>
+          <tr><td style="padding:.5rem .75rem .5rem 0;border-bottom:1px solid var(--border);font-family:'SF Mono','Fira Code',monospace;font-size:.78rem;font-weight:600;color:var(--navy)">CSV</td><td style="padding:.5rem 0;border-bottom:1px solid var(--border);font-size:.875rem;color:var(--muted)">Ticket import</td></tr>
+          <tr><td style="padding:.5rem .75rem .5rem 0;font-family:'SF Mono','Fira Code',monospace;font-size:.78rem;font-weight:600;color:var(--navy)">CycloneDX AI-BOM</td><td style="padding:.5rem 0;font-size:.875rem;color:var(--muted)">Supply chain attestation</td></tr>
+        </table>
       </div>
     </div>
   </div>
