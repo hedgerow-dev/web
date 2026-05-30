@@ -21,12 +21,18 @@
     <a href="index.html" class="logo-tag-link" aria-current="page"><span class="logo-tag">Rowan</span></a>
   </div>
   <div class="nav-links">
+    <a href="#coverage">Coverage</a>
+    <a href="#architecture">Architecture</a>
+    <a href="#setup">Setup</a>
     <a href="../thicket/index.html">Thicket</a>
     <a href="mailto:hello@hedgerow.dev" class="nav-cta">Contact</a>
   </div>
   <button class="nav-hamburger" id="navToggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
 </nav>
 <div class="nav-drawer" id="navDrawer">
+  <a href="#coverage">Coverage</a>
+  <a href="#architecture">Architecture</a>
+  <a href="#setup">Setup</a>
   <a href="../thicket/index.html">Thicket</a>
   <a href="mailto:hello@hedgerow.dev" class="nav-drawer-cta">Contact &rarr;</a>
 </div>
@@ -35,9 +41,9 @@
 <section class="rowan-hero">
   <div class="wrap">
     <h1>Source code analysis that finds what general-purpose SAST misses.</h1>
-    <p class="hero-sub">Most scanners pattern-match within a single file. Rowan builds a call graph for your whole project and follows tainted data from source to sink across imports and function calls &mdash; which is where real vulnerabilities actually live. Built specifically for AI infrastructure.</p>
+    <p class="hero-sub" style="margin-top:2rem">Most scanners pattern-match within a single file. Rowan builds a call graph for your whole project and follows tainted data from source to sink across imports and function calls &mdash; which is where real vulnerabilities actually live. Built specifically for AI infrastructure.</p>
     <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:2.5rem">
-      <a href="mailto:hello@hedgerow.dev" class="btn" style="background:#fff;color:var(--navy);font-weight:600">Get in touch</a>
+      <a href="mailto:hello@hedgerow.dev" class="btn-hero-primary">Get in touch</a>
     </div>
   </div>
 </section>
@@ -51,8 +57,8 @@
 
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;max-width:860px">
       <div>
-        <p style="font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sage);margin-bottom:.75rem">api/endpoints.py</p>
-        <div class="code-block" style="display:block;font-size:.78rem">
+        <code style="font-family:'SF Mono','Fira Code',monospace;font-size:.73rem;color:var(--muted);display:block;margin-bottom:.625rem">api/endpoints.py</code>
+        <div class="code-block" style="display:block;width:100%;font-size:.78rem">
           <div style="color:var(--faint)"># HTTP entry point</div>
           <div><span class="flag">@router</span>.get(<span style="color:#E6A87C">'/fetch'</span>)</div>
           <div><span class="flag">async def</span> <span class="cmd">fetch_resource</span>(url: str):</div>
@@ -61,8 +67,8 @@
         </div>
       </div>
       <div>
-        <p style="font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sage);margin-bottom:.75rem">clients/resource.py</p>
-        <div class="code-block" style="display:block;font-size:.78rem">
+        <code style="font-family:'SF Mono','Fira Code',monospace;font-size:.73rem;color:var(--muted);display:block;margin-bottom:.625rem">clients/resource.py</code>
+        <div class="code-block" style="display:block;width:100%;font-size:.78rem">
           <div style="color:var(--faint)"># downstream — different file</div>
           <div><span class="flag">class</span> <span class="cmd">ResourceClient</span>:</div>
           <div>&nbsp;&nbsp;<span class="flag">async def</span> <span class="cmd">get</span>(self, url: str):</div>
@@ -72,8 +78,8 @@
       </div>
     </div>
 
-    <div style="margin-top:1.5rem;max-width:860px">
-      <div class="code-block" style="display:block;font-size:.78rem">
+    <div style="margin-top:2rem;max-width:860px">
+      <div class="code-block" style="display:block;width:100%;font-size:.78rem">
         <div style="color:#E87070;font-weight:600">[CRITICAL] Server-Side Request Forgery &mdash; confidence: 89%</div>
         <div style="color:var(--faint);margin-top:.4rem">Taint path: url param &rarr; client.get() &rarr; httpx.get()</div>
         <div style="color:var(--faint)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;endpoints.py:3 &rarr; endpoints.py:4 &rarr; clients/resource.py:9</div>
@@ -84,7 +90,7 @@
 </section>
 
 <!-- What Rowan covers -->
-<section style="background:var(--surface);padding:5rem 0;border-bottom:1px solid var(--border)">
+<section id="coverage" style="background:var(--surface);padding:5rem 0;border-bottom:1px solid var(--border)">
   <div class="wrap">
     <p class="section-label">Coverage</p>
     <h2>What Rowan scans.</h2>
@@ -125,7 +131,7 @@
 </section>
 
 <!-- Four engines -->
-<section style="background:var(--bg);padding:5rem 0;border-bottom:1px solid var(--border)">
+<section id="architecture" style="background:var(--bg);padding:5rem 0;border-bottom:1px solid var(--border)">
   <div class="wrap">
     <p class="section-label">Architecture</p>
     <h2>Four engines. One scan.</h2>
@@ -194,7 +200,7 @@
 </section>
 
 <!-- Setup -->
-<section style="background:var(--bg);padding:5rem 0;border-bottom:1px solid var(--border)">
+<section id="setup" style="background:var(--bg);padding:5rem 0;border-bottom:1px solid var(--border)">
   <div class="wrap">
     <p class="section-label">Setup</p>
     <h2>CLI and web API.</h2>
