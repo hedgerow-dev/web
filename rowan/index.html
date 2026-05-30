@@ -21,13 +21,11 @@
     <span class="logo-tag">Rowan</span>
   </a>
   <div class="nav-links">
-    <a href="benchmarks.html">Benchmarks</a>
     <a href="mailto:hello@hedgerow.dev" class="nav-cta">Get Early Access</a>
   </div>
   <button class="nav-hamburger" id="navToggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
 </nav>
 <div class="nav-drawer" id="navDrawer">
-  <a href="benchmarks.html">Benchmarks</a>
   <a href="mailto:hello@hedgerow.dev" class="nav-drawer-cta">Get Early Access &rarr;</a>
 </div>
 
@@ -37,35 +35,10 @@
     <p class="hero-sub">Cross-file taint analysis and AI-specific sink models. Rowan understands that <code>torch.load()</code> is a code execution primitive. That <code>trust_remote_code=True</code> is a trust boundary. That the attack surface of an AI application is not the same as a web API.</p>
     <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:2.5rem">
       <a href="mailto:hello@hedgerow.dev" class="btn" style="background:#fff;color:var(--navy)">Request early access</a>
-      <a href="benchmarks.html" class="btn" style="background:transparent;color:rgba(255,255,255,.7);border:1.5px solid rgba(255,255,255,.25)">Read the findings &rarr;</a>
     </div>
   </div>
 </section>
 
-<section style="background:var(--bg);padding:5rem 0;border-bottom:1px solid var(--border)">
-  <div class="wrap">
-    <p class="section-label">Evidence</p>
-    <h2>Confirmed in production.</h2>
-    <p class="section-intro" style="margin-bottom:2.5rem">Findings in real codebases, confirmed exploitable, disclosed to maintainers. All missed by CodeQL and Semgrep.</p>
-    <div style="display:flex;flex-direction:column;gap:1px;border-top:1px solid var(--border)">
-      <div style="padding:1.25rem 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:baseline;gap:2rem;flex-wrap:wrap">
-        <span style="font-weight:600;color:var(--text)">SGLang &mdash; three critical RCEs</span>
-        <span style="font-size:.78rem;color:var(--faint)">CVSS 10.0, 10.0, 8.1 &middot; April 2026</span>
-      </div>
-      <div style="padding:1.25rem 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:baseline;gap:2rem;flex-wrap:wrap">
-        <span style="font-weight:600;color:var(--text)">Letta &mdash; two critical RCEs</span>
-        <span style="font-size:.78rem;color:var(--faint)">May 2026</span>
-      </div>
-      <div style="padding:1.25rem 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:baseline;gap:2rem;flex-wrap:wrap">
-        <span style="font-weight:600;color:var(--text)">LangChain &mdash; CVE-2025-68664</span>
-        <span style="font-size:.78rem;color:var(--faint)">100% recall, zero false positives</span>
-      </div>
-    </div>
-    <p style="margin-top:1.25rem;font-size:.82rem;color:var(--faint)">
-      <a href="benchmarks.html" style="color:var(--sage);text-decoration:none;font-weight:600">Full findings &rarr;</a>
-    </p>
-  </div>
-</section>
 
 <section style="background:var(--navy);padding:5.5rem 0;text-align:left">
   <div class="wrap">
@@ -82,8 +55,7 @@
       <div class="footer-brand">Hedgerow</div>
       <div class="footer-links" style="justify-content:flex-start;margin-top:.5rem">
         <a href="../index.html">Home</a>
-        <a href="benchmarks.html">Benchmarks</a>
-        <a href="../thicket/index.html">Thicket</a>
+            <a href="../thicket/index.html">Thicket</a>
         <a href="mailto:hello@hedgerow.dev">Contact</a>
       </div>
     </div>
