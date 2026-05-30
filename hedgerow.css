@@ -74,7 +74,7 @@ p:last-child { margin-bottom:0 }
 .section-label {
   display:inline-block;
   font-size:.68rem; font-weight:600; letter-spacing:.14em; text-transform:uppercase;
-  color:var(--sage); margin-bottom:1.25rem;
+  color:#4A6B45; margin-bottom:1.25rem; /* darkened Herb for WCAG AA contrast */
 }
 .section-intro {
   font-size:1.05rem; color:var(--muted);
