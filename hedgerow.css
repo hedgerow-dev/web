@@ -38,7 +38,7 @@
 
 html { font-size:16px; scroll-behavior:smooth }
 body {
-  font-family:'Inter', system-ui, sans-serif;
+  font-family:'Avenir Next', 'Avenir', 'Century Gothic', 'Montserrat', sans-serif;
   background:var(--bg);
   color:var(--text);
   line-height:1.6;
@@ -47,7 +47,7 @@ body {
 
 /* ── Typography — Inter throughout, per style guide ── */
 h1 {
-  font-family:'Inter', system-ui, sans-serif;
+  font-family:'Avenir Next', 'Avenir', 'Century Gothic', 'Montserrat', sans-serif;
   font-size:clamp(2.2rem,5vw,3.8rem);
   font-weight:700;
   letter-spacing:-.04em;
@@ -55,7 +55,7 @@ h1 {
   color:var(--navy);
 }
 h2 {
-  font-family:'Inter', system-ui, sans-serif;
+  font-family:'Avenir Next', 'Avenir', 'Century Gothic', 'Montserrat', sans-serif;
   font-size:clamp(1.4rem,3vw,2rem);
   font-weight:600;
   letter-spacing:-.025em;
@@ -98,11 +98,11 @@ nav {
 
 /* ── "hr█." logo mark ── */
 .logo-mark {
-  font-family:'Avenir Next', 'Avenir', 'Century Gothic', 'Trebuchet MS', system-ui, sans-serif;
+  font-family:'Avenir Next', 'Avenir', 'Century Gothic', 'Montserrat', sans-serif;
   font-weight:700;
-  font-size:1.15rem;
+  font-size:1.5rem;
   letter-spacing:-.02em;
-  color:#0D1A10;   /* always near-black — logo is B&W */
+  color:#0D1A10;
   display:inline-flex;
   align-items:center;
   gap:0;
@@ -110,14 +110,11 @@ nav {
 }
 .logo-block {
   display:inline-block;
-  width:1.55em;
-  height:0.68em;
+  width:1.4em;
+  height:0.62em;
   background:currentColor;
-  margin:0 0.07em;
+  margin:0 0.06em;
   flex-shrink:0;
-  vertical-align:middle;
-  position:relative;
-  top:-.04em;
 }
 
 .nav-logo .logo-tag {
@@ -284,7 +281,7 @@ td:first-child { color:var(--text); font-weight:500 }
   border-radius:6px; padding:1.5rem 1.25rem;
 }
 .stat-num {
-  font-family:'Inter', system-ui, sans-serif;
+  font-family:'Avenir Next', 'Avenir', 'Century Gothic', 'Montserrat', sans-serif;
   font-size:2.8rem; font-weight:700;
   color:var(--navy); letter-spacing:-.04em;
   display:block; line-height:1;
@@ -315,7 +312,7 @@ td:first-child { color:var(--text); font-weight:500 }
 }
 .page-header h1 { color:#fff; font-size:clamp(2rem,4.5vw,3rem) }
 .page-header .page-sub {
-  font-family:'Inter', sans-serif; font-style:normal;
+  font-family:'Avenir Next', 'Avenir', 'Century Gothic', 'Montserrat', sans-serif; font-style:normal;
   color:rgba(255,255,255,.6); font-size:1rem;
   margin-top:.875rem; max-width:600px;
 }

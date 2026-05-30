@@ -16,7 +16,7 @@
 }
 .rowan-hero h1 { color:#fff; font-size:clamp(2.4rem,5.5vw,3.8rem) }
 .rowan-hero .hero-sub {
-  font-family:'Inter',sans-serif; font-style:normal;
+  font-family:'Avenir Next', 'Avenir', 'Century Gothic', 'Montserrat', sans-serif; font-style:normal;
   color:rgba(255,255,255,.65); font-size:1.05rem;
   max-width:600px; margin:1.25rem 0 2.5rem; line-height:1.75;
 }
@@ -71,7 +71,7 @@
   position:relative;
 }
 .feature-num {
-  font-family:'Inter', system-ui, sans-serif;
+  font-family:'Avenir Next', 'Avenir', 'Century Gothic', 'Montserrat', sans-serif;
   font-size:1.5rem; font-weight:300;
   color:var(--border); letter-spacing:-.02em; line-height:1;
   position:absolute; top:1.25rem; right:1.5rem;
@@ -91,7 +91,7 @@
   margin-bottom:1.25rem; flex-wrap:wrap;
 }
 .proof-project {
-  font-family:'Inter', system-ui, sans-serif;
+  font-family:'Avenir Next', 'Avenir', 'Century Gothic', 'Montserrat', sans-serif;
   font-size:1.2rem; font-weight:700; letter-spacing:-.02em; color:var(--navy);
 }
 .proof-date {
@@ -137,7 +137,7 @@
   border-top:3px solid var(--sage);
 }
 .engine-name {
-  font-family:'Inter', system-ui, sans-serif;
+  font-family:'Avenir Next', 'Avenir', 'Century Gothic', 'Montserrat', sans-serif;
   font-size:.95rem; font-weight:700; letter-spacing:-.01em; color:var(--navy); margin-bottom:.35rem;
 }
 .engine-subtitle { font-size:.72rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--sage); margin-bottom:.75rem }
@@ -185,7 +185,7 @@
 }
 .rowan-page-header h1 { color:#fff; font-size:clamp(2rem,4.5vw,3rem) }
 .rowan-page-header .page-sub {
-  font-family:'Inter',sans-serif; font-style:normal;
+  font-family:'Avenir Next', 'Avenir', 'Century Gothic', 'Montserrat', sans-serif; font-style:normal;
   color:rgba(255,255,255,.6); font-size:1rem;
   margin-top:.875rem; max-width:600px;
 }

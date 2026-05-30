@@ -93,7 +93,7 @@
 .pm-accent--thicket { background:var(--marigold) }
 .pm-accent--rowan   { background:var(--celeste) }
 .pm-name {
-  font-family:'Inter', system-ui, sans-serif;
+  font-family:'Avenir Next', 'Avenir', 'Century Gothic', 'Montserrat', sans-serif;
   font-size:1.5rem;
   font-weight:600;
   letter-spacing:-.02em;
@@ -127,7 +127,7 @@
   margin-bottom:1.25rem;
 }
 .contact-email {
-  font-family:'Inter', system-ui, sans-serif;
+  font-family:'Avenir Next', 'Avenir', 'Century Gothic', 'Montserrat', sans-serif;
   font-size:clamp(1.4rem,3vw,2.2rem);
   font-weight:300;
   letter-spacing:-.02em;
