@@ -1,0 +1,13 @@
+{
+  "name": "hedgerow-dev",
+  "version": "1.0.0",
+  "description": "Hedgerow company website — static HTML/CSS",
+  "private": true,
+  "scripts": {
+    "start": "serve -l 4800 .",
+    "dev": "serve -l 4800 ."
+  },
+  "devDependencies": {
+    "serve": "^14.2.4"
+  }
+}
