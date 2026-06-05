@@ -37,18 +37,18 @@ The site should feel like Midnight + Lionsmane. Herb/Moss Shadow is the accent. 
 
 ## Typography
 
-**Primary font stack:** `'Avenir Next', 'Avenir', 'Century Gothic', 'Montserrat', sans-serif`
+**Primary font stack:** `'Inter', system-ui, sans-serif`
 
-Montserrat is loaded from Google Fonts as the web fallback.
+Inter is loaded from Google Fonts (`weights 300;400;500;600;700`). It is the single typeface across the whole site — this is the canonical stack the live site renders. (Earlier brand drafts specified Avenir Next / Montserrat; the site standardised on Inter for consistent cross-platform rendering and weight range. Do not reintroduce Avenir or Montserrat without updating every page and this guide together.)
 
 **Rules:**
 - One font family throughout — no decorative serifs, no Cormorant Garamond, no display fonts
 - Weight and spacing contrast do the work, not multiple typefaces
-- Headlines: bold (`700`), tight tracking (`-.04em`)
+- Headlines: bold (`700`), tight tracking (`-.02em` to `-.04em`)
 - Body: regular (`400`) or medium (`500`)
 - Labels: uppercase, wide tracking (`.12–.14em`), small size (`.65–.7rem`)
 
-**Logo mark:** `hr█.` in Avenir Next bold — this is a separate typographic object, not subject to the body font rule.
+**Logo mark:** `hr█.` — a separate typographic object (rendered via `assets/logo-nav.png`), not subject to the body font rule.
 
 ---
 
