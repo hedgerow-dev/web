@@ -42,6 +42,8 @@
       <span class="byline-sep"></span>
       <span class="byline-author">Hedgerow Research</span>
       <span class="byline-sep"></span>
+      <span class="byline-readtime">8 min read</span>
+      <span class="byline-sep"></span>
       <span class="byline-tag">Bug bounty</span>
       <span class="byline-tag">Threat modeling</span>
     </div>
@@ -66,7 +68,9 @@
 
       <p>During a routine scan of an open-source ML library, Rowan flagged an inter-procedural taint flow from a user-controlled file upload directly to an unsafe deserialization call. We fed this into our automated review pipeline, generated three candidate exploit vectors, and went to work. We spun up a private replica of the target, got our shell execution, confirmed persistence, and confidently submitted a high-severity RCE report.</p>
 
-      <p>The triager replied almost immediately: <em>&ldquo;This is expected behavior. The utility is built to execute these files.&rdquo;</em></p>
+      <blockquote>
+        <p>&ldquo;This is expected behavior. The utility is built to execute these files.&rdquo;</p>
+      </blockquote>
 
       <p>My initial reaction was typical red-team ego. I spent hours building a rebuttal package with live exploit harnesses, environment dumps, and undeniable proof of impact.</p>
 
@@ -82,15 +86,13 @@
 
       <p>This failure forced me to completely re-evaluate how I triage bug bounty findings, specifically in the data science and ML ecosystem where &ldquo;unsafe deserialization&rdquo; is a notoriously noisy flag. I had to build a clear lens to separate a known risk from a broken security claim.</p>
 
-      <p>Here is the verdict on how to filter these findings:</p>
-
       <ul class="verdict-list">
         <li class="drop">
-          <span class="vl-head">Drop &mdash; The Documented Risk</span>
+          <span class="vl-head"><span class="vl-icon">&times;</span> Drop &mdash; The Documented Risk</span>
           You have to drop findings where the danger is an acknowledged architectural reality. If a CLI utility warns users to only parse trusted files, that is a user-awareness issue, not a CVE. If a library has an internal data-handling function literally named <code>unpickle_data()</code>, the developer has already conceded the design. Blanketing these with &ldquo;deserialization is dangerous&rdquo; reports exhausts engineering teams and burns your credibility.
         </li>
         <li class="keep">
-          <span class="vl-head">Keep &mdash; The Silent Opt-In</span>
+          <span class="vl-head"><span class="vl-icon">&#10003;</span> Keep &mdash; The Silent Opt-In</span>
           The findings that survive scrutiny are fundamentally different. The vulnerability isn&rsquo;t just &ldquo;this library uses unsafe deserialization.&rdquo; The true vulnerability is when a library <strong>silently opts the user into a dangerous default without consent, visibility, or a documentation warning.</strong> Imagine a widely used deep learning framework that provides a simple function to download and load standard tutorial datasets. Under the hood, if that function hardcodes an <code>allow_untrusted=True</code> flag and passes it to a raw deserializer &mdash; with no gate, no allowlist, and no warning in the docstring &mdash; that is a critical finding. The user calls a harmless-looking <code>load_data()</code> function with zero visibility into the fact that their trust boundary has just been dissolved.
         </li>
       </ul>
@@ -103,30 +105,37 @@
 
       <p>The target&rsquo;s reference web application routed uploads through a single, fragile trust check:</p>
 
-<pre><span class="code-label">Python &mdash; vulnerable upload handler</span><code>if filename.endswith(TRUSTED_EXTENSION):
+      <div class="code-wrap">
+        <div class="code-label">Python &mdash; vulnerable upload handler</div>
+        <pre><code>if filename.endswith(TRUSTED_EXTENSION):
     model = restricted_load(file_bytes, trusted=audit_types(data=file_bytes))
 else:
-    model = legacy_deserialize(file_bytes)   # &larr; any other extension lands here
-</code></pre>
+    model = legacy_deserialize(file_bytes)   # &larr; any other extension lands here</code></pre>
+      </div>
 
       <p>This is textbook fail-open design. The entire trust boundary is a string suffix check. If your file doesn&rsquo;t have the exact trusted extension, it falls straight into raw, unrestricted execution.</p>
 
       <p>Unlike the local developer utility, this public-facing web app had no documentation warning users that uploads would be executed. The reasonable expectation is that a public upload interface won&rsquo;t detonate untrusted input.</p>
 
-      <p><strong>The Secure-by-Design Fix:</strong> Reject at the boundary. Never fail open.</p>
+      <div class="callout-action">
+        <span class="ca-label">Secure-by-Design Fix</span>
+        <p>Reject at the boundary. Never fail open. If the extension is not on the allowlist, raise immediately &mdash; do not fall through to a less-safe path.</p>
+      </div>
 
-<pre><span class="code-label">Python &mdash; fixed</span><code>if not filename.endswith(TRUSTED_EXTENSION):
+      <div class="code-wrap">
+        <div class="code-label">Python &mdash; fixed</div>
+        <pre><code>if not filename.endswith(TRUSTED_EXTENSION):
     raise ValueError("Unsupported format. Only trusted format files accepted.")
-model = restricted_load(file_bytes, trusted=audit_types(data=file_bytes))
-</code></pre>
+model = restricted_load(file_bytes, trusted=audit_types(data=file_bytes))</code></pre>
+      </div>
 
       <h3>Vector 2: Path Traversal (Defense-in-Depth)</h3>
 
       <p>Another vector Rowan found involved a write function that accepted caller-provided paths without sanitizing <code>../</code> sequences. But looking at the adversary context: for this to be exploitable, an attacker has to control the path argument. In standard usage, the developer controls this. It&rsquo;s only a vulnerability if the implementing application passes raw user input to it. This is a hardening suggestion, not a standalone CVE.</p>
 
-      <p>A boundary check fixes it:</p>
-
-<pre><span class="code-label">Python &mdash; path boundary enforcement</span><code>import os
+      <div class="code-wrap">
+        <div class="code-label">Python &mdash; path boundary enforcement</div>
+        <pre><code>import os
 from pathlib import Path
 
 def write_with_boundary_check(model, destination, allowed_dir):
@@ -134,8 +143,8 @@ def write_with_boundary_check(model, destination, allowed_dir):
     boundary = Path(os.path.realpath(allowed_dir))
     if not str(resolved).startswith(str(boundary) + os.sep):
         raise ValueError(f"Path outside allowed directory: {destination}")
-    library_write(model, resolved)
-</code></pre>
+    library_write(model, resolved)</code></pre>
+      </div>
 
       <h3>The ML Security Blind Spot</h3>
 
@@ -143,7 +152,7 @@ def write_with_boundary_check(model, destination, allowed_dir):
 
       <p>When triagers see &ldquo;unsafe deserialization&rdquo; in a report, they instinctively close it as a known risk. Our web app finding got caught in the crossfire because we led with the documented utility, and the triager shut the door before looking at the context.</p>
 
-      <p>If you want a security report to land, you cannot just say &ldquo;unsafe code is dangerous.&rdquo; You have to open with:</p>
+      <p>If you want a security report to land, you cannot just say &ldquo;unsafe code is dangerous.&rdquo; You have to open with a claim:</p>
 
       <blockquote>
         <p>&ldquo;[Library] claims to protect against [specific threat] via [specific mechanism]. This report demonstrates that [specific input] bypasses that protection because [specific reason].&rdquo;</p>
@@ -151,14 +160,16 @@ def write_with_boundary_check(model, destination, allowed_dir):
 
       <p>Tools like Rowan map the flows. They find the sinks. But threat modeling &mdash; understanding what a system actually claims to protect &mdash; remains a human responsibility. Next time, I&rsquo;m reading the README before I drop the shell.</p>
 
-      <hr class="appendix-rule">
-      <span class="appendix-label">Appendix</span>
+      <hr class="appendix-divider">
+      <span class="appendix-kicker">Appendix</span>
 
       <h3>Pragmatic Allowlisting for Legacy Formats</h3>
 
       <p>If you are stuck supporting legacy formats and cannot drop them entirely, do not use a blocklist. Blocklists for dangerous modules will inevitably fail against bypasses like <code>builtins.eval</code>. Use a strict allowlist that explicitly permits only the modules your application requires.</p>
 
-<pre><span class="code-label">Python &mdash; allowlist-based deserializer</span><code># Audit and expand this list for your specific model types before any production use
+      <div class="code-wrap">
+        <div class="code-label">Python &mdash; allowlist-based deserializer</div>
+        <pre><code># Audit and expand this list for your specific model types before production use
 ALLOWED_MODULE_ROOTS = {
     "your_ml_framework",
     "numerical_library",
@@ -184,8 +195,8 @@ class RestrictedDeserializer(BaseDeserializer):
             raise DeserializationError(
                 f"Blocked module: {module}.{name}"
             )
-        return super().resolve_class(module, name)
-</code></pre>
+        return super().resolve_class(module, name)</code></pre>
+      </div>
 
     </div><!-- /.article-inner -->
   </div><!-- /.wrap -->
