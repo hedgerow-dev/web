@@ -33,8 +33,6 @@ document.addEventListener('DOMContentLoaded', function () {
     var href = a.getAttribute('href').split('#')[0].split('/').pop();
     if (href && href === page) {
       a.classList.add('active');
-      a.style.color = 'var(--navy)';
-      a.style.fontWeight = '600';
     }
   });
 });

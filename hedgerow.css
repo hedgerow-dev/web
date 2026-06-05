@@ -478,6 +478,7 @@ footer a:hover { color:rgba(255,255,255,.85) }
   color:var(--muted); text-decoration:none; transition:color .15s;
 }
 .nav-drawer a:hover { color:var(--navy) }
+.nav-drawer a.active { color:var(--navy); font-weight:600 }
 .nav-drawer a:last-child { border-bottom:none }
 .nav-drawer .nav-drawer-cta { color:var(--navy); font-weight:700; margin-top:.25rem; border-bottom:none }
 
