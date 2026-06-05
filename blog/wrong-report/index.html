@@ -39,7 +39,9 @@
     <h1>How a Working Exploit Made Me Forget How to Threat Model</h1>
     <div class="article-byline">
       <span class="byline-date">June 2026</span>
+      <span class="byline-sep"></span>
       <span class="byline-author">Hedgerow Research</span>
+      <span class="byline-sep"></span>
       <span class="byline-tag">Bug bounty</span>
       <span class="byline-tag">Threat modeling</span>
     </div>
@@ -101,7 +103,7 @@
 
       <p>The target&rsquo;s reference web application routed uploads through a single, fragile trust check:</p>
 
-<pre><code>if filename.endswith(TRUSTED_EXTENSION):
+<pre><span class="code-label">Python &mdash; vulnerable upload handler</span><code>if filename.endswith(TRUSTED_EXTENSION):
     model = restricted_load(file_bytes, trusted=audit_types(data=file_bytes))
 else:
     model = legacy_deserialize(file_bytes)   # &larr; any other extension lands here
@@ -113,7 +115,7 @@ else:
 
       <p><strong>The Secure-by-Design Fix:</strong> Reject at the boundary. Never fail open.</p>
 
-<pre><code>if not filename.endswith(TRUSTED_EXTENSION):
+<pre><span class="code-label">Python &mdash; fixed</span><code>if not filename.endswith(TRUSTED_EXTENSION):
     raise ValueError("Unsupported format. Only trusted format files accepted.")
 model = restricted_load(file_bytes, trusted=audit_types(data=file_bytes))
 </code></pre>
@@ -124,7 +126,7 @@ model = restricted_load(file_bytes, trusted=audit_types(data=file_bytes))
 
       <p>A boundary check fixes it:</p>
 
-<pre><code>import os
+<pre><span class="code-label">Python &mdash; path boundary enforcement</span><code>import os
 from pathlib import Path
 
 def write_with_boundary_check(model, destination, allowed_dir):
@@ -144,18 +146,19 @@ def write_with_boundary_check(model, destination, allowed_dir):
       <p>If you want a security report to land, you cannot just say &ldquo;unsafe code is dangerous.&rdquo; You have to open with:</p>
 
       <blockquote>
-        <p><em>&ldquo;[Library] claims to protect against [specific threat] via [specific mechanism]. This report demonstrates that [specific input] bypasses that protection because [specific reason].&rdquo;</em></p>
+        <p>&ldquo;[Library] claims to protect against [specific threat] via [specific mechanism]. This report demonstrates that [specific input] bypasses that protection because [specific reason].&rdquo;</p>
       </blockquote>
 
       <p>Tools like Rowan map the flows. They find the sinks. But threat modeling &mdash; understanding what a system actually claims to protect &mdash; remains a human responsibility. Next time, I&rsquo;m reading the README before I drop the shell.</p>
 
-      <hr style="border:none;border-top:1px solid var(--border);margin:3rem 0">
+      <hr class="appendix-rule">
+      <span class="appendix-label">Appendix</span>
 
-      <h3>Appendix: Pragmatic Allowlisting for Legacy Formats</h3>
+      <h3>Pragmatic Allowlisting for Legacy Formats</h3>
 
       <p>If you are stuck supporting legacy formats and cannot drop them entirely, do not use a blocklist. Blocklists for dangerous modules will inevitably fail against bypasses like <code>builtins.eval</code>. Use a strict allowlist that explicitly permits only the modules your application requires.</p>
 
-<pre><code># &lpar;!&rpar; AUDIT AND EXPAND THIS LIST FOR YOUR SPECIFIC MODEL TYPES BEFORE ANY PRODUCTION USE
+<pre><span class="code-label">Python &mdash; allowlist-based deserializer</span><code># Audit and expand this list for your specific model types before any production use
 ALLOWED_MODULE_ROOTS = {
     "your_ml_framework",
     "numerical_library",
