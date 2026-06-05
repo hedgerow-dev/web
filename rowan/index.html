@@ -46,7 +46,7 @@
   <div class="wrap">
     <p class="section-label">Source analysis</p>
     <h1>Most scanners look at one file at a time. Real AI vulnerabilities don&rsquo;t live there.</h1>
-    <p class="hero-sub">Rowan builds a call graph for your entire codebase and follows tainted data from source to sink across imports and function calls. The multi-hop chains where exploitable vulnerabilities actually live, covering the AI attack surface that most scanners were never built for.</p>
+    <p class="hero-sub">Rowan builds a call graph across your entire codebase and follows tainted data from source to sink, across imports, modules, and async boundaries. A three-hop taint path across different files is invisible to pattern matching. That&rsquo;s where the real findings are.</p>
     <div class="hero-actions">
       <a href="mailto:hello@hedgerow.dev" class="btn-hero-primary">Request access &rarr;</a>
     </div>
@@ -58,12 +58,12 @@
   <div class="wrap">
     <p class="section-label">In the wild</p>
     <h2>Vulnerabilities in production AI frameworks, found by Rowan.</h2>
-    <p class="rw-lead">These are not synthetic test cases. Rowan identified exploitable vulnerabilities in widely deployed AI frameworks through cross-file taint analysis and reachability-aware scanning. All findings were responsibly disclosed.</p>
+    <p class="rw-lead">These aren&rsquo;t lab examples. Rowan found these in frameworks that production AI applications depend on. All were responsibly disclosed.</p>
     <div class="rw-cve-list">
       <div class="rw-cve">
         <span class="rw-cve-name">LangChain</span>
         <span class="rw-cve-sev rw-cve-sev--crit">HIGH</span>
-        <span class="rw-cve-desc">CVE-2026-34070, confirmed at multiple reachable locations across the dependency graph. Reachability-aware SCA traced the vulnerable function through the call graph and confirmed it was reachable from application entry points.</span>
+        <span class="rw-cve-desc">CVE-2026-34070, confirmed reachable from application entry points. Dependency scanners flagged it as informational because they can&rsquo;t prove a call path. Rowan traced it through the call graph and confirmed it was live.</span>
       </div>
     </div>
   </div>
@@ -74,7 +74,7 @@
   <div class="wrap">
     <p class="section-label">The limitation</p>
     <h2>Real vulnerabilities don&rsquo;t stay in one file.</h2>
-    <p class="rw-lead">An SSRF that spans two files and an async method won&rsquo;t appear in a single-file regex scan. Rowan follows the full chain and shows exactly where it breaks.</p>
+    <p class="rw-lead">An SSRF that crosses two files and an async boundary won&rsquo;t show up in a single-file scan. Rowan follows the full path and shows you exactly where it breaks.</p>
     <div class="code-block rw-trace">
       <div class="rw-trace-crit">[CRITICAL] Server-Side Request Forgery, confidence: 89%</div>
       <div class="rw-trace-grid">
@@ -102,7 +102,7 @@
       </div>
       <div class="rw-grid-cell">
         <h3 class="rw-cell-title">AI/ML attack surfaces</h3>
-        <p class="rw-cell-text"><code>torch.load()</code>, <code>trust_remote_code=True</code>, <code>apply_chat_template()</code>: modelled as distinct vulnerability classes with rules built specifically for AI infrastructure.</p>
+        <p class="rw-cell-text"><code>torch.load()</code>, <code>trust_remote_code=True</code>, <code>apply_chat_template()</code>: each has dedicated rules that understand what these do in an AI context. A general-purpose scanner doesn&rsquo;t know what they mean.</p>
       </div>
       <div class="rw-grid-cell">
         <h3 class="rw-cell-title">Model file scanning</h3>
@@ -110,7 +110,7 @@
       </div>
       <div class="rw-grid-cell">
         <h3 class="rw-cell-title">Reachability-aware SCA</h3>
-        <p class="rw-cell-text">Surfaces only the CVEs your code can actually trigger. Eliminates the noise that makes conventional SCA outputs impossible to act on.</p>
+        <p class="rw-cell-text">Only surfaces CVEs your code can actually reach. Most SCA tools report vulnerabilities in functions you never call. This doesn&rsquo;t.</p>
       </div>
       <div class="rw-grid-cell">
         <h3 class="rw-cell-title">Prompt injection paths</h3>
@@ -118,7 +118,7 @@
       </div>
       <div class="rw-grid-cell">
         <h3 class="rw-cell-title">Framework-specific rules</h3>
-        <p class="rw-cell-text">Named rules for LangChain, Keras, OmegaConf, ONNX Hub, Gradio, and other AI infrastructure libraries commonly absent from general-purpose scanners.</p>
+        <p class="rw-cell-text">Named rules for LangChain, Keras, OmegaConf, ONNX Hub, Gradio, and other AI infrastructure libraries. These aren&rsquo;t in general-purpose scanner rule sets.</p>
       </div>
     </div>
   </div>
@@ -135,28 +135,28 @@
         <span class="rw-engine-num">1</span>
         <div>
           <h3 class="rw-cell-title">Inter-procedural taint analysis</h3>
-          <p class="rw-engine-text">Follows user-controlled data from entry points across file and function boundaries to dangerous sinks. Detects multi-hop chains that file-level pattern matching cannot see.</p>
+          <p class="rw-engine-text">Follows user-controlled data from HTTP handlers and CLI args across file and function boundaries to dangerous sinks. The finding includes every hop: source, intermediate calls, and sink.</p>
         </div>
       </div>
       <div class="rw-engine">
         <span class="rw-engine-num">2</span>
         <div>
           <h3 class="rw-cell-title">AI-specific pattern scanning</h3>
-          <p class="rw-engine-text">AST-based rules covering AI framework misconfigurations, unsafe model loading patterns, missing authentication, and known vulnerability classes absent from general-purpose SAST rule sets.</p>
+          <p class="rw-engine-text">AST-based rules written specifically for AI frameworks: unsafe model loading, missing auth on inference endpoints, misconfigurations in LangChain, Keras, OmegaConf, and similar. These aren&rsquo;t in general-purpose rule sets.</p>
         </div>
       </div>
       <div class="rw-engine">
         <span class="rw-engine-num">3</span>
         <div>
           <h3 class="rw-cell-title">Reachability-aware supply chain</h3>
-          <p class="rw-engine-text">Queries the CVE database, then builds a call graph to prove whether the vulnerable function is reachable from an application entry point. Suppresses everything that isn&rsquo;t. Eliminates 80&ndash;90% of the false-positive noise from conventional SCA tools.</p>
+          <p class="rw-engine-text">Checks your dependencies against the CVE database, then traces whether the vulnerable function is reachable from your entry points. If there&rsquo;s no call path, it&rsquo;s suppressed. In practice this cuts 80&ndash;90% of what conventional SCA surfaces.</p>
         </div>
       </div>
       <div class="rw-engine">
         <span class="rw-engine-num">4</span>
         <div>
           <h3 class="rw-cell-title">Autonomous hunt mode</h3>
-          <p class="rw-engine-text">An agentic pipeline that generates vulnerability hypotheses, traces exploit chains, and attempts confirmation without manual triage. Used for security research and deep-dive audits rather than CI gates.</p>
+          <p class="rw-engine-text">An agentic pipeline that forms hypotheses about where vulnerabilities exist, traces potential exploit paths, and tries to confirm them. Not a CI tool. Use it for research and deep audits.</p>
         </div>
       </div>
     </div>
@@ -171,7 +171,7 @@
     <div class="rw-output-cols">
       <div>
         <h3>Confidence scoring</h3>
-        <p>Every finding is scored 0&ndash;100% based on source clarity, taint path length, and whether known sanitizers were detected in the path. High-confidence findings are direct exploits. Lower scores identify patterns worth reviewing. Filter to 80%+ to separate signal from noise.</p>
+        <p>Every finding gets a confidence score based on source clarity, taint path length, and whether sanitizers appear in the path. Above 80 is a direct exploit path. Below that, it&rsquo;s a pattern worth a look. Start at 80%+ if you want a short list.</p>
       </div>
       <div>
         <h3>Output formats</h3>

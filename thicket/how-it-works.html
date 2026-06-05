@@ -41,7 +41,7 @@
   <div class="wrap">
     <div class="section-label">How it works</div>
     <h1>Defence in depth, from prompt to kernel.</h1>
-    <p class="page-sub">Each enforcement layer operates independently at a different point in the execution path. An attacker who evades one layer immediately faces the next, with different bypass requirements.</p>
+    <p class="page-sub">Each layer operates at a different point in the execution path. Evading one means you immediately face the next, with different bypass requirements at each level.</p>
   </div>
 </div>
 
@@ -53,7 +53,7 @@
         <span class="hw-step-num">1</span>
         <div>
           <h3 class="hw-step-title">Prompt &amp; content scanning</h3>
-          <p class="hw-step-text">Every prompt, tool call result, and model output is scanned against deterministic rule sets before it can trigger downstream execution. No content leaves your process. Catches injection attempts before they reach an operation that can cause harm.</p>
+          <p class="hw-step-text">Every prompt, tool call result, and model output is scanned before it can route execution anywhere. Runs against deterministic rule sets in your process. Nothing leaves. Catches injection attempts before they reach anything that matters.</p>
         </div>
       </div>
 
@@ -85,7 +85,7 @@
   <div class="wrap">
     <p class="section-label">Detection performance</p>
     <h2 class="bench-title">Measured against independent benchmarks.</h2>
-    <p class="sp-lead">Content scanning validated against independent, labelled datasets of jailbreak and prompt injection attempts. Latency measured on server-grade hardware (16-core Linux VM). These numbers cover the content scanning layer only. Operations that evade it are still blocked by runtime interception before they execute.</p>
+    <p class="sp-lead">Validated against independent, labelled datasets of jailbreak and prompt injection attempts. Latency measured on a 16-core Linux VM. These numbers are for the content scanning layer only. Anything that evades it still gets blocked by runtime interception.</p>
     <div class="bench-grid">
       <div class="bench-card">
         <div class="bench-num">100%</div>

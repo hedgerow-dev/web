@@ -44,7 +44,7 @@
   <div class="wrap">
     <p class="section-label">Runtime protection</p>
     <h1>Your AI application can be tricked into running code. Thicket stops it.</h1>
-    <p class="sp-sub">Prompt injection attacks arrive disguised as user input, tool results, or RAG content and route LLM output toward subprocesses, network calls, or file writes. Thicket sits between your application and everything dangerous it could do, and blocks those operations at the execution boundary before they complete.</p>
+    <p class="sp-sub">A prompt injection attack doesn&rsquo;t need the LLM to say anything bad. It just needs the LLM to call the right function. Thicket sits between your application and the operations it can perform and blocks them before they execute: at the subprocess, the network socket, the file write. By the time it blocks, the operation hasn&rsquo;t happened yet.</p>
     <div class="sp-claims">
       <div class="sp-claim">
         <span class="sp-claim-head">No AI Inside</span>
@@ -70,15 +70,15 @@
   <div class="wrap">
     <p class="section-label">What Thicket blocks</p>
     <h2>The attacks your existing tools can&rsquo;t see.</h2>
-    <p class="sp-lead">Thicket intercepts execution at the syscall and network level, not the prompt level. There is no obfuscation technique that bypasses a kernel control.</p>
+    <p class="sp-lead">Enforcing at the prompt level is the wrong layer. Base64-encode the payload, translate it, split it across tokens: none of it matters. Thicket enforces at the operation. There is no obfuscation that bypasses a kernel control.</p>
     <div class="sp-grid">
       <div class="sp-grid-cell">
         <h3 class="sp-cell-title">Prompt injection</h3>
-        <p class="sp-cell-text">Scans every prompt, tool result, and model output before it can trigger downstream execution. In-process. No content leaves your environment.</p>
+        <p class="sp-cell-text">Every prompt, tool result, and model output is scanned before it can route execution anywhere. Runs in your process. Nothing leaves.</p>
       </div>
       <div class="sp-grid-cell">
         <h3 class="sp-cell-title">Code execution via LLM output</h3>
-        <p class="sp-cell-text">Intercepts <code>exec</code>, <code>eval</code>, and subprocess calls at the Python level before they run, regardless of how the call was reached.</p>
+        <p class="sp-cell-text"><code>exec</code>, <code>eval</code>, <code>subprocess.run</code>: intercepted at the Python level before they run. Doesn&rsquo;t matter what call path got there.</p>
       </div>
       <div class="sp-grid-cell">
         <h3 class="sp-cell-title">SSRF &amp; network abuse</h3>
