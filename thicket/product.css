@@ -28,7 +28,49 @@
   display:inline-block; transition:border-color .2s;
 }
 .contact-email-sm:hover { border-color:var(--navy) }
+
+/* ── Shared button row ── */
+.btn-row { margin-top:2.5rem;display:flex;gap:1rem;flex-wrap:wrap }
+
+/* ── Content sections ── */
+.sp-section { padding:5rem 0;border-bottom:1px solid var(--border) }
+.sp-section--bg { background:var(--bg) }
+.sp-section--surface { background:var(--surface) }
+.sp-lead { color:var(--muted);max-width:620px;line-height:1.8;margin-bottom:2.5rem }
+.sp-section--surface .sp-lead { margin-bottom:2rem }
+
+/* ── Attack grid ── */
+.sp-grid {
+  display:grid;grid-template-columns:1fr 1fr;
+  max-width:820px;border-top:1px solid var(--border);
+}
+.sp-grid-cell { padding:1.25rem 0;border-bottom:1px solid var(--border) }
+.sp-grid-cell:nth-child(odd) { padding-right:2rem;border-right:1px solid var(--border) }
+.sp-grid-cell:nth-child(even) { padding-left:2rem }
+.sp-grid-cell:nth-last-child(-n+2) { border-bottom:none }
+.sp-cell-title { font-weight:600;color:var(--navy);font-size:.9rem;margin:0 0 .3rem }
+.sp-cell-text { font-size:.875rem;margin:0 }
+
+/* ── Deployment ── */
+.sp-deploy-cols { display:flex;gap:2.5rem;flex-wrap:wrap;max-width:700px;margin-top:2rem }
+.sp-deploy-label {
+  font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--sage);margin-bottom:.75rem;
+}
+.sp-deploy-list { font-size:.875rem;color:var(--muted);line-height:2 }
+
+/* ── Contact note ── */
+.sp-contact-note { color:var(--muted);font-size:.875rem;margin-top:.75rem }
+
 @media(max-width:768px) {
   .sp-hero { padding:5rem 0 4rem }
   .sp-claims { grid-template-columns:1fr;gap:1.5rem }
+  .sp-grid { grid-template-columns:1fr }
+  .sp-grid-cell,
+  .sp-grid-cell:nth-child(odd),
+  .sp-grid-cell:nth-child(even) {
+    padding:1.25rem 0;border-right:none;
+    border-bottom:1px solid var(--border);
+  }
+  .sp-grid-cell:last-child { border-bottom:none }
 }

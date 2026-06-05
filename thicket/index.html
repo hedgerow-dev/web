@@ -42,7 +42,7 @@
 
 <section class="sp-hero">
   <div class="wrap">
-    <p class="section-label">Runtime protection <span class="badge-beta">Closed beta</span></p>
+    <p class="section-label">Runtime protection</p>
     <h1>Your AI application can be tricked into running code. Thicket stops it.</h1>
     <p class="sp-sub">Prompt injection attacks don&rsquo;t announce themselves &mdash; they arrive disguised as user input, tool results, or RAG content and route LLM output toward subprocesses, network calls, or file writes. Thicket sits between your application and everything dangerous it could do, and blocks those operations at the execution boundary before they complete.</p>
     <div class="sp-claims">
@@ -59,63 +59,63 @@
         <span class="sp-claim-body">When Thicket blocks, it&rsquo;s almost always right. Under 1.5% false positive rate on clean traffic.</span>
       </div>
     </div>
-    <div style="margin-top:2.5rem;display:flex;gap:1rem;flex-wrap:wrap">
+    <div class="btn-row">
       <a href="demos.html" class="btn btn-primary">See it block real attacks</a>
-      <a href="how-it-works.html" class="btn btn-outline" style="background:transparent;border-color:rgba(255,255,255,.25);color:#fff">How it works &rarr;</a>
+      <a href="how-it-works.html" class="btn btn-outline">How it works &rarr;</a>
     </div>
   </div>
 </section>
 
-<section style="background:var(--bg);padding:5rem 0;border-bottom:1px solid var(--border)">
+<section class="sp-section sp-section--bg">
   <div class="wrap">
     <p class="section-label">What Thicket blocks</p>
     <h2>The attacks your existing tools can&rsquo;t see.</h2>
-    <p style="color:var(--muted);max-width:620px;line-height:1.8;margin-bottom:2.5rem">Cloud prompt scanners inspect text and return a score. Thicket intercepts execution &mdash; the actual syscall, the actual network connection &mdash; so there&rsquo;s no prompt obfuscation that bypasses it.</p>
-    <div style="display:grid;grid-template-columns:1fr 1fr;max-width:820px;border-top:1px solid var(--border)">
-      <div style="padding:1.25rem 2rem 1.25rem 0;border-bottom:1px solid var(--border);border-right:1px solid var(--border)">
-        <p style="font-weight:600;color:var(--navy);font-size:.9rem;margin-bottom:.3rem">Prompt injection</p>
-        <p style="font-size:.875rem;margin:0">Scans every prompt, tool result, and model output before it can trigger downstream execution. In-process. No content leaves your environment.</p>
+    <p class="sp-lead">Cloud prompt scanners inspect text and return a score. Thicket intercepts execution &mdash; the actual syscall, the actual network connection &mdash; so there&rsquo;s no prompt obfuscation that bypasses it.</p>
+    <div class="sp-grid">
+      <div class="sp-grid-cell">
+        <h3 class="sp-cell-title">Prompt injection</h3>
+        <p class="sp-cell-text">Scans every prompt, tool result, and model output before it can trigger downstream execution. In-process. No content leaves your environment.</p>
       </div>
-      <div style="padding:1.25rem 0 1.25rem 2rem;border-bottom:1px solid var(--border)">
-        <p style="font-weight:600;color:var(--navy);font-size:.9rem;margin-bottom:.3rem">Code execution via LLM output</p>
-        <p style="font-size:.875rem;margin:0">Intercepts <code>exec</code>, <code>eval</code>, and subprocess calls at the Python level before they run, regardless of how the call was reached.</p>
+      <div class="sp-grid-cell">
+        <h3 class="sp-cell-title">Code execution via LLM output</h3>
+        <p class="sp-cell-text">Intercepts <code>exec</code>, <code>eval</code>, and subprocess calls at the Python level before they run, regardless of how the call was reached.</p>
       </div>
-      <div style="padding:1.25rem 2rem 1.25rem 0;border-bottom:1px solid var(--border);border-right:1px solid var(--border)">
-        <p style="font-weight:600;color:var(--navy);font-size:.9rem;margin-bottom:.3rem">SSRF &amp; network abuse</p>
-        <p style="font-size:.875rem;margin:0">Blocks outbound connections to private IP ranges and cloud metadata endpoints &mdash; enforced at the network call, not the prompt.</p>
+      <div class="sp-grid-cell">
+        <h3 class="sp-cell-title">SSRF &amp; network abuse</h3>
+        <p class="sp-cell-text">Blocks outbound connections to private IP ranges and cloud metadata endpoints &mdash; enforced at the network call, not the prompt.</p>
       </div>
-      <div style="padding:1.25rem 0 1.25rem 2rem;border-bottom:1px solid var(--border)">
-        <p style="font-weight:600;color:var(--navy);font-size:.9rem;margin-bottom:.3rem">File system abuse</p>
-        <p style="font-size:.875rem;margin:0">Sandboxes write access to sensitive paths &mdash; credentials, SSH keys, cloud config &mdash; so a compromised agent can&rsquo;t exfiltrate them.</p>
+      <div class="sp-grid-cell">
+        <h3 class="sp-cell-title">File system abuse</h3>
+        <p class="sp-cell-text">Sandboxes write access to sensitive paths &mdash; credentials, SSH keys, cloud config &mdash; so a compromised agent can&rsquo;t exfiltrate them.</p>
       </div>
-      <div style="padding:1.25rem 2rem 1.25rem 0;border-right:1px solid var(--border)">
-        <p style="font-weight:600;color:var(--navy);font-size:.9rem;margin-bottom:.3rem">Model supply chain</p>
-        <p style="font-size:.875rem;margin:0">Scans model checkpoint files for embedded payloads before they are loaded &mdash; stopping the attack before the Python runtime sees it.</p>
+      <div class="sp-grid-cell">
+        <h3 class="sp-cell-title">Model supply chain</h3>
+        <p class="sp-cell-text">Scans model checkpoint files for embedded payloads before they are loaded &mdash; stopping the attack before the Python runtime sees it.</p>
       </div>
-      <div style="padding:1.25rem 0 1.25rem 2rem">
-        <p style="font-weight:600;color:var(--navy);font-size:.9rem;margin-bottom:.3rem">OS kernel backstop</p>
-        <p style="font-size:.875rem;margin:0">A second, independent enforcement layer at the kernel level. Cannot be reversed from application code. Catches bypasses that evade the Python layer.</p>
+      <div class="sp-grid-cell">
+        <h3 class="sp-cell-title">OS kernel backstop</h3>
+        <p class="sp-cell-text">A second, independent enforcement layer at the kernel level. Cannot be reversed from application code. Catches bypasses that evade the Python layer.</p>
       </div>
     </div>
   </div>
 </section>
 
-<section style="background:var(--surface);padding:5rem 0;border-bottom:1px solid var(--border)">
+<section class="sp-section sp-section--surface">
   <div class="wrap">
     <p class="section-label">Deployment</p>
     <h2>One library. Drop-in for the frameworks you already use.</h2>
-    <p style="color:var(--muted);max-width:620px;line-height:1.8;margin-bottom:2rem">Thicket installs as a standard Python package and auto-patches LangChain, LlamaIndex, FastAPI, Flask, and Django. Run in <code>audit_only</code> mode to validate false positive rates before switching to enforcement.</p>
-    <div style="display:flex;gap:2.5rem;flex-wrap:wrap;max-width:700px;margin-top:2rem">
+    <p class="sp-lead">Thicket installs as a standard Python package and auto-patches LangChain, LlamaIndex, FastAPI, Flask, and Django. Run in <code>audit_only</code> mode to validate false positive rates before switching to enforcement.</p>
+    <div class="sp-deploy-cols">
       <div>
-        <p style="font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sage);margin-bottom:.75rem">Works with</p>
-        <p style="font-size:.875rem;color:var(--muted);line-height:2">LangChain &middot; LlamaIndex &middot; AutoGPT<br>FastAPI &middot; Flask &middot; Django<br>Kubernetes &middot; Linux &middot; Windows Server</p>
+        <p class="sp-deploy-label">Works with</p>
+        <p class="sp-deploy-list">LangChain &middot; LlamaIndex &middot; AutoGPT<br>FastAPI &middot; Flask &middot; Django<br>Kubernetes &middot; Linux &middot; Windows Server</p>
       </div>
       <div>
-        <p style="font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sage);margin-bottom:.75rem">Integrates with</p>
-        <p style="font-size:.875rem;color:var(--muted);line-height:2">Splunk &middot; Elastic &middot; Azure Monitor<br>GitHub Advanced Security<br>OCSF-structured audit logs</p>
+        <p class="sp-deploy-label">Integrates with</p>
+        <p class="sp-deploy-list">Splunk &middot; Elastic &middot; Azure Monitor<br>GitHub Advanced Security<br>OCSF-structured audit logs</p>
       </div>
     </div>
-    <div style="margin-top:2.5rem;display:flex;gap:1rem;flex-wrap:wrap">
+    <div class="btn-row">
       <a href="how-it-works.html" class="btn btn-primary">How it works &rarr;</a>
       <a href="compare.html" class="btn btn-outline">Compare to alternatives</a>
     </div>
@@ -126,7 +126,7 @@
   <div class="wrap">
     <p class="section-label">Get in touch</p>
     <a href="mailto:hello@hedgerow.dev" class="contact-email-sm">hello@hedgerow.dev</a>
-    <p style="color:var(--muted);font-size:.875rem;margin-top:.75rem">Early access, design partnerships, and technical questions.</p>
+    <p class="sp-contact-note">Early access, design partnerships, and technical questions.</p>
   </div>
 </section>
 
