@@ -11,8 +11,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../hedgerow.css">
-<link rel="stylesheet" href="../blog.css?v=3">
+<link rel="stylesheet" href="/hedgerow.css">
+<link rel="stylesheet" href="/blog/blog.css?v=4">
 </head>
 <body>
 
@@ -107,7 +107,7 @@
 
       <div class="code-wrap">
         <div class="code-label">Python &mdash; vulnerable upload handler</div>
-        <pre style="margin:0;overflow-x:auto"><code style="display:block;background:#111210;color:#E6E2DA;font-family:monospace;font-size:.85rem;line-height:1.75;padding:1.5rem 1.75rem;white-space:pre">if filename.endswith(TRUSTED_EXTENSION):
+        <pre><code>if filename.endswith(TRUSTED_EXTENSION):
     model = restricted_load(file_bytes, trusted=audit_types(data=file_bytes))
 else:
     model = legacy_deserialize(file_bytes)   # &larr; any other extension lands here</code></pre>
@@ -124,7 +124,7 @@ else:
 
       <div class="code-wrap">
         <div class="code-label">Python &mdash; fixed</div>
-        <pre style="margin:0;overflow-x:auto"><code style="display:block;background:#111210;color:#E6E2DA;font-family:monospace;font-size:.85rem;line-height:1.75;padding:1.5rem 1.75rem;white-space:pre">if not filename.endswith(TRUSTED_EXTENSION):
+        <pre><code>if not filename.endswith(TRUSTED_EXTENSION):
     raise ValueError("Unsupported format. Only trusted format files accepted.")
 model = restricted_load(file_bytes, trusted=audit_types(data=file_bytes))</code></pre>
       </div>
@@ -135,7 +135,7 @@ model = restricted_load(file_bytes, trusted=audit_types(data=file_bytes))</code>
 
       <div class="code-wrap">
         <div class="code-label">Python &mdash; path boundary enforcement</div>
-        <pre style="margin:0;overflow-x:auto"><code style="display:block;background:#111210;color:#E6E2DA;font-family:monospace;font-size:.85rem;line-height:1.75;padding:1.5rem 1.75rem;white-space:pre">import os
+        <pre><code>import os
 from pathlib import Path
 
 def write_with_boundary_check(model, destination, allowed_dir):
@@ -169,7 +169,7 @@ def write_with_boundary_check(model, destination, allowed_dir):
 
       <div class="code-wrap">
         <div class="code-label">Python &mdash; allowlist-based deserializer</div>
-        <pre style="margin:0;overflow-x:auto"><code style="display:block;background:#111210;color:#E6E2DA;font-family:monospace;font-size:.85rem;line-height:1.75;padding:1.5rem 1.75rem;white-space:pre"># Audit and expand this list for your specific model types before production use
+        <pre><code># Audit and expand this list for your specific model types before production use
 ALLOWED_MODULE_ROOTS = {
     "your_ml_framework",
     "numerical_library",
