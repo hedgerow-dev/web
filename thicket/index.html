@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self'; img-src 'self' data:; connect-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta name="referrer" content="strict-origin-when-cross-origin">
-<title>Thicket &mdash; Runtime Protection for AI Applications</title>
+<title>Thicket: Runtime Protection for AI Applications</title>
 <meta name="description" content="Thicket blocks prompt injection, LLM-driven code execution, and SSRF at the execution boundary. In-process, offline, deterministic. No AI making blocking decisions.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -44,11 +44,11 @@
   <div class="wrap">
     <p class="section-label">Runtime protection</p>
     <h1>Your AI application can be tricked into running code. Thicket stops it.</h1>
-    <p class="sp-sub">Prompt injection attacks don&rsquo;t announce themselves &mdash; they arrive disguised as user input, tool results, or RAG content and route LLM output toward subprocesses, network calls, or file writes. Thicket sits between your application and everything dangerous it could do, and blocks those operations at the execution boundary before they complete.</p>
+    <p class="sp-sub">Prompt injection attacks arrive disguised as user input, tool results, or RAG content and route LLM output toward subprocesses, network calls, or file writes. Thicket sits between your application and everything dangerous it could do, and blocks those operations at the execution boundary before they complete.</p>
     <div class="sp-claims">
       <div class="sp-claim">
         <span class="sp-claim-head">No AI Inside</span>
-        <span class="sp-claim-body">Every block traces to a deterministic rule or a kernel control &mdash; not a model score. Auditable. Explainable.</span>
+        <span class="sp-claim-body">Every block traces to a deterministic rule or a kernel control, not a model score. Auditable. Explainable.</span>
       </div>
       <div class="sp-claim">
         <span class="sp-claim-head">No external API</span>
@@ -70,7 +70,7 @@
   <div class="wrap">
     <p class="section-label">What Thicket blocks</p>
     <h2>The attacks your existing tools can&rsquo;t see.</h2>
-    <p class="sp-lead">Cloud prompt scanners inspect text and return a score. Thicket intercepts execution &mdash; the actual syscall, the actual network connection &mdash; so there&rsquo;s no prompt obfuscation that bypasses it.</p>
+    <p class="sp-lead">Thicket intercepts execution at the syscall and network level, not the prompt level. There is no obfuscation technique that bypasses a kernel control.</p>
     <div class="sp-grid">
       <div class="sp-grid-cell">
         <h3 class="sp-cell-title">Prompt injection</h3>
@@ -82,15 +82,15 @@
       </div>
       <div class="sp-grid-cell">
         <h3 class="sp-cell-title">SSRF &amp; network abuse</h3>
-        <p class="sp-cell-text">Blocks outbound connections to private IP ranges and cloud metadata endpoints &mdash; enforced at the network call, not the prompt.</p>
+        <p class="sp-cell-text">Blocks outbound connections to private IP ranges and cloud metadata endpoints. Enforced at the network call, not the prompt.</p>
       </div>
       <div class="sp-grid-cell">
         <h3 class="sp-cell-title">File system abuse</h3>
-        <p class="sp-cell-text">Sandboxes write access to sensitive paths &mdash; credentials, SSH keys, cloud config &mdash; so a compromised agent can&rsquo;t exfiltrate them.</p>
+        <p class="sp-cell-text">Sandboxes write access to sensitive paths (credentials, SSH keys, cloud config) so a compromised agent can&rsquo;t exfiltrate them.</p>
       </div>
       <div class="sp-grid-cell">
         <h3 class="sp-cell-title">Model supply chain</h3>
-        <p class="sp-cell-text">Scans model checkpoint files for embedded payloads before they are loaded &mdash; stopping the attack before the Python runtime sees it.</p>
+        <p class="sp-cell-text">Scans model checkpoint files for embedded payloads before they are loaded, stopping the attack before the Python runtime sees it.</p>
       </div>
       <div class="sp-grid-cell">
         <h3 class="sp-cell-title">OS kernel backstop</h3>

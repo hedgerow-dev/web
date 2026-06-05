@@ -6,8 +6,8 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self'; img-src 'self' data:; connect-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta name="referrer" content="strict-origin-when-cross-origin">
-<title>Rowan &mdash; Security Analysis for AI Codebases</title>
-<meta name="description" content="Rowan finds exploitable vulnerabilities in AI infrastructure that CodeQL and Semgrep were never designed to detect. Cross-file taint analysis, AI-specific attack surfaces, reachability-aware supply chain scanning.">
+<title>Rowan: Security Analysis for AI Codebases</title>
+<meta name="description" content="Rowan finds exploitable vulnerabilities in AI infrastructure. Cross-file taint analysis, AI-specific attack surfaces, reachability-aware supply chain scanning.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -46,7 +46,7 @@
   <div class="wrap">
     <p class="section-label">Source analysis</p>
     <h1>Most scanners look at one file at a time. Real AI vulnerabilities don&rsquo;t live there.</h1>
-    <p class="hero-sub">Rowan builds a call graph for your entire codebase and follows tainted data from source to sink across imports and function calls &mdash; the multi-hop chains where exploitable vulnerabilities actually live. Built specifically for the AI attack surface that CodeQL and Semgrep weren&rsquo;t designed to cover.</p>
+    <p class="hero-sub">Rowan builds a call graph for your entire codebase and follows tainted data from source to sink across imports and function calls. The multi-hop chains where exploitable vulnerabilities actually live, covering the AI attack surface that most scanners were never built for.</p>
     <div class="hero-actions">
       <a href="mailto:hello@hedgerow.dev" class="btn-hero-primary">Request access &rarr;</a>
     </div>
@@ -57,23 +57,13 @@
 <section class="rw-section rw-section--bg">
   <div class="wrap">
     <p class="section-label">In the wild</p>
-    <h2>Vulnerabilities in production AI frameworks &mdash; found by Rowan.</h2>
-    <p class="rw-lead">These are not synthetic test cases. Rowan identified exploitable vulnerabilities in widely deployed AI frameworks that CodeQL and Semgrep did not surface. All findings were responsibly disclosed.</p>
+    <h2>Vulnerabilities in production AI frameworks, found by Rowan.</h2>
+    <p class="rw-lead">These are not synthetic test cases. Rowan identified exploitable vulnerabilities in widely deployed AI frameworks through cross-file taint analysis and reachability-aware scanning. All findings were responsibly disclosed.</p>
     <div class="rw-cve-list">
-      <div class="rw-cve">
-        <span class="rw-cve-name">SGLang</span>
-        <span class="rw-cve-sev rw-cve-sev--crit">CRITICAL 9.8</span>
-        <span class="rw-cve-desc">CVE-2026-5760 &mdash; unauthenticated RCE via Jinja2 SSTI in the <code>/v1/rerank</code> endpoint. Triggered by a malicious GGUF model file with a crafted <code>tokenizer.chat_template</code>. Identified by Rowan&rsquo;s cross-file taint engine; CodeQL and Semgrep had no rules for this sink.</span>
-      </div>
       <div class="rw-cve">
         <span class="rw-cve-name">LangChain</span>
         <span class="rw-cve-sev rw-cve-sev--crit">HIGH</span>
-        <span class="rw-cve-desc">CVE-2025-68664 confirmed at multiple reachable locations. Reachability-aware SCA surfaced it; standard pip-audit listed it as noise because it could not prove the vulnerable function was called.</span>
-      </div>
-      <div class="rw-cve">
-        <span class="rw-cve-name">Gradio</span>
-        <span class="rw-cve-sev rw-cve-sev--med">MEDIUM</span>
-        <span class="rw-cve-desc">Server-side file read via component configuration endpoint. Taint path spans three files and an async call chain &mdash; invisible to single-file pattern matching.</span>
+        <span class="rw-cve-desc">CVE-2026-34070, confirmed at multiple reachable locations across the dependency graph. Reachability-aware SCA traced the vulnerable function through the call graph and confirmed it was reachable from application entry points.</span>
       </div>
     </div>
   </div>
@@ -86,14 +76,14 @@
     <h2>Real vulnerabilities don&rsquo;t stay in one file.</h2>
     <p class="rw-lead">An SSRF that spans two files and an async method won&rsquo;t appear in a single-file regex scan. Rowan follows the full chain and shows exactly where it breaks.</p>
     <div class="code-block rw-trace">
-      <div class="rw-trace-crit">[CRITICAL] Server-Side Request Forgery &mdash; confidence: 89%</div>
+      <div class="rw-trace-crit">[CRITICAL] Server-Side Request Forgery, confidence: 89%</div>
       <div class="rw-trace-grid">
         <span class="rw-trace-label">Source</span>
         <span class="rw-trace-val"><span class="rw-trace-dim">api/endpoints.py:3</span><span class="rw-trace-dim"> &nbsp; url = request.args.get(&lsquo;url&rsquo;)</span></span>
         <span class="rw-trace-label">Via</span>
         <span class="rw-trace-val"><span class="rw-trace-dim">api/endpoints.py:5</span><span class="rw-trace-dim"> &nbsp; return await client.get(url)</span></span>
         <span class="rw-trace-label">Sink</span>
-        <span class="rw-trace-val"><span class="rw-trace-dim">clients/resource.py:9</span><span class="rw-trace-danger"> &nbsp; httpx.get(url) &mdash; no validation</span></span>
+        <span class="rw-trace-val"><span class="rw-trace-dim">clients/resource.py:9</span><span class="rw-trace-danger"> &nbsp; httpx.get(url), no validation</span></span>
       </div>
       <div class="rw-trace-note">No URL validation, scheme restriction, or allowlist detected.</div>
     </div>
@@ -108,15 +98,15 @@
     <div class="rw-grid">
       <div class="rw-grid-cell">
         <h3 class="rw-cell-title">Cross-file taint</h3>
-        <p class="rw-cell-text">HTTP params, CLI args, env vars &mdash; tracked to dangerous sinks across files, imports, and async function boundaries.</p>
+        <p class="rw-cell-text">HTTP params, CLI args, env vars: tracked to dangerous sinks across files, imports, and async function boundaries.</p>
       </div>
       <div class="rw-grid-cell">
         <h3 class="rw-cell-title">AI/ML attack surfaces</h3>
-        <p class="rw-cell-text"><code>torch.load()</code>, <code>trust_remote_code=True</code>, <code>apply_chat_template()</code> &mdash; modelled as distinct vulnerability classes that generic tools ignore.</p>
+        <p class="rw-cell-text"><code>torch.load()</code>, <code>trust_remote_code=True</code>, <code>apply_chat_template()</code>: modelled as distinct vulnerability classes with rules built specifically for AI infrastructure.</p>
       </div>
       <div class="rw-grid-cell">
         <h3 class="rw-cell-title">Model file scanning</h3>
-        <p class="rw-cell-text">Static analysis of binary model files &mdash; pickle checkpoint formats, GGUF metadata, and Keras layers &mdash; before they are loaded into memory.</p>
+        <p class="rw-cell-text">Static analysis of binary model files (pickle checkpoint formats, GGUF metadata, and Keras layers) before they are loaded into memory.</p>
       </div>
       <div class="rw-grid-cell">
         <h3 class="rw-cell-title">Reachability-aware SCA</h3>
@@ -124,7 +114,7 @@
       </div>
       <div class="rw-grid-cell">
         <h3 class="rw-cell-title">Prompt injection paths</h3>
-        <p class="rw-cell-text">Taint flows into LLM system prompts, RAG contexts, and Jinja2 template rendering &mdash; the attack chain, not just the sink.</p>
+        <p class="rw-cell-text">Taint flows into LLM system prompts, RAG contexts, and Jinja2 template rendering. The full attack chain, not just the sink.</p>
       </div>
       <div class="rw-grid-cell">
         <h3 class="rw-cell-title">Framework-specific rules</h3>
@@ -139,7 +129,7 @@
   <div class="wrap">
     <p class="section-label">Architecture</p>
     <h2>Four parallel analysis engines.</h2>
-    <p class="rw-lead">Each engine covers a different class of vulnerability. Results are combined, deduplicated, and ranked before output &mdash; so you see one prioritised finding list, not four separate reports.</p>
+    <p class="rw-lead">Each engine covers a different class of vulnerability. Results are combined, deduplicated, and ranked before output, so you see one prioritised finding list, not four separate reports.</p>
     <div class="rw-engines">
       <div class="rw-engine">
         <span class="rw-engine-num">1</span>
@@ -166,7 +156,7 @@
         <span class="rw-engine-num">4</span>
         <div>
           <h3 class="rw-cell-title">Autonomous hunt mode</h3>
-          <p class="rw-engine-text">An agentic pipeline that generates vulnerability hypotheses, traces exploit chains, and attempts confirmation &mdash; without manual triage. Used for security research and deep-dive audits rather than CI gates.</p>
+          <p class="rw-engine-text">An agentic pipeline that generates vulnerability hypotheses, traces exploit chains, and attempts confirmation without manual triage. Used for security research and deep-dive audits rather than CI gates.</p>
         </div>
       </div>
     </div>

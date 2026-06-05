@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self'; img-src 'self' data:; connect-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta name="referrer" content="strict-origin-when-cross-origin">
-<title>How Thicket Works &mdash; Layered Enforcement for AI Applications</title>
+<title>How Thicket Works: Layered Enforcement for AI Applications</title>
 <meta name="description" content="Thicket enforces security at multiple independent layers — prompt scanning, runtime interception, and OS kernel controls. An attacker who bypasses one hits the next.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -41,7 +41,7 @@
   <div class="wrap">
     <div class="section-label">How it works</div>
     <h1>Defence in depth, from prompt to kernel.</h1>
-    <p class="page-sub">Each enforcement layer operates independently at a different point in the execution path. An attacker who evades one layer immediately faces the next &mdash; with different bypass requirements.</p>
+    <p class="page-sub">Each enforcement layer operates independently at a different point in the execution path. An attacker who evades one layer immediately faces the next, with different bypass requirements.</p>
   </div>
 </div>
 
@@ -61,7 +61,7 @@
         <span class="hw-step-num">2</span>
         <div>
           <h3 class="hw-step-title">Runtime interception</h3>
-          <p class="hw-step-text">Hooks into the Python runtime to intercept dangerous operations &mdash; code execution, network calls, file writes, subprocess spawning &mdash; at the moment they are attempted. No prompt obfuscation bypasses a hook on the operation itself. Works regardless of how the call was reached.</p>
+          <p class="hw-step-text">Hooks into the Python runtime to intercept dangerous operations (code execution, network calls, file writes, subprocess spawning) at the moment they are attempted. No prompt obfuscation bypasses a hook on the operation itself. Works regardless of how the call was reached.</p>
         </div>
       </div>
 
@@ -69,7 +69,7 @@
         <span class="hw-step-num">3</span>
         <div>
           <h3 class="hw-step-title">OS kernel backstop</h3>
-          <p class="hw-step-text">A second, independent enforcement layer operating at the kernel level on Linux. Completely separate from the Python runtime &mdash; an exploit that disables the application-level layer still hits this one. Cannot be reversed from application code.</p>
+          <p class="hw-step-text">A second, independent enforcement layer operating at the kernel level on Linux. Completely separate from the Python runtime. An exploit that disables the application-level layer still hits this one. Cannot be reversed from application code.</p>
         </div>
       </div>
     </div>
@@ -85,7 +85,7 @@
   <div class="wrap">
     <p class="section-label">Detection performance</p>
     <h2 class="bench-title">Measured against independent benchmarks.</h2>
-    <p class="sp-lead">Content scanning validated against independent, labelled datasets of jailbreak and prompt injection attempts. Latency measured on server-grade hardware (16-core Linux VM). These numbers cover the content scanning layer only &mdash; operations that evade it are still blocked by runtime interception before they execute.</p>
+    <p class="sp-lead">Content scanning validated against independent, labelled datasets of jailbreak and prompt injection attempts. Latency measured on server-grade hardware (16-core Linux VM). These numbers cover the content scanning layer only. Operations that evade it are still blocked by runtime interception before they execute.</p>
     <div class="bench-grid">
       <div class="bench-card">
         <div class="bench-num">100%</div>
@@ -93,7 +93,7 @@
       </div>
       <div class="bench-card">
         <div class="bench-num">94%</div>
-        <div class="bench-label">Precision &mdash; blocks are almost always right</div>
+        <div class="bench-label">Precision: blocks are almost always right</div>
       </div>
       <div class="bench-card">
         <div class="bench-num">&lt;1.5%</div>
@@ -104,7 +104,7 @@
         <div class="bench-label">Median added latency per request</div>
       </div>
     </div>
-    <p class="bench-note">Thicket is an injection and execution detector, not a harmful content classifier. Benchmarks that test content moderation (jailbreak refusal, harmful output) measure a different problem &mdash; see our <a href="compare.html">comparison page</a> for context.</p>
+    <p class="bench-note">Thicket is an injection and execution detector, not a harmful content classifier. Benchmarks that test content moderation (jailbreak refusal, harmful output) measure a different problem. See our <a href="compare.html">comparison page</a> for context.</p>
   </div>
 </section>
 

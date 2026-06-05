@@ -37,11 +37,11 @@
     <p class="kicker">Hedgerow</p>
     <h1>Security tooling built for the AI attack surface.</h1>
     <div class="problem-body">
-      <p>Model files execute arbitrary code. LLM output reaches subprocesses. Tool calls cross trust boundaries. None of these appear in a file-level pattern scan &mdash; which is all that existing SAST, SCA, and runtime tools do.</p>
+      <p>Most security tooling was built before AI applications existed. Hedgerow covers what appeared after: model files that execute code on load, LLM outputs that reach subprocesses, and tool calls that cross trust boundaries with no enforcement layer between them.</p>
     </div>
     <div class="hero-actions">
-      <a href="thicket/index.html" class="btn btn-primary">Thicket &mdash; runtime protection</a>
-      <a href="rowan/index.html" class="btn btn-outline">Rowan &mdash; source analysis</a>
+      <a href="thicket/index.html" class="btn btn-primary">Thicket: runtime protection</a>
+      <a href="rowan/index.html" class="btn btn-outline">Rowan: source analysis</a>
     </div>
   </div>
 </section>
@@ -52,14 +52,14 @@
       <div class="pm-entry">
         <div class="pm-accent pm-accent--thicket"></div>
         <h2 class="pm-name">Thicket</h2>
-        <span class="pm-desc">Blocks prompt injection, LLM-driven code execution, and SSRF at the execution boundary &mdash; in-process, offline, with no AI making blocking decisions.</span>
+        <span class="pm-desc">Blocks prompt injection, LLM-driven code execution, and SSRF at the execution boundary. In-process, offline, with no AI making blocking decisions.</span>
         <a href="thicket/index.html" class="pm-link">Overview &rarr;</a>
       </div>
       <div class="pm-divider"></div>
       <div class="pm-entry">
         <div class="pm-accent pm-accent--rowan"></div>
         <h2 class="pm-name">Rowan</h2>
-        <span class="pm-desc">Finds exploitable vulnerabilities in AI infrastructure before deployment &mdash; the attack surface that CodeQL and Semgrep weren&rsquo;t built for.</span>
+        <span class="pm-desc">Finds exploitable vulnerabilities in AI infrastructure before deployment. Cross-file taint analysis, AI-specific sink models, and reachability-aware supply chain scanning.</span>
         <a href="rowan/index.html" class="pm-link">Overview &rarr;</a>
       </div>
     </div>

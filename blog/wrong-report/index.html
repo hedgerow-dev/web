@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self'; img-src 'self' data:; connect-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta name="referrer" content="strict-origin-when-cross-origin">
-<title>How a Working Exploit Made Me Forget How to Threat Model &mdash; Hedgerow</title>
+<title>How a Working Exploit Made Me Forget How to Threat Model | Hedgerow</title>
 <meta name="description" content="A post-mortem on submitting a high-severity RCE, getting it closed as expected behavior, and the actual vulnerability we almost missed in the process.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -88,16 +88,16 @@
 
       <ul class="verdict-list">
         <li class="drop">
-          <span class="vl-head"><span class="vl-icon">&times;</span> Drop &mdash; The Documented Risk</span>
+          <span class="vl-head"><span class="vl-icon">&times;</span> Drop: The Documented Risk</span>
           You have to drop findings where the danger is an acknowledged architectural reality. If a CLI utility warns users to only parse trusted files, that is a user-awareness issue, not a CVE. If a library has an internal data-handling function literally named <code>unpickle_data()</code>, the developer has already conceded the design. Blanketing these with &ldquo;deserialization is dangerous&rdquo; reports exhausts engineering teams and burns your credibility.
         </li>
         <li class="keep">
-          <span class="vl-head"><span class="vl-icon">&#10003;</span> Keep &mdash; The Silent Opt-In</span>
-          The findings that survive scrutiny are fundamentally different. The vulnerability isn&rsquo;t just &ldquo;this library uses unsafe deserialization.&rdquo; The true vulnerability is when a library <strong>silently opts the user into a dangerous default without consent, visibility, or a documentation warning.</strong> Imagine a widely used deep learning framework that provides a simple function to download and load standard tutorial datasets. Under the hood, if that function hardcodes an <code>allow_untrusted=True</code> flag and passes it to a raw deserializer &mdash; with no gate, no allowlist, and no warning in the docstring &mdash; that is a critical finding. The user calls a harmless-looking <code>load_data()</code> function with zero visibility into the fact that their trust boundary has just been dissolved.
+          <span class="vl-head"><span class="vl-icon">&#10003;</span> Keep: The Silent Opt-In</span>
+          The findings that survive scrutiny are fundamentally different. The vulnerability isn&rsquo;t just &ldquo;this library uses unsafe deserialization.&rdquo; The true vulnerability is when a library <strong>silently opts the user into a dangerous default without consent, visibility, or a documentation warning.</strong> Imagine a widely used deep learning framework that provides a simple function to download and load standard tutorial datasets. Under the hood, if that function hardcodes an <code>allow_untrusted=True</code> flag and passes it to a raw deserializer, with no gate, no allowlist, and no warning in the docstring, that is a critical finding. The user calls a harmless-looking <code>load_data()</code> function with zero visibility into the fact that their trust boundary has just been dissolved.
         </li>
       </ul>
 
-      <p>When you frame a finding this way &mdash; proving you know how to drop a documented risk, but highlighting a silent opt-in &mdash; your argument becomes unassailable.</p>
+      <p>When you frame a finding this way (proving you know how to drop a documented risk, but highlighting a silent opt-in) your argument becomes unassailable.</p>
 
       <h3>Vector 1: The Reference Web App (The Actual Vulnerability)</h3>
 
@@ -106,7 +106,7 @@
       <p>The target&rsquo;s reference web application routed uploads through a single, fragile trust check:</p>
 
       <div class="code-wrap">
-        <div class="code-label">Python &mdash; vulnerable upload handler</div>
+        <div class="code-label">Python: vulnerable upload handler</div>
         <pre><code>if filename.endswith(TRUSTED_EXTENSION):
     model = restricted_load(file_bytes, trusted=audit_types(data=file_bytes))
 else:
@@ -119,11 +119,11 @@ else:
 
       <div class="callout-action">
         <span class="ca-label">Secure-by-Design Fix</span>
-        <p>Reject at the boundary. Never fail open. If the extension is not on the allowlist, raise immediately &mdash; do not fall through to a less-safe path.</p>
+        <p>Reject at the boundary. Never fail open. If the extension is not on the allowlist, raise immediately. Do not fall through to a less-safe path.</p>
       </div>
 
       <div class="code-wrap">
-        <div class="code-label">Python &mdash; fixed</div>
+        <div class="code-label">Python: fixed</div>
         <pre><code>if not filename.endswith(TRUSTED_EXTENSION):
     raise ValueError("Unsupported format. Only trusted format files accepted.")
 model = restricted_load(file_bytes, trusted=audit_types(data=file_bytes))</code></pre>
@@ -134,7 +134,7 @@ model = restricted_load(file_bytes, trusted=audit_types(data=file_bytes))</code>
       <p>Another vector Rowan found involved a write function that accepted caller-provided paths without sanitizing <code>../</code> sequences. But looking at the adversary context: for this to be exploitable, an attacker has to control the path argument. In standard usage, the developer controls this. It&rsquo;s only a vulnerability if the implementing application passes raw user input to it. This is a hardening suggestion, not a standalone CVE.</p>
 
       <div class="code-wrap">
-        <div class="code-label">Python &mdash; path boundary enforcement</div>
+        <div class="code-label">Python: path boundary enforcement</div>
         <pre><code>import os
 from pathlib import Path
 
@@ -158,7 +158,7 @@ def write_with_boundary_check(model, destination, allowed_dir):
         <p>&ldquo;[Library] claims to protect against [specific threat] via [specific mechanism]. This report demonstrates that [specific input] bypasses that protection because [specific reason].&rdquo;</p>
       </blockquote>
 
-      <p>Tools like Rowan map the flows. They find the sinks. But threat modeling &mdash; understanding what a system actually claims to protect &mdash; remains a human responsibility. Next time, I&rsquo;m reading the README before I drop the shell.</p>
+      <p>Tools like Rowan map the flows. They find the sinks. But threat modeling (understanding what a system actually claims to protect) remains a human responsibility. Next time, I&rsquo;m reading the README before I drop the shell.</p>
 
       <hr class="appendix-divider">
       <span class="appendix-kicker">Appendix</span>
@@ -168,7 +168,7 @@ def write_with_boundary_check(model, destination, allowed_dir):
       <p>If you are stuck supporting legacy formats and cannot drop them entirely, do not use a blocklist. Blocklists for dangerous modules will inevitably fail against bypasses like <code>builtins.eval</code>. Use a strict allowlist that explicitly permits only the modules your application requires.</p>
 
       <div class="code-wrap">
-        <div class="code-label">Python &mdash; allowlist-based deserializer</div>
+        <div class="code-label">Python: allowlist-based deserializer</div>
         <pre><code># Audit and expand this list for your specific model types before production use
 ALLOWED_MODULE_ROOTS = {
     "your_ml_framework",

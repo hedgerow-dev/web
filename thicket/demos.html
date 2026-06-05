@@ -39,7 +39,7 @@
   <div class="tabs">
     <button class="tab active" data-tab="deser">Model RCE (deserialization)</button>
     <button class="tab" data-tab="langflow">Langflow CVE-2025-3248</button>
-    <button class="tab" data-tab="ssrf">SSRF &mdash; cloud creds</button>
+    <button class="tab" data-tab="ssrf">SSRF: cloud creds</button>
   </div>
 
   <div id="panel-deser" class="panel active">
@@ -56,7 +56,7 @@
   <div id="panel-langflow" class="panel">
     <div class="run-row">
       <button class="run-btn" id="btn-langflow">Run demo</button>
-      <span class="run-status" id="status-langflow">CVSS 9.8 &mdash; unauthenticated RCE in Langflow &lt; 1.3.0. Actively exploited May 2025 (Cisco Talos)</span>
+      <span class="run-status" id="status-langflow">CVSS 9.8, unauthenticated RCE in Langflow &lt; 1.3.0. Actively exploited May 2025 (Cisco Talos)</span>
     </div>
     <div class="pair">
       <div class="tcard danger"><div class="tbar"><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div><div class="ttitle-wrap"><span class="ttitle">Without Thicket</span></div><div class="tbar-pad"></div></div><div class="tbody" id="ll"></div></div>
@@ -67,7 +67,7 @@
   <div id="panel-ssrf" class="panel">
     <div class="run-row">
       <button class="run-btn" id="btn-ssrf">Run demo</button>
-      <span class="run-status" id="status-ssrf">CVSS 8.6 &mdash; SSRF via redirect bypass. Same class as Capital One (2019). Confirmed on RAGFlow: live Azure IMDS token exfiltrated.</span>
+      <span class="run-status" id="status-ssrf">CVSS 8.6, SSRF via redirect bypass. Same class as Capital One (2019). Confirmed on RAGFlow: live Azure IMDS token exfiltrated.</span>
     </div>
     <div class="pair">
       <div class="tcard danger"><div class="tbar"><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div><div class="ttitle-wrap"><span class="ttitle">Without Thicket</span></div><div class="tbar-pad"></div></div><div class="tbody" id="sl"></div></div>
@@ -78,7 +78,7 @@
   <p class="note">
     Deserialization vulnerability class documented by JFrog &amp; Protect AI (2024).
     Langflow CVE-2025-3248 actively exploited per <a href="https://nvd.nist.gov/vuln/detail/CVE-2025-3248" target="_blank" rel="noopener noreferrer">NVD / Cisco Talos (May 2025)</a>.
-    SSRF (undisclosed, reported 2026) &mdash; same class as <a href="https://cloudsecurityalliance.org/blog/2019/08/09/a-technical-analysis-of-the-capital-one-cloud-misconfiguration-breach" target="_blank" rel="noopener noreferrer">Capital One (2019)</a>. Our research confirmed live Azure IMDS token exfiltration from a production AI platform deployment.
+    SSRF (undisclosed, reported 2026), same class as <a href="https://cloudsecurityalliance.org/blog/2019/08/09/a-technical-analysis-of-the-capital-one-cloud-misconfiguration-breach" target="_blank" rel="noopener noreferrer">Capital One (2019)</a>. Our research confirmed live Azure IMDS token exfiltration from a production AI platform deployment.
   </p>
 </div>
 
