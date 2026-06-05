@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self'; img-src 'self' data:; connect-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>How a Working Exploit Made Me Forget How to Threat Model &mdash; Hedgerow</title>
+<meta name="description" content="A post-mortem on submitting a high-severity RCE, getting it closed as expected behavior, and the actual vulnerability we almost missed in the process.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../hedgerow.css">
+<link rel="stylesheet" href="blog.css">
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../index.html"><img src="../assets/logo-nav.png" alt="Hedgerow" class="nav-logo-img" width="104" height="36"><span class="nav-logo-name">hedgerow</span></a>
+  <div class="nav-links">
+    <a href="../thicket/index.html">Thicket</a>
+    <a href="../rowan/index.html">Rowan</a>
+    <a href="index.html" class="active">Blog</a>
+    <a href="mailto:hello@hedgerow.dev" class="nav-cta">Contact</a>
+  </div>
+  <button class="nav-hamburger" id="navToggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+</nav>
+<div class="nav-drawer" id="navDrawer">
+  <a href="../thicket/index.html">Thicket</a>
+  <a href="../rowan/index.html">Rowan</a>
+  <a href="index.html">Blog</a>
+  <a href="mailto:hello@hedgerow.dev" class="nav-drawer-cta">Contact &rarr;</a>
+</div>
+
+<section class="article-hero">
+  <div class="wrap">
+    <a href="index.html" class="article-nav-back">&larr; All posts</a>
+    <h1>How a Working Exploit Made Me Forget How to Threat Model</h1>
+    <div class="article-byline">
+      <span class="byline-date">June 2026</span>
+      <span class="byline-author">Hedgerow Research</span>
+      <span class="byline-tag">Bug bounty</span>
+      <span class="byline-tag">Threat modeling</span>
+    </div>
+  </div>
+</section>
+
+<section class="article-body">
+  <div class="wrap">
+    <div class="article-inner prose">
+
+      <p>We talk a lot in AppSec about &ldquo;shifting left&rdquo; and automated discovery, but we rarely talk about the human blind spots those tools create.</p>
+
+      <p>Recently, we were testing Rowan, our proprietary SAST platform built specifically for AI/ML security. It does the heavy lifting: inter-procedural call graphs, taint flows, and chain detection for composite vulnerabilities. When it works, it is a beautiful thing. Earlier this year, Rowan surfaced CVE-2026-34070, a zero-day path traversal in LangChain&rsquo;s prompt loaders that led to a clean, high-severity patch.</p>
+
+      <p>But this post isn&rsquo;t a victory lap. It&rsquo;s a post-mortem. It is a story about what happens when your tooling is faster than your threat modeling, and why getting a shell doesn&rsquo;t automatically mean you&rsquo;ve found a vulnerability.</p>
+
+      <h3>The Dopamine Hit and the Red Team Ego</h3>
+
+      <p>I am a massive advocate for threat modeling. I firmly believe security starts at the whiteboard. Before you look at a single line of code, you have to ask: <em>Who is the adversary? What is the asset? What is the stated trust boundary?</em></p>
+
+      <p>But let me be completely honest: when you see a raw, un-sanitized deserialization sink, build the payload, and catch a reverse shell, the dopamine hits hard. The sheer technical success of the exploit creates a massive confirmation bias. You forget the whiteboard entirely.</p>
+
+      <p>During a routine scan of an open-source ML library, Rowan flagged an inter-procedural taint flow from a user-controlled file upload directly to an unsafe deserialization call. We fed this into our automated review pipeline, generated three candidate exploit vectors, and went to work. We spun up a private replica of the target, got our shell execution, confirmed persistence, and confidently submitted a high-severity RCE report.</p>
+
+      <p>The triager replied almost immediately: <em>&ldquo;This is expected behavior. The utility is built to execute these files.&rdquo;</em></p>
+
+      <p>My initial reaction was typical red-team ego. I spent hours building a rebuttal package with live exploit harnesses, environment dumps, and undeniable proof of impact.</p>
+
+      <p>Then, finally, I stopped and actually read the documentation.</p>
+
+      <h3>The RTFM Failure</h3>
+
+      <p>The library&rsquo;s documentation was precise. It framed its format as a restricted alternative to raw serialization, explicitly stating it wasn&rsquo;t a complete security guarantee. For the specific utility we exploited, the docs carried a prominent warning: it <em>must</em> load legacy formats to function, and users should only run it on files they absolutely trust.</p>
+
+      <p>The triager wasn&rsquo;t blowing us off. They were exactly right. By ignoring the documented boundaries, I had effectively submitted a bug report complaining that <code>eval()</code> executes code.</p>
+
+      <h3>The Lens: Dropping the By-Design vs. Keeping the Silent Opt-In</h3>
+
+      <p>This failure forced me to completely re-evaluate how I triage bug bounty findings, specifically in the data science and ML ecosystem where &ldquo;unsafe deserialization&rdquo; is a notoriously noisy flag. I had to build a clear lens to separate a known risk from a broken security claim.</p>
+
+      <p>Here is the verdict on how to filter these findings:</p>
+
+      <ul class="verdict-list">
+        <li class="drop">
+          <span class="vl-head">Drop &mdash; The Documented Risk</span>
+          You have to drop findings where the danger is an acknowledged architectural reality. If a CLI utility warns users to only parse trusted files, that is a user-awareness issue, not a CVE. If a library has an internal data-handling function literally named <code>unpickle_data()</code>, the developer has already conceded the design. Blanketing these with &ldquo;deserialization is dangerous&rdquo; reports exhausts engineering teams and burns your credibility.
+        </li>
+        <li class="keep">
+          <span class="vl-head">Keep &mdash; The Silent Opt-In</span>
+          The findings that survive scrutiny are fundamentally different. The vulnerability isn&rsquo;t just &ldquo;this library uses unsafe deserialization.&rdquo; The true vulnerability is when a library <strong>silently opts the user into a dangerous default without consent, visibility, or a documentation warning.</strong> Imagine a widely used deep learning framework that provides a simple function to download and load standard tutorial datasets. Under the hood, if that function hardcodes an <code>allow_untrusted=True</code> flag and passes it to a raw deserializer &mdash; with no gate, no allowlist, and no warning in the docstring &mdash; that is a critical finding. The user calls a harmless-looking <code>load_data()</code> function with zero visibility into the fact that their trust boundary has just been dissolved.
+        </li>
+      </ul>
+
+      <p>When you frame a finding this way &mdash; proving you know how to drop a documented risk, but highlighting a silent opt-in &mdash; your argument becomes unassailable.</p>
+
+      <h3>Vector 1: The Reference Web App (The Actual Vulnerability)</h3>
+
+      <p>Ironically, while our primary exploit was a documented feature, the blanket dismissal swept up a finding that actually deserved a closer look.</p>
+
+      <p>The target&rsquo;s reference web application routed uploads through a single, fragile trust check:</p>
+
+<pre><code>if filename.endswith(TRUSTED_EXTENSION):
+    model = restricted_load(file_bytes, trusted=audit_types(data=file_bytes))
+else:
+    model = legacy_deserialize(file_bytes)   # &larr; any other extension lands here
+</code></pre>
+
+      <p>This is textbook fail-open design. The entire trust boundary is a string suffix check. If your file doesn&rsquo;t have the exact trusted extension, it falls straight into raw, unrestricted execution.</p>
+
+      <p>Unlike the local developer utility, this public-facing web app had no documentation warning users that uploads would be executed. The reasonable expectation is that a public upload interface won&rsquo;t detonate untrusted input.</p>
+
+      <p><strong>The Secure-by-Design Fix:</strong> Reject at the boundary. Never fail open.</p>
+
+<pre><code>if not filename.endswith(TRUSTED_EXTENSION):
+    raise ValueError("Unsupported format. Only trusted format files accepted.")
+model = restricted_load(file_bytes, trusted=audit_types(data=file_bytes))
+</code></pre>
+
+      <h3>Vector 2: Path Traversal (Defense-in-Depth)</h3>
+
+      <p>Another vector Rowan found involved a write function that accepted caller-provided paths without sanitizing <code>../</code> sequences. But looking at the adversary context: for this to be exploitable, an attacker has to control the path argument. In standard usage, the developer controls this. It&rsquo;s only a vulnerability if the implementing application passes raw user input to it. This is a hardening suggestion, not a standalone CVE.</p>
+
+      <p>A boundary check fixes it:</p>
+
+<pre><code>import os
+from pathlib import Path
+
+def write_with_boundary_check(model, destination, allowed_dir):
+    resolved = Path(os.path.realpath(destination))
+    boundary = Path(os.path.realpath(allowed_dir))
+    if not str(resolved).startswith(str(boundary) + os.sep):
+        raise ValueError(f"Path outside allowed directory: {destination}")
+    library_write(model, resolved)
+</code></pre>
+
+      <h3>The ML Security Blind Spot</h3>
+
+      <p>The ML ecosystem currently relies on a universal disclaimer: <em>deserializing untrusted data is your problem, not ours</em>.</p>
+
+      <p>When triagers see &ldquo;unsafe deserialization&rdquo; in a report, they instinctively close it as a known risk. Our web app finding got caught in the crossfire because we led with the documented utility, and the triager shut the door before looking at the context.</p>
+
+      <p>If you want a security report to land, you cannot just say &ldquo;unsafe code is dangerous.&rdquo; You have to open with:</p>
+
+      <blockquote>
+        <p><em>&ldquo;[Library] claims to protect against [specific threat] via [specific mechanism]. This report demonstrates that [specific input] bypasses that protection because [specific reason].&rdquo;</em></p>
+      </blockquote>
+
+      <p>Tools like Rowan map the flows. They find the sinks. But threat modeling &mdash; understanding what a system actually claims to protect &mdash; remains a human responsibility. Next time, I&rsquo;m reading the README before I drop the shell.</p>
+
+      <hr style="border:none;border-top:1px solid var(--border);margin:3rem 0">
+
+      <h3>Appendix: Pragmatic Allowlisting for Legacy Formats</h3>
+
+      <p>If you are stuck supporting legacy formats and cannot drop them entirely, do not use a blocklist. Blocklists for dangerous modules will inevitably fail against bypasses like <code>builtins.eval</code>. Use a strict allowlist that explicitly permits only the modules your application requires.</p>
+
+<pre><code># &lpar;!&rpar; AUDIT AND EXPAND THIS LIST FOR YOUR SPECIFIC MODEL TYPES BEFORE ANY PRODUCTION USE
+ALLOWED_MODULE_ROOTS = {
+    "your_ml_framework",
+    "numerical_library",
+    "dataframe_library",
+}
+
+ALLOWED_BUILTINS = {
+    "list", "dict", "tuple", "set", "frozenset",
+    "str", "int", "float", "bool", "bytes", "bytearray",
+    "type", "object", "slice", "range",
+}
+
+class RestrictedDeserializer(BaseDeserializer):
+    def resolve_class(self, module, name):
+        if module == "builtins":
+            if name not in ALLOWED_BUILTINS:
+                raise DeserializationError(
+                    f"Blocked builtin: builtins.{name}"
+                )
+            return super().resolve_class(module, name)
+        root = module.split(".")[0]
+        if root not in ALLOWED_MODULE_ROOTS:
+            raise DeserializationError(
+                f"Blocked module: {module}.{name}"
+            )
+        return super().resolve_class(module, name)
+</code></pre>
+
+    </div><!-- /.article-inner -->
+  </div><!-- /.wrap -->
+</section>
+
+<footer>
+  <div class="wrap footer-inner">
+    <div class="footer-brand">Hedgerow</div>
+    <div class="footer-links">
+      <a href="../index.html">Home</a>
+      <a href="../thicket/index.html">Thicket</a>
+      <a href="../rowan/index.html">Rowan</a>
+      <a href="index.html">Blog</a>
+      <a href="mailto:hello@hedgerow.dev">Contact</a>
+    </div>
+  </div>
+  <div class="wrap">
+    <p class="footer-patent">Hedgerow &middot; hedgerow.dev &middot; hello@hedgerow.dev<br>Commercially licensed. Technology protected by pending patent applications.</p>
+  </div>
+</footer>
+
+<script src="../nav.js" defer></script>
+</body>
+</html>

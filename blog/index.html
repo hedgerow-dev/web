@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self'; img-src 'self' data:; connect-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>Blog &mdash; Hedgerow</title>
+<meta name="description" content="Security research from the Hedgerow team. AI attack surfaces, bug bounty post-mortems, and threat modeling.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../hedgerow.css">
+<link rel="stylesheet" href="blog.css">
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../index.html"><img src="../assets/logo-nav.png" alt="Hedgerow" class="nav-logo-img" width="104" height="36"><span class="nav-logo-name">hedgerow</span></a>
+  <div class="nav-links">
+    <a href="../thicket/index.html">Thicket</a>
+    <a href="../rowan/index.html">Rowan</a>
+    <a href="index.html" class="active">Blog</a>
+    <a href="mailto:hello@hedgerow.dev" class="nav-cta">Contact</a>
+  </div>
+  <button class="nav-hamburger" id="navToggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+</nav>
+<div class="nav-drawer" id="navDrawer">
+  <a href="../thicket/index.html">Thicket</a>
+  <a href="../rowan/index.html">Rowan</a>
+  <a href="index.html">Blog</a>
+  <a href="mailto:hello@hedgerow.dev" class="nav-drawer-cta">Contact &rarr;</a>
+</div>
+
+<section class="blog-hero">
+  <div class="wrap">
+    <p class="section-label">Research &amp; writing</p>
+    <h1>Blog</h1>
+    <p>Security research, tool post-mortems, and threat modeling from the Hedgerow team.</p>
+  </div>
+</section>
+
+<section class="post-list">
+  <div class="wrap">
+    <a href="wrong-report.html" class="post-card">
+      <div class="post-meta">
+        <span class="post-date">June 2026</span>
+        <span class="post-tag">Bug bounty</span>
+        <span class="post-tag">Threat modeling</span>
+      </div>
+      <p class="post-title">How a Working Exploit Made Me Forget How to Threat Model</p>
+      <p class="post-excerpt">When your scanner is faster than your threat model. A post-mortem on submitting a high-severity RCE report, getting it closed as expected behavior, and what we actually missed in the process.</p>
+      <span class="post-read-more">Read &rarr;</span>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-inner">
+    <div class="footer-brand">Hedgerow</div>
+    <div class="footer-links">
+      <a href="../index.html">Home</a>
+      <a href="../thicket/index.html">Thicket</a>
+      <a href="../rowan/index.html">Rowan</a>
+      <a href="index.html">Blog</a>
+      <a href="mailto:hello@hedgerow.dev">Contact</a>
+    </div>
+  </div>
+  <div class="wrap">
+    <p class="footer-patent">Hedgerow &middot; hedgerow.dev &middot; hello@hedgerow.dev<br>Commercially licensed. Technology protected by pending patent applications.</p>
+  </div>
+</footer>
+
+<script src="../nav.js" defer></script>
+</body>
+</html>
