@@ -395,16 +395,17 @@ footer .wrap { display:block }
 footer a { color:rgba(255,255,255,.45); text-decoration:none; font-size:.78rem }
 footer a:hover { color:rgba(255,255,255,.85) }
 .footer-patent {
-  font-size:.62rem; color:rgba(255,255,255,.28);
+  font-size:.72rem; color:rgba(255,255,255,.5);
   border-top:1px solid rgba(255,255,255,.08);
   padding-top:.5rem; margin-top:.25rem;
 }
 
 /* ── Hamburger ── */
 .nav-hamburger {
-  display:flex; flex-direction:column; justify-content:center;
+  display:flex; flex-direction:column; justify-content:center; align-items:center;
   gap:5px; background:none; border:none; cursor:pointer;
   padding:6px 4px; margin-left:auto; flex-shrink:0;
+  min-width:44px; min-height:44px;
 }
 .nav-hamburger span {
   display:block; width:22px; height:1.5px;
@@ -501,11 +502,3 @@ footer a:hover { color:rgba(255,255,255,.85) }
   .footer-links { justify-content:flex-start }
 }
 
-/* Closed beta badge */
-.badge-beta {
-  display:inline-block;
-  font-size:.6rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
-  padding:.2rem .55rem; border-radius:2px;
-  background:rgba(1,61,90,.08); color:var(--muted);
-  vertical-align:middle; margin-left:.5rem;
-}
