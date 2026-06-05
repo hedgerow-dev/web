@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self'; img-src 'self' data:; connect-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta name="referrer" content="strict-origin-when-cross-origin">
-<title>Hedgerow</title>
+<title>Hedgerow — Security tooling for AI applications</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -32,14 +32,14 @@
 
 <section class="s-problem">
   <div class="wrap">
-    <p class="kicker">The problem</p>
-    <h1>AI applications create attack surfaces that general-purpose security tooling wasn&rsquo;t designed to find.</h1>
+    <p class="kicker">Hedgerow</p>
+    <h1>Security tooling built for the AI attack surface.</h1>
     <div class="problem-body">
-      <p>Model files are executable. LLM output reaches code execution. Tool calls cross trust boundaries. Multi-hop exploit chains don&rsquo;t appear in file-level pattern scans.</p>
+      <p>Model files execute arbitrary code. LLM output reaches subprocesses. Tool calls cross trust boundaries. None of these appear in a file-level pattern scan &mdash; which is all that existing SAST, SCA, and runtime tools do.</p>
     </div>
     <div style="margin-top:2.5rem;display:flex;gap:1rem;flex-wrap:wrap">
-      <a href="thicket/index.html" class="btn btn-primary">Explore Thicket</a>
-      <a href="rowan/index.html" class="btn btn-outline">Explore Rowan</a>
+      <a href="thicket/index.html" class="btn btn-primary">Thicket &mdash; runtime protection</a>
+      <a href="rowan/index.html" class="btn btn-outline">Rowan &mdash; source analysis</a>
     </div>
   </div>
 </section>
@@ -50,14 +50,14 @@
       <div class="pm-entry">
         <div class="pm-accent pm-accent--thicket"></div>
         <span class="pm-name">Thicket <span class="badge-beta">Closed beta</span></span>
-        <span class="pm-desc">Runtime security for AI applications. Deterministic. No external API.</span>
+        <span class="pm-desc">Blocks prompt injection, LLM-driven code execution, and SSRF at the execution boundary &mdash; in-process, offline, with no AI making blocking decisions.</span>
         <a href="thicket/index.html" class="pm-link">Overview &rarr;</a>
       </div>
       <div class="pm-divider"></div>
       <div class="pm-entry">
         <div class="pm-accent pm-accent--rowan"></div>
         <span class="pm-name">Rowan <span class="badge-beta">Closed beta</span></span>
-        <span class="pm-desc">Source code analysis for AI infrastructure. Finds what general-purpose SAST misses.</span>
+        <span class="pm-desc">Finds exploitable vulnerabilities in AI infrastructure before deployment &mdash; the attack surface that CodeQL and Semgrep weren&rsquo;t built for.</span>
         <a href="rowan/index.html" class="pm-link">Overview &rarr;</a>
       </div>
     </div>
@@ -68,7 +68,7 @@
   <div class="wrap">
     <p class="section-label">Get in touch</p>
     <a href="mailto:hello@hedgerow.dev" class="contact-email">hello@hedgerow.dev</a>
-    <p class="contact-note">Inquiries, early access to Rowan, and security disclosures.</p>
+    <p class="contact-note">Early access, design partnerships, and security disclosures.</p>
   </div>
 </section>
 
