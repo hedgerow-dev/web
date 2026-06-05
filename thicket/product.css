@@ -88,6 +88,11 @@
 .bench-note { margin-top:1.75rem;font-size:.82rem;color:var(--muted);max-width:600px;line-height:1.7 }
 .bench-note a { color:var(--sage) }
 
+/* ── Compare table ── */
+.sp-section--flush { border-bottom:none }
+.compare-table th:first-child { width:40% }
+.cmp-note { margin-top:2.5rem;font-size:.9rem;color:var(--muted);max-width:600px;line-height:1.75 }
+
 @media(max-width:768px) {
   .sp-hero { padding:5rem 0 4rem }
   .sp-claims { grid-template-columns:1fr;gap:1.5rem }
