@@ -23,6 +23,7 @@
     <a href="how-it-works.html">How it works</a>
     <a href="compare.html" class="active">Compare</a>
     <a href="demos.html">Live demos</a>
+    <a href="../blog/index.html">Blog</a>
     <a href="mailto:hello@hedgerow.dev" class="nav-cta">Contact</a>
   </div>
   <button class="nav-hamburger" id="navToggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
@@ -32,14 +33,15 @@
   <a href="how-it-works.html">How it works</a>
   <a href="compare.html">Compare</a>
   <a href="demos.html">Live demos</a>
+  <a href="../blog/index.html">Blog</a>
   <a href="mailto:hello@hedgerow.dev" class="nav-drawer-cta">Contact &rarr;</a>
 </div>
 
 <div class="page-header">
   <div class="wrap">
     <div class="section-label" style="color:rgba(255,255,255,.4)">Compare</div>
-    <h1>Thicket vs cloud prompt scanners.</h1>
-    <p class="page-sub">Cloud scanners inspect text. Thicket intercepts execution. Those are not the same problem.</p>
+    <h1>Cloud scanners inspect text. Thicket intercepts execution.</h1>
+    <p class="page-sub">Those are not the same problem. A classifier that scores your prompt cannot stop a subprocess call that your application makes in response to it.</p>
   </div>
 </div>
 
@@ -55,19 +57,22 @@
           </tr>
         </thead>
         <tbody>
-          <tr><td>Runtime blocking</td><td class="t-good">Yes &mdash; at the execution boundary</td><td class="t-bad">No</td></tr>
+          <tr><td>Blocks at the execution boundary</td><td class="t-good">Yes &mdash; before the operation completes</td><td class="t-bad">No &mdash; returns a score only</td></tr>
           <tr><td>SSRF protection</td><td class="t-good">Yes</td><td class="t-bad">No</td></tr>
+          <tr><td>Code execution prevention</td><td class="t-good">Yes</td><td class="t-bad">No</td></tr>
           <tr><td>Deserialization hardening</td><td class="t-good">Yes</td><td class="t-bad">No</td></tr>
           <tr><td>Works offline / air-gapped</td><td class="t-good">Yes</td><td class="t-bad">No</td></tr>
-          <tr><td>No AI making blocking decisions</td><td class="t-good">Yes</td><td class="t-bad">No</td></tr>
+          <tr><td>Deterministic &mdash; no AI making blocking decisions</td><td class="t-good">Yes</td><td class="t-bad">No</td></tr>
           <tr><td>Data leaves your process</td><td class="t-good">Never</td><td class="t-bad">Always</td></tr>
-          <tr><td>OS kernel backstop</td><td class="t-good">Yes (Linux &ge; 5.10)</td><td class="t-bad">No</td></tr>
+          <tr><td>OS kernel backstop</td><td class="t-good">Yes (Linux)</td><td class="t-bad">No</td></tr>
+          <tr><td>Added latency</td><td class="t-good">~1ms median</td><td class="t-bad">400&ndash;600ms round-trip</td></tr>
         </tbody>
       </table>
     </div>
-    <p style="margin-top:2.5rem;font-size:.9rem;color:var(--muted);max-width:580px;line-height:1.75">For organisations with data-sovereignty requirements, a cloud scanner that receives your prompts is not a viable option regardless of detection quality.</p>
-    <div style="margin-top:2.5rem">
-      <a href="demos.html" class="btn btn-primary">Watch it block real attacks &rarr;</a>
+    <p style="margin-top:2.5rem;font-size:.9rem;color:var(--muted);max-width:600px;line-height:1.75">For teams with data-sovereignty requirements, a cloud scanner that receives your prompts and model outputs is not a viable option regardless of detection quality. Thicket never sends data outside your process.</p>
+    <div style="margin-top:2.5rem;display:flex;gap:1rem;flex-wrap:wrap">
+      <a href="demos.html" class="btn btn-primary">See it block real attacks &rarr;</a>
+      <a href="how-it-works.html" class="btn btn-outline">How the enforcement layers work</a>
     </div>
   </div>
 </section>
@@ -85,6 +90,7 @@
       <a href="../index.html">Home</a>
       <a href="../thicket/index.html">Thicket</a>
       <a href="../rowan/index.html">Rowan</a>
+      <a href="../blog/index.html">Blog</a>
       <a href="mailto:hello@hedgerow.dev">Contact</a>
     </div>
   </div>

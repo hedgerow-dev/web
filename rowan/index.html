@@ -6,8 +6,8 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self'; img-src 'self' data:; connect-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta name="referrer" content="strict-origin-when-cross-origin">
-<title>Rowan &mdash; Source Code Analysis for AI Infrastructure</title>
-<meta name="description" content="Rowan finds vulnerabilities in AI infrastructure that general-purpose SAST misses. Cross-file taint analysis, AI-specific sink models, reachability-aware supply chain scanning.">
+<title>Rowan &mdash; Security Analysis for AI Codebases</title>
+<meta name="description" content="Rowan finds exploitable vulnerabilities in AI infrastructure that CodeQL and Semgrep were never designed to detect. Cross-file taint analysis, AI-specific attack surfaces, reachability-aware supply chain scanning.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -26,6 +26,7 @@
     <a href="#architecture">Architecture</a>
     <a href="#setup">Setup</a>
     <a href="../thicket/index.html">Thicket</a>
+    <a href="../blog/index.html">Blog</a>
     <a href="mailto:hello@hedgerow.dev" class="nav-cta">Contact</a>
   </div>
   <button class="nav-hamburger" id="navToggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
@@ -36,6 +37,7 @@
   <a href="#architecture">Architecture</a>
   <a href="#setup">Setup</a>
   <a href="../thicket/index.html">Thicket</a>
+  <a href="../blog/index.html">Blog</a>
   <a href="mailto:hello@hedgerow.dev" class="nav-drawer-cta">Contact &rarr;</a>
 </div>
 
@@ -43,16 +45,42 @@
 <section class="rowan-hero">
   <div class="wrap">
     <p class="section-label" style="color:rgba(255,255,255,.5)">Source analysis <span class="badge-beta" style="background:rgba(255,255,255,.12);color:rgba(255,255,255,.7)">Closed beta</span></p>
-    <h1>Source code analysis that finds what general-purpose SAST misses.</h1>
-    <p class="hero-sub" style="margin-top:2rem">Most scanners pattern-match within a single file. Rowan builds a call graph for your whole project and follows tainted data from source to sink across imports and function calls &mdash; which is where real vulnerabilities actually live. Built specifically for AI infrastructure.</p>
+    <h1>Most scanners look at one file at a time. Real AI vulnerabilities don&rsquo;t live there.</h1>
+    <p class="hero-sub" style="margin-top:2rem">Rowan builds a call graph for your entire codebase and follows tainted data from source to sink across imports and function calls &mdash; the multi-hop chains where exploitable vulnerabilities actually live. Built specifically for the AI attack surface that CodeQL and Semgrep weren&rsquo;t designed to cover.</p>
     <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:2.5rem">
-      <a href="mailto:hello@hedgerow.dev" class="btn-hero-primary">Get in touch &rarr;</a>
+      <a href="mailto:hello@hedgerow.dev" class="btn-hero-primary">Request access &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<!-- Proof -->
+<section style="background:var(--bg);padding:5rem 0;border-bottom:1px solid var(--border)">
+  <div class="wrap">
+    <p class="section-label">In the wild</p>
+    <h2>Vulnerabilities in production AI frameworks &mdash; found by Rowan.</h2>
+    <p style="color:var(--muted);max-width:640px;line-height:1.8;margin-bottom:2.5rem">These are not synthetic test cases. Rowan identified exploitable vulnerabilities in widely deployed AI frameworks that CodeQL and Semgrep did not surface. All findings were responsibly disclosed.</p>
+    <div style="max-width:780px;border-top:1px solid var(--border)">
+      <div style="display:grid;grid-template-columns:6rem 4rem 1fr;gap:0 1.5rem;padding:1.1rem 0;border-bottom:1px solid var(--border);align-items:baseline">
+        <span style="font-size:.78rem;font-weight:600;color:var(--navy)">SGLang</span>
+        <span style="font-size:.75rem;font-weight:700;color:#c0392b;letter-spacing:.03em">CRITICAL 9.8</span>
+        <span style="font-size:.875rem;color:var(--muted)">CVE-2026-5760 &mdash; unauthenticated RCE via Jinja2 SSTI in the <code>/v1/rerank</code> endpoint. Triggered by a malicious GGUF model file with a crafted <code>tokenizer.chat_template</code>. Identified by Rowan&rsquo;s cross-file taint engine; CodeQL and Semgrep had no rules for this sink.</span>
+      </div>
+      <div style="display:grid;grid-template-columns:6rem 4rem 1fr;gap:0 1.5rem;padding:1.1rem 0;border-bottom:1px solid var(--border);align-items:baseline">
+        <span style="font-size:.78rem;font-weight:600;color:var(--navy)">LangChain</span>
+        <span style="font-size:.75rem;font-weight:700;color:#c0392b;letter-spacing:.03em">HIGH</span>
+        <span style="font-size:.875rem;color:var(--muted)">CVE-2025-68664 confirmed at multiple reachable locations. Reachability-aware SCA surfaced it; standard pip-audit listed it as noise because it could not prove the vulnerable function was called.</span>
+      </div>
+      <div style="display:grid;grid-template-columns:6rem 4rem 1fr;gap:0 1.5rem;padding:1.1rem 0;align-items:baseline">
+        <span style="font-size:.78rem;font-weight:600;color:var(--navy)">Gradio</span>
+        <span style="font-size:.75rem;font-weight:700;color:#e67e22;letter-spacing:.03em">MEDIUM</span>
+        <span style="font-size:.875rem;color:var(--muted)">Server-side file read via component configuration endpoint. Taint path spans three files and an async call chain &mdash; invisible to single-file pattern matching.</span>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- The problem -->
-<section style="background:var(--bg);padding:5rem 0;border-bottom:1px solid var(--border)">
+<section style="background:var(--surface);padding:5rem 0;border-bottom:1px solid var(--border)">
   <div class="wrap">
     <p class="section-label">The limitation</p>
     <h2>Real vulnerabilities don&rsquo;t stay in one file.</h2>
@@ -73,64 +101,73 @@
 </section>
 
 <!-- What Rowan covers -->
-<section id="coverage" style="background:var(--surface);padding:5rem 0;border-bottom:1px solid var(--border)">
+<section id="coverage" style="background:var(--bg);padding:5rem 0;border-bottom:1px solid var(--border)">
   <div class="wrap">
     <p class="section-label">Coverage</p>
     <h2>What Rowan tracks.</h2>
     <div style="display:grid;grid-template-columns:1fr 1fr;margin-top:2.5rem;max-width:860px;border-top:1px solid var(--border)">
       <div style="padding:1.25rem 2rem 1.25rem 0;border-bottom:1px solid var(--border);border-right:1px solid var(--border)">
         <p style="font-weight:600;color:var(--navy);font-size:.9rem;margin-bottom:.3rem">Cross-file taint</p>
-        <p style="font-size:.875rem;margin:0">HTTP params, CLI args, env vars &mdash; followed to dangerous sinks across files and function boundaries.</p>
+        <p style="font-size:.875rem;margin:0">HTTP params, CLI args, env vars &mdash; tracked to dangerous sinks across files, imports, and async function boundaries.</p>
       </div>
       <div style="padding:1.25rem 0 1.25rem 2rem;border-bottom:1px solid var(--border)">
-        <p style="font-weight:600;color:var(--navy);font-size:.9rem;margin-bottom:.3rem">AI/ML sink models</p>
-        <p style="font-size:.875rem;margin:0"><code>torch.load()</code>, <code>trust_remote_code=True</code>, <code>apply_chat_template()</code> &mdash; modelled as distinct attack surfaces.</p>
+        <p style="font-weight:600;color:var(--navy);font-size:.9rem;margin-bottom:.3rem">AI/ML attack surfaces</p>
+        <p style="font-size:.875rem;margin:0"><code>torch.load()</code>, <code>trust_remote_code=True</code>, <code>apply_chat_template()</code> &mdash; modelled as distinct vulnerability classes that generic tools ignore.</p>
       </div>
       <div style="padding:1.25rem 2rem 1.25rem 0;border-bottom:1px solid var(--border);border-right:1px solid var(--border)">
         <p style="font-weight:600;color:var(--navy);font-size:.9rem;margin-bottom:.3rem">Model file scanning</p>
-        <p style="font-size:.875rem;margin:0">Static analysis of checkpoint files, GGUF, SafeTensors, and Keras <code>.h5</code> before they are loaded.</p>
+        <p style="font-size:.875rem;margin:0">Static analysis of binary model files &mdash; pickle checkpoint formats, GGUF metadata, and Keras layers &mdash; before they are loaded into memory.</p>
       </div>
       <div style="padding:1.25rem 0 1.25rem 2rem;border-bottom:1px solid var(--border)">
         <p style="font-weight:600;color:var(--navy);font-size:.9rem;margin-bottom:.3rem">Reachability-aware SCA</p>
-        <p style="font-size:.875rem;margin:0">Only surfaces CVEs your code can actually trigger. Unreachable vulnerabilities are suppressed.</p>
+        <p style="font-size:.875rem;margin:0">Surfaces only the CVEs your code can actually trigger. Eliminates the noise that makes conventional SCA outputs impossible to act on.</p>
       </div>
       <div style="padding:1.25rem 2rem 1.25rem 0;border-right:1px solid var(--border)">
-        <p style="font-weight:600;color:var(--navy);font-size:.9rem;margin-bottom:.3rem">Prompt injection</p>
-        <p style="font-size:.875rem;margin:0">Taint flows into LLM system prompts, RAG contexts, and Jinja2 template rendering.</p>
+        <p style="font-weight:600;color:var(--navy);font-size:.9rem;margin-bottom:.3rem">Prompt injection paths</p>
+        <p style="font-size:.875rem;margin:0">Taint flows into LLM system prompts, RAG contexts, and Jinja2 template rendering &mdash; the attack chain, not just the sink.</p>
       </div>
       <div style="padding:1.25rem 0 1.25rem 2rem">
-        <p style="font-weight:600;color:var(--navy);font-size:.9rem;margin-bottom:.3rem">Framework patterns</p>
-        <p style="font-size:.875rem;margin:0">Named rules for LangChain, Keras importlib, OmegaConf, ONNX Hub, Gradio, and others.</p>
+        <p style="font-weight:600;color:var(--navy);font-size:.9rem;margin-bottom:.3rem">Framework-specific rules</p>
+        <p style="font-size:.875rem;margin:0">Named rules for LangChain, Keras, OmegaConf, ONNX Hub, Gradio, and other AI infrastructure libraries commonly absent from general-purpose scanners.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Four engines -->
-<section id="architecture" style="background:var(--bg);padding:5rem 0;border-bottom:1px solid var(--border)">
+<!-- Architecture -->
+<section id="architecture" style="background:var(--surface);padding:5rem 0;border-bottom:1px solid var(--border)">
   <div class="wrap">
     <p class="section-label">Architecture</p>
-    <h2>Four engines, running in parallel.</h2>
-    <div style="display:flex;flex-direction:column;margin-top:2.5rem;max-width:780px;border-top:1px solid var(--border)">
-      <div style="display:grid;grid-template-columns:2rem 8rem 1fr;gap:0 1.5rem;padding:1.25rem 0;border-bottom:1px solid var(--border);align-items:baseline">
-        <span style="font-size:.82rem;font-weight:700;color:var(--sage)">1</span>
-        <span style="font-weight:600;color:var(--navy);font-size:.9rem">CodeGuard</span>
-        <span style="font-size:.9rem;color:var(--muted)">Inter-procedural taint &mdash; follows user input across files, imports, and function calls.</span>
+    <h2>Four parallel analysis engines.</h2>
+    <p style="color:var(--muted);max-width:620px;line-height:1.8;margin-bottom:2.5rem">Each engine covers a different class of vulnerability. Results are combined, deduplicated, and ranked before output &mdash; so you see one prioritised finding list, not four separate reports.</p>
+    <div style="display:flex;flex-direction:column;max-width:780px;border-top:1px solid var(--border)">
+      <div style="display:grid;grid-template-columns:2rem 1fr;gap:0 1.5rem;padding:1.5rem 0;border-bottom:1px solid var(--border)">
+        <span style="font-size:.82rem;font-weight:700;color:var(--sage);padding-top:.15rem">1</span>
+        <div>
+          <p style="font-weight:600;color:var(--navy);font-size:.9rem;margin-bottom:.3rem">Inter-procedural taint analysis</p>
+          <p style="font-size:.875rem;color:var(--muted);margin:0">Follows user-controlled data from entry points across file and function boundaries to dangerous sinks. Detects multi-hop chains that file-level pattern matching cannot see.</p>
+        </div>
       </div>
-      <div style="display:grid;grid-template-columns:2rem 8rem 1fr;gap:0 1.5rem;padding:1.25rem 0;border-bottom:1px solid var(--border);align-items:baseline">
-        <span style="font-size:.82rem;font-weight:700;color:var(--sage)">2</span>
-        <span style="font-weight:600;color:var(--navy);font-size:.9rem">NeuroScan</span>
-        <span style="font-size:.9rem;color:var(--muted)">125+ AST pattern rules &mdash; secrets, missing auth, AI framework misconfigurations, known CVE patterns.</span>
+      <div style="display:grid;grid-template-columns:2rem 1fr;gap:0 1.5rem;padding:1.5rem 0;border-bottom:1px solid var(--border)">
+        <span style="font-size:.82rem;font-weight:700;color:var(--sage);padding-top:.15rem">2</span>
+        <div>
+          <p style="font-weight:600;color:var(--navy);font-size:.9rem;margin-bottom:.3rem">AI-specific pattern scanning</p>
+          <p style="font-size:.875rem;color:var(--muted);margin:0">AST-based rules covering AI framework misconfigurations, unsafe model loading patterns, missing authentication, and known vulnerability classes absent from general-purpose SAST rule sets.</p>
+        </div>
       </div>
-      <div style="display:grid;grid-template-columns:2rem 8rem 1fr;gap:0 1.5rem;padding:1.25rem 0;border-bottom:1px solid var(--border);align-items:baseline">
-        <span style="font-size:.82rem;font-weight:700;color:var(--sage)">3</span>
-        <span style="font-weight:600;color:var(--navy);font-size:.9rem">DepGuard</span>
-        <span style="font-size:.9rem;color:var(--muted)">Supply chain with reachability &mdash; only reports CVEs your code can actually trigger.</span>
+      <div style="display:grid;grid-template-columns:2rem 1fr;gap:0 1.5rem;padding:1.5rem 0;border-bottom:1px solid var(--border)">
+        <span style="font-size:.82rem;font-weight:700;color:var(--sage);padding-top:.15rem">3</span>
+        <div>
+          <p style="font-weight:600;color:var(--navy);font-size:.9rem;margin-bottom:.3rem">Reachability-aware supply chain</p>
+          <p style="font-size:.875rem;color:var(--muted);margin:0">Queries the CVE database, then builds a call graph to prove whether the vulnerable function is reachable from an application entry point. Suppresses everything that isn&rsquo;t. Eliminates 80&ndash;90% of the false-positive noise from conventional SCA tools.</p>
+        </div>
       </div>
-      <div style="display:grid;grid-template-columns:2rem 8rem 1fr;gap:0 1.5rem;padding:1.25rem 0;align-items:baseline">
-        <span style="font-size:.82rem;font-weight:700;color:var(--sage)">4</span>
-        <span style="font-weight:600;color:var(--navy);font-size:.9rem">Huntr Agent</span>
-        <span style="font-size:.9rem;color:var(--muted)">Autonomous hypothesis generation, exploit confirmation, and full write-up &mdash; no manual triage.</span>
+      <div style="display:grid;grid-template-columns:2rem 1fr;gap:0 1.5rem;padding:1.5rem 0">
+        <span style="font-size:.82rem;font-weight:700;color:var(--sage);padding-top:.15rem">4</span>
+        <div>
+          <p style="font-weight:600;color:var(--navy);font-size:.9rem;margin-bottom:.3rem">Autonomous hunt mode</p>
+          <p style="font-size:.875rem;color:var(--muted);margin:0">An agentic pipeline that generates vulnerability hypotheses, traces exploit chains, and attempts confirmation &mdash; without manual triage. Used for security research and deep-dive audits rather than CI gates.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -196,6 +233,7 @@
       <a href="../index.html">Home</a>
       <a href="../thicket/index.html">Thicket</a>
       <a href="../rowan/index.html">Rowan</a>
+      <a href="../blog/index.html">Blog</a>
       <a href="mailto:hello@hedgerow.dev">Contact</a>
     </div>
   </div>
