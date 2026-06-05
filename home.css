@@ -92,6 +92,12 @@
 }
 .pm-accent--thicket { background:var(--marigold) }
 .pm-accent--rowan   { background:var(--celeste) }
+.hero-actions {
+  margin-top:2.5rem;
+  display:flex;
+  gap:1rem;
+  flex-wrap:wrap;
+}
 .pm-name {
   font-family:'Inter', system-ui, sans-serif;
   font-size:1.5rem;
@@ -99,6 +105,7 @@
   letter-spacing:-.02em;
   color:var(--navy);
   line-height:1;
+  margin:0;
 }
 .pm-desc {
   font-size:.9rem;
