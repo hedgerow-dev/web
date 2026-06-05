@@ -15,17 +15,21 @@
     ],
     "headers": [
       {
-        "source": "**/*.html",
+        "source": "**/*.@(css|js|png|jpg|svg|ico|woff|woff2)",
         "headers": [
           {
             "key": "Cache-Control",
-            "value": "no-cache, no-store, must-revalidate"
+            "value": "max-age=31536000, immutable"
           }
         ]
       },
       {
         "source": "**",
         "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache, no-store, must-revalidate"
+          },
           {
             "key": "X-Content-Type-Options",
             "value": "nosniff"
