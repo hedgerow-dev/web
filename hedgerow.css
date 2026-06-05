@@ -334,6 +334,7 @@ td:first-child { color:var(--text); font-weight:500 }
   padding:5rem 0 4rem;
 }
 .page-header h1 { color:#fff; font-size:clamp(2rem,4.5vw,3rem) }
+.page-header .section-label { color:rgba(255,255,255,.4) }
 .page-header .page-sub {
   font-family:'Inter', system-ui, sans-serif; font-style:normal;
   color:rgba(255,255,255,.6); font-size:1rem;
