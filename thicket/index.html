@@ -55,8 +55,8 @@
         <span class="sp-claim-body">Runs entirely in-process. No outbound calls, no latency overhead, no data leaving your environment.</span>
       </div>
       <div class="sp-claim">
-        <span class="sp-claim-head">94% precision</span>
-        <span class="sp-claim-body">When Thicket blocks, it&rsquo;s almost always right. Under 1.5% false positive rate on clean traffic.</span>
+        <span class="sp-claim-head">96% precision</span>
+        <span class="sp-claim-body">When Thicket blocks, it&rsquo;s almost always right. Under 2.5% false positive rate on clean traffic. Measured against a balanced, provenance-locked holdout of 1,057 samples across 7 attack categories.</span>
       </div>
     </div>
     <div class="btn-row">
@@ -74,7 +74,11 @@
     <div class="sp-grid">
       <div class="sp-grid-cell">
         <h3 class="sp-cell-title">Prompt injection</h3>
-        <p class="sp-cell-text">Every prompt, tool result, and model output is scanned before it can route execution anywhere. Runs in your process. Nothing leaves.</p>
+        <p class="sp-cell-text">Every prompt, tool result, and model output is scanned before it can route execution anywhere. 280+ deterministic regex patterns catch direct overrides (98.9% recall), persona injections, and jailbreak templates. Runs in your process. Nothing leaves.</p>
+      </div>
+      <div class="sp-grid-cell">
+        <h3 class="sp-cell-title">Cross-turn &amp; multi-step attacks</h3>
+        <p class="sp-cell-text">Detects Crescendo-style escalation attacks, adversarial instructions accumulated across conversation turns, and sequential system prompt extraction — patterns invisible to single-message scanners.</p>
       </div>
       <div class="sp-grid-cell">
         <h3 class="sp-cell-title">Code execution via LLM output</h3>
@@ -104,7 +108,7 @@
   <div class="wrap">
     <p class="section-label">Deployment</p>
     <h2>One library. Drop-in for the frameworks you already use.</h2>
-    <p class="sp-lead">Thicket installs as a standard Python package and auto-patches LangChain, LlamaIndex, FastAPI, Flask, and Django. Run in <code>audit_only</code> mode to validate false positive rates before switching to enforcement.</p>
+    <p class="sp-lead">Thicket installs as a standard Python package. <code>thicket.init()</code> auto-detects FastAPI, Flask, or Django and wires middleware automatically. Also patches LangChain, LlamaIndex, and OpenAI SDK. Run in <code>audit_only</code> mode to validate false positive rates before switching to enforcement.</p>
     <div class="sp-deploy-cols">
       <div>
         <p class="sp-deploy-label">Works with</p>
