@@ -57,13 +57,13 @@
 <section class="rw-section rw-section--bg">
   <div class="wrap">
     <p class="section-label">In the wild</p>
-    <h2>Vulnerabilities in production AI frameworks, found by Rowan.</h2>
-    <p class="rw-lead">These aren&rsquo;t lab examples. Rowan found these in frameworks that production AI applications depend on. All were responsibly disclosed.</p>
+    <h2>The vulnerabilities dependency scanners miss.</h2>
+    <p class="rw-lead">A vulnerable dependency only matters if your code can actually reach it. Rowan traces the call graph to tell the difference, surfacing real, reachable issues in the frameworks production AI applications depend on.</p>
     <div class="rw-cve-list">
       <div class="rw-cve">
-        <span class="rw-cve-name">LangChain</span>
+        <span class="rw-cve-name">Example</span>
         <span class="rw-cve-sev rw-cve-sev--crit">HIGH</span>
-        <span class="rw-cve-desc">CVE-2026-34070, confirmed reachable from application entry points. Dependency scanners flagged it as informational because they can&rsquo;t prove a call path. Rowan traced it through the call graph and confirmed it was live.</span>
+        <span class="rw-cve-desc">A path-traversal in an LLM framework&rsquo;s prompt loaders. Dependency scanners flag this class of issue as informational because they can&rsquo;t prove a call path. Rowan traces it through the call graph and confirms whether it is actually reachable from your entry points.</span>
       </div>
     </div>
   </div>
@@ -76,7 +76,7 @@
     <h2>Real vulnerabilities don&rsquo;t stay in one file.</h2>
     <p class="rw-lead">An SSRF that crosses two files and an async boundary won&rsquo;t show up in a single-file scan. Rowan follows the full path and shows you exactly where it breaks.</p>
     <div class="code-block rw-trace">
-      <div class="rw-trace-crit">[CRITICAL] Server-Side Request Forgery, confidence: 89%</div>
+      <div class="rw-trace-crit">[CRITICAL] Server-Side Request Forgery, confidence: high</div>
       <div class="rw-trace-grid">
         <span class="rw-trace-label">Source</span>
         <span class="rw-trace-val"><span class="rw-trace-dim">api/endpoints.py:3</span><span class="rw-trace-dim"> &nbsp; url = request.args.get(&lsquo;url&rsquo;)</span></span>
@@ -149,7 +149,7 @@
         <span class="rw-engine-num">3</span>
         <div>
           <h3 class="rw-cell-title">Reachability-aware supply chain</h3>
-          <p class="rw-engine-text">Checks your dependencies against the CVE database, then traces whether the vulnerable function is reachable from your entry points. If there&rsquo;s no call path, it&rsquo;s suppressed. In practice this cuts 80&ndash;90% of what conventional SCA surfaces.</p>
+          <p class="rw-engine-text">Checks your dependencies against the CVE database, then traces whether the vulnerable function is reachable from your entry points. If there&rsquo;s no call path, it&rsquo;s suppressed. In practice this cuts most of the noise conventional SCA surfaces.</p>
         </div>
       </div>
       <div class="rw-engine">
@@ -171,7 +171,7 @@
     <div class="rw-output-cols">
       <div>
         <h3>Confidence scoring</h3>
-        <p>Every finding gets a confidence score based on source clarity, taint path length, and whether sanitizers appear in the path. Above 80 is a direct exploit path. Below that, it&rsquo;s a pattern worth a look. Start at 80%+ if you want a short list.</p>
+        <p>Every finding gets a confidence score based on source clarity, taint path length, and whether sanitizers appear in the path. High-confidence findings are direct exploit paths. Lower ones are patterns worth a look. Filter to the top tier if you want a short list.</p>
       </div>
       <div>
         <h3>Output formats</h3>

@@ -85,23 +85,23 @@
   <div class="wrap">
     <p class="section-label">Detection performance</p>
     <h2 class="bench-title">Measured against independent benchmarks.</h2>
-    <p class="sp-lead">Validated against independent, labelled datasets of jailbreak and prompt injection attempts. Latency measured on a 16-core Linux VM. These numbers are for the content scanning layer only. Anything that evades it still gets blocked by runtime interception.</p>
+    <p class="sp-lead">Validated against independent, labelled datasets of jailbreak and prompt injection attempts. These results are for the content scanning layer only. Anything that evades it still gets blocked by runtime interception.</p>
     <div class="bench-grid">
       <div class="bench-card">
-        <div class="bench-num">100%</div>
-        <div class="bench-label">Recall on explicit injection attempts (InjecAgent enhanced)</div>
+        <div class="bench-num">High recall</div>
+        <div class="bench-label">Catches explicit injection attempts in independent, labelled testing</div>
       </div>
       <div class="bench-card">
-        <div class="bench-num">94%</div>
-        <div class="bench-label">Precision: blocks are almost always right</div>
+        <div class="bench-num">Precise</div>
+        <div class="bench-label">When Thicket blocks, it&rsquo;s almost always right</div>
       </div>
       <div class="bench-card">
-        <div class="bench-num">&lt;1.5%</div>
+        <div class="bench-num">Low</div>
         <div class="bench-label">False positive rate on clean traffic</div>
       </div>
       <div class="bench-card">
-        <div class="bench-num">~1ms</div>
-        <div class="bench-label">Median added latency per request</div>
+        <div class="bench-num">Very low</div>
+        <div class="bench-label">Added latency per request</div>
       </div>
     </div>
     <p class="bench-note">Thicket is an injection and execution detector, not a harmful content classifier. Benchmarks that test content moderation (jailbreak refusal, harmful output) measure a different problem. See our <a href="compare.html">comparison page</a> for context.</p>

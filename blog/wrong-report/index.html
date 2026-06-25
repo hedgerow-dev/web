@@ -56,7 +56,7 @@
 
       <p>We talk a lot in AppSec about &ldquo;shifting left&rdquo; and automated discovery, but we rarely talk about the human blind spots those tools create.</p>
 
-      <p>Recently, we were testing Rowan, our proprietary SAST platform built specifically for AI/ML security. It does the heavy lifting: inter-procedural call graphs, taint flows, and chain detection for composite vulnerabilities. When it works, it is a beautiful thing. Earlier this year, Rowan surfaced CVE-2026-34070, a zero-day path traversal in LangChain&rsquo;s prompt loaders that led to a clean, high-severity patch.</p>
+      <p>Recently, we were testing Rowan, our proprietary SAST platform built specifically for AI/ML security. It does the heavy lifting: inter-procedural call graphs, taint flows, and chain detection for composite vulnerabilities. When it works, it is a beautiful thing. It is the kind of tool that can surface a path-traversal buried in an LLM framework&rsquo;s prompt loaders, the sort of issue conventional scanners walk right past.</p>
 
       <p>But this post isn&rsquo;t a victory lap. It&rsquo;s a post-mortem. It is a story about what happens when your tooling is faster than your threat modeling, and why getting a shell doesn&rsquo;t automatically mean you&rsquo;ve found a vulnerability.</p>
 

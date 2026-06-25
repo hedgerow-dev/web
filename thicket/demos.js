@@ -172,7 +172,7 @@
     var btn = el('btn-ssrf'), st = el('status-ssrf');
     btn.disabled = true; st.textContent = 'Running…';
     await Promise.all([play('sl', SL), play('sr', SR)]);
-    resetBtn(btn, ['sl','sr'], st, 'CVSS 8.6 — SSRF via redirect bypass', window.runSsrf);
+    resetBtn(btn, ['sl','sr'], st, 'SSRF via redirect bypass', window.runSsrf);
   };
 
   /* Bind all buttons via addEventListener — no inline onclick needed */
