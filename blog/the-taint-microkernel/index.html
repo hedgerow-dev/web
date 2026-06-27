@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self'; img-src 'self' data:; connect-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>Trust Me Is Not a Finding: The Taint Microkernel | Hedgerow</title>
+<meta name="description" content="A language model can tell you a great story about a vulnerability. It can't hand you a reproducible, auditable proof that the bug is real. Put the deterministic taint engine at the center and let the model ride shotgun.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/hedgerow.css">
+<link rel="stylesheet" href="/blog/blog.css?v=5">
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../../index.html"><img src="../../assets/logo-nav.png" alt="Hedgerow" class="nav-logo-img" width="104" height="36"><span class="nav-logo-name">hedgerow</span></a>
+  <div class="nav-links">
+    <a href="../../thicket/index.html">Thicket</a>
+    <a href="../../rowan/index.html">Rowan</a>
+    <a href="../" class="active">Blog</a>
+    <a href="mailto:hello@hedgerow.dev" class="nav-cta">Contact</a>
+  </div>
+  <button class="nav-hamburger" id="navToggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+</nav>
+<div class="nav-drawer" id="navDrawer">
+  <a href="../../thicket/index.html">Thicket</a>
+  <a href="../../rowan/index.html">Rowan</a>
+  <a href="../">Blog</a>
+  <a href="mailto:hello@hedgerow.dev" class="nav-drawer-cta">Contact &rarr;</a>
+</div>
+
+<section class="article-hero">
+  <div class="wrap">
+    <a href="../" class="article-nav-back">&larr; All posts</a>
+    <h1>Trust Me Is Not a Finding</h1>
+    <p class="article-subtitle">The Taint Microkernel: why an LLM security scanner needs a deterministic core, and why the model belongs on top of the ground truth, never standing in for it.</p>
+    <div class="article-byline">
+      <span class="byline-date">June 2026</span>
+      <span class="byline-sep"></span>
+      <span class="byline-author">Kenneth Cox &middot; Hedgerow</span>
+      <span class="byline-sep"></span>
+      <span class="byline-readtime">9 min read</span>
+      <span class="byline-sep"></span>
+      <span class="byline-tag">Architecture</span>
+      <span class="byline-tag">LLM</span>
+      <span class="byline-tag">Static analysis</span>
+    </div>
+  </div>
+</section>
+
+<section class="article-body">
+  <div class="wrap">
+    <div class="article-inner prose">
+
+      <div class="companion">
+        <span class="comp-icon">&#9776;</span>
+        <p><span class="comp-label">Companion paper</span>This is the argument. The sister essay, <a href="../closing-the-seam/">Closing the Seam</a>, is the engineering: how Open-Rowan does cross-file taint on top of OpenGrep. This one answers the question that immediately follows: <em>if frontier models are this good, why build a taint engine at all?</em> Both Rowan and Open-Rowan are in private beta; claims about them are design and intent, and the claims about everyone else are cited.</p>
+      </div>
+
+      <h3>The shortcut everyone wants to take</h3>
+
+      <p>The pitch sells itself. Point a frontier model at a repo, say &ldquo;find the vulnerabilities,&rdquo; and skip the years of program-analysis grind. The models really can read code, and they really can spin up a convincing exploit narrative. So why on earth would you still hand-maintain a call graph, a fixpoint loop, and a rule corpus like some kind of caveman?</p>
+
+      <p>Because &ldquo;spin up a convincing exploit narrative&rdquo; and &ldquo;prove, the same way every time and in a form an auditor will accept, that attacker-controlled data reaches a dangerous sink somewhere across this thousand-file repo&rdquo; are not the same job. The first is what a language model is built for. The second is what a taint engine is built for. You want both, but only one of them gets to be the <em>ground truth</em>, and it is not the one that occasionally hallucinates a function that doesn&rsquo;t exist.</p>
+
+      <p>None of this is anti-LLM. It&rsquo;s about which part is the kernel and which part is the coprocessor. The strongest research in the area agrees, loudly: IRIS [1] and the follow-on work on LLM-assisted spec inference and false-positive triage [2][3] all pair a model with a <em>static</em> taint engine (CodeQL, in IRIS&rsquo;s case) rather than turning the model loose on its own. The IRIS authors&rsquo; argument is that plain models struggle with the complex, whole-repository reasoning these bugs demand, so they lean on CodeQL to do the heavy structural lifting and let the model do what it&rsquo;s good at [1][3]. The model infers and triages. The engine enumerates and proves. Everybody plays to type.</p>
+
+      <h3>Five things the engine does that the model can&rsquo;t</h3>
+
+      <h4>1. It gives the same answer twice</h4>
+
+      <p>Same code, same rules, same findings, every run, forever. That&rsquo;s the entire foundation of CI gating, audit trails, and regression tracking: if the findings changed, the <em>code or the rules</em> changed, not the temperature setting. Model output, by contrast, drifts with sampling, prompt wording, the order you fed things in, and the occasional silent upgrade on the provider&rsquo;s end that you find out about from a changelog. The research that bothers to evaluate LLMs <em>as</em> taint analyzers treats this instability as something to measure and characterize, not wave away [4]. You can build a CI gate on a deterministic engine. You cannot build one on a coin, no matter how nicely it&rsquo;s weighted.</p>
+
+      <h4>2. It shows its work</h4>
+
+      <p>A taint engine hands you the actual path: source, every hop in between, sink, plus the rule that fired and the sanitizers it considered along the way. An auditor can walk it. A developer can argue with it. A model can <em>describe</em> a flow beautifully, and you&rsquo;re now trusting prose instead of inspecting a graph, and a fluent, confident description of a flow that isn&rsquo;t actually there is exactly the failure you can least afford in a security tool. The neuro-symbolic systems pin every model judgment to a concrete program fact for this precise reason [1][3]. &ldquo;Trust me&rdquo; is not a finding.</p>
+
+      <h4>3. It sees the whole repo without going broke</h4>
+
+      <p>Cross-file taint is a whole-program question by definition. An engine just walks the entire call graph, and summary-based, compositional propagation is what keeps that tractable at scale: the industrial work on compositional taint analysis (CFTaint and kin) shows summaries scaling to large microservice systems [5]. (Our own SCC-decomposed convergence, covered in the <a href="../closing-the-seam/">companion paper</a>, is the same idea wearing a compiler-theory hat.) A model has a context window, so you chop the repo into prompt-sized pieces and lose the global picture at every cut, which is, awkwardly, the one thing cross-file analysis exists to preserve. And you pay per token, every scan, for the privilege of making the model re-read the world from scratch each time. The engine scans a thousand-file project in seconds, offline, for the price of electricity.</p>
+
+      <h4>4. You can <code>git blame</code> its brain</h4>
+
+      <p>Everything the engine knows lives in declarative source/sink/propagator/sanitizer definitions: plain text you can review, diff, version, and bisect. Recall changed between releases? Go look at the rule that changed. A model&rsquo;s &ldquo;spec&rdquo; is smeared across prompt text, few-shot examples, and a few hundred billion weights; there is no commit to revert. (The genuinely useful move is to let the model <em>propose</em> new specs the engine then enforces, the AdaTaint / SemTaint pattern [3][6], rather than letting the model <em>be</em> the spec.)</p>
+
+      <h4>5. Its failure modes stay in your building</h4>
+
+      <p>The engine is a binary you run in your own CI. It doesn&rsquo;t ship your proprietary source to anyone&rsquo;s API, and when it breaks it breaks in legible, local ways: a bug in call-graph construction, a stale cache, a missing rule. Routing whole-repo scans through a hosted model means either mailing your code to a third party or self-hosting a model that brings a brand-new attack surface along for the ride. &ldquo;Run this binary offline&rdquo; and &ldquo;stream the codebase to a stochastic service&rdquo; are not the same security posture, and your compliance team will have opinions.</p>
+
+      <h3>We managed to prove both halves of this in one afternoon</h3>
+
+      <p>This isn&rsquo;t a thought experiment. Building and benchmarking Open-Rowan&rsquo;s cross-file engine handed us a clean demonstration of <em>each</em> side of the argument, on the same day, mostly by accident.</p>
+
+      <ul class="verdict-list">
+        <li class="keep">
+          <span class="vl-head"><span class="vl-icon">A</span> Determinism is worthless until a benchmark proves it&rsquo;s correct</span>
+          For a stretch, the cross-file engine returned <strong>zero</strong> findings on everything: fixtures, real repos, all of it. Not because there was nothing to find, but because of a thoroughly boring wiring bug. Regex sink-findings were tagged with one engine label, the cross-file matcher was looking for a different one, and so every annotation got silently dropped on the floor. The engine was <em>flawlessly deterministic this entire time.</em> It returned the wrong answer with total consistency and would have kept doing so in CI until the sun burned out. The only reason we caught it is that the ablation benchmark put a zero exactly where a zero was impossible. Determinism buys you a repeatable answer; the benchmark is what upgrades it to a repeatably <em>correct</em> one.
+        </li>
+        <li class="keep">
+          <span class="vl-head"><span class="vl-icon">B</span> The engine&rsquo;s blind spot is precisely where the model earns its keep</span>
+          On a completely textbook cross-file SQL injection (a request parameter string-formatted straight into a raw <code>cursor.execute(...)</code> one file over) the engine whiffed entirely, because that particular sink pattern wasn&rsquo;t in the rule corpus. All the cross-file machinery in the world doesn&rsquo;t help when you don&rsquo;t recognize the sink. This is exactly the gap LLM spec-inference is good at: read the unfamiliar sink, propose the rule, hand it to the engine to enforce deterministically from then on [3][6]. The model is great at the long tail the corpus hasn&rsquo;t learned yet. The engine is great at proving the same thing the ten-thousandth time without getting bored or creative.
+        </li>
+      </ul>
+
+      <p>Once we fixed the wiring, that same repo (Langflow) gave up eleven cross-file findings: real three-to-five-hop flows through its server-config code, produced deterministically, offline, in seconds. That&rsquo;s the kernel doing the one thing only a kernel can. The model was never supposed to replace any of it.</p>
+
+      <h3>So here&rsquo;s the architecture</h3>
+
+      <p>Put the static engine in the middle as the <strong>microkernel</strong> and let the model ride along as the <strong>coprocessor</strong>:</p>
+
+      <div class="code-wrap">
+        <div class="code-label">The kernel / coprocessor split</div>
+        <pre><code>            ┌─────────────────────────────────────────┐
+            │   MODEL  (coprocessor)                    │
+            │   infer specs · triage · explain · PoC    │
+            │   adaptive · fluent · bounded by ↓        │
+            └───────────────────┬─────────────────────-┘
+                                │ proposes / ranks
+            ┌───────────────────▼─────────────────────-┐
+            │   ENGINE  (microkernel · ground truth)    │
+            │   call graph · fixpoint · proven flows    │
+            │   deterministic · offline · auditable     │
+            └─────────────────────────────────────────-┘</code></pre>
+      </div>
+
+      <ul>
+        <li><strong>Engine (the kernel):</strong> build the interprocedural graph, propagate taint to a fixpoint, enumerate candidate flows with real source-to-sink proofs. Deterministic, offline, auditable, cheap to re-run until you&rsquo;re sick of it.</li>
+        <li><strong>Model (the coprocessor):</strong> infer the source/sink/sanitizer specs the engine is missing, triage and rank the engine&rsquo;s candidates to kill false positives, explain findings in human language, sketch a proof-of-concept. Adaptive, fluent, and firmly <em>bounded by</em> the engine&rsquo;s ground truth.</li>
+      </ul>
+
+      <p>This is where the research keeps landing [1][2][3][6], and it&rsquo;s not just an ivory-tower pattern either. The nicest piece of evidence comes from <strong>AGHAST</strong> (<em>AI Guided Hybrid Application Static Testing</em>) [7], open-sourced by the team at Bounce Security, led by Josh Grossman, and now an OWASP incubator project. It&rsquo;s genuinely good work, and it&rsquo;s built on the same division of labor we&rsquo;re describing. AGHAST pairs static discovery (Semgrep rules, SARIF findings, code-unit extraction) with LLM analysis, and offers modes that line up almost suspiciously well with the kernel/coprocessor split: static checks with no model in the loop, static discovery feeding <em>targeted</em> AI analysis of each location it surfaces, and broader repository-wide AI analysis on top.</p>
+
+      <p>What I most appreciate is how unhyped the maintainers are about it. The framing is about turning a human&rsquo;s suspicion into a repeatable, rule-driven validation, not about handing the car keys to an autonomous agent. When a team coming at this from a completely different starting point lands on the same architecture, that&rsquo;s a good sign it&rsquo;s the consensus and not just our house style.</p>
+
+      <p>It&rsquo;s also, unsurprisingly, how we&rsquo;ve split our own work. In Rowan, the commercial edition, a deterministic cross-file taint engine is the kernel and an agent layer does the spec inference, triage, and exploit synthesis on top. Open-Rowan publishes the kernel. The model lives where it belongs: on top of the ground truth, never standing in for it.</p>
+
+      <div class="callout-action">
+        <span class="ca-label">The whole argument in one line</span>
+        <p>A scanner that&rsquo;s only a model wrapper bets its detections, audit story, and CI determinism on a black box that answers differently depending on the weather. A scanner that&rsquo;s only a static engine has a recall ceiling nailed to its rule corpus. Neither is a product on its own. The engine is the heart; the model is the hands. Build the heart first.</p>
+      </div>
+
+      <hr class="appendix-divider">
+      <span class="appendix-kicker">References</span>
+
+      <p>External, citable sources. The Hedgerow bits (Rowan / Open-Rowan) are private-beta software and haven&rsquo;t been independently audited.</p>
+
+      <ol class="ref-list">
+        <li><span class="ref-title">IRIS</span>: <em>LLM-Assisted Static Analysis for Detecting Security Vulnerabilities</em>, ICLR 2025. <code>arxiv.org/abs/2405.17238</code> &middot; <code>github.com/iris-sast/iris</code></li>
+        <li><em>LLM-Assisted Static Analysis for Detecting Security Vulnerabilities</em>: literature review and method discussion. <code>arxiv.org/html/2405.17238v3</code></li>
+        <li><span class="ref-title">AdaTaint</span>: <em>LLM-Driven Adaptive Source&ndash;Sink Identification and False-Positive Reduction.</em> <code>arxiv.org/html/2511.04023v1</code></li>
+        <li><span class="ref-title">LLMTaint</span>: <em>Exploring Static Taint Analysis in LLMs: A Dynamic Benchmarking Approach</em>, ASE 2025.</li>
+        <li><em>Scalable Compositional Static Taint Analysis for Sensitive Data Tracing on Industrial Micro-Services.</em></li>
+        <li><span class="ref-title">SemTaint</span>: <em>Multi-Agent Taint Specification Extraction for Vulnerability Detection.</em> <code>arxiv.org/html/2601.10865v1</code></li>
+        <li><span class="ref-title">AGHAST</span> (AI Guided Hybrid Application Static Testing): open-sourced by Bounce Security (Josh Grossman et al.), an OWASP incubator project combining static discovery (Semgrep, SARIF, code-unit extraction) with LLM analysis across static / targeted / repository-wide modes. AGPL-3.0. <code>github.com/BounceSecurity/aghast</code> &middot; <code>bouncesecurity.com/blog/2026/04/14/Introducing-AGHAST.html</code></li>
+      </ol>
+
+      <hr class="appendix-divider">
+      <p><em>Companion paper: <a href="../closing-the-seam/">Closing the Seam: Cross-File Taint Analysis Without the Pro License</a>, on how Open-Rowan layers repository-wide taint on top of OpenGrep. Both built by <a href="../../index.html">Hedgerow</a>.</em></p>
+
+    </div><!-- /.article-inner -->
+  </div><!-- /.wrap -->
+</section>
+
+<footer>
+  <div class="wrap footer-inner">
+    <div class="footer-brand">Hedgerow</div>
+    <div class="footer-links">
+      <a href="../../index.html">Home</a>
+      <a href="../../thicket/index.html">Thicket</a>
+      <a href="../../rowan/index.html">Rowan</a>
+      <a href="../">Blog</a>
+      <a href="mailto:hello@hedgerow.dev">Contact</a>
+    </div>
+  </div>
+  <div class="wrap">
+    <p class="footer-patent">Hedgerow &middot; hedgerow.dev &middot; hello@hedgerow.dev<br>Commercially licensed. Technology protected by pending patent applications.</p>
+  </div>
+</footer>
+
+<script src="../../nav.js" defer></script>
+</body>
+</html>
