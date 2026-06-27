@@ -21,7 +21,7 @@
   <div class="nav-links">
     <a href="../../thicket/index.html">Thicket</a>
     <a href="../../rowan/index.html">Rowan</a>
-    <a href="../" class="active">Blog</a>
+    <a href="/blog/" class="active">Blog</a>
     <a href="mailto:hello@hedgerow.dev" class="nav-cta">Contact</a>
   </div>
   <button class="nav-hamburger" id="navToggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
@@ -29,13 +29,13 @@
 <div class="nav-drawer" id="navDrawer">
   <a href="../../thicket/index.html">Thicket</a>
   <a href="../../rowan/index.html">Rowan</a>
-  <a href="../">Blog</a>
+  <a href="/blog/">Blog</a>
   <a href="mailto:hello@hedgerow.dev" class="nav-drawer-cta">Contact &rarr;</a>
 </div>
 
 <section class="article-hero">
   <div class="wrap">
-    <a href="../" class="article-nav-back">&larr; All posts</a>
+    <a href="/blog/" class="article-nav-back">&larr; All posts</a>
     <h1>Trust Me Is Not a Finding</h1>
     <p class="article-subtitle">The Taint Microkernel: why an LLM security scanner needs a deterministic core, and why the model belongs on top of the ground truth, never standing in for it.</p>
     <div class="article-byline">
@@ -58,7 +58,7 @@
 
       <div class="companion">
         <span class="comp-icon">&#9776;</span>
-        <p><span class="comp-label">Companion paper</span>This is the argument. The sister essay, <a href="../closing-the-seam/">Closing the Seam</a>, is the engineering: how Open-Rowan does cross-file taint on top of OpenGrep. This one answers the question that immediately follows: <em>if frontier models are this good, why build a taint engine at all?</em> Both Rowan and Open-Rowan are in private beta; claims about them are design and intent, and the claims about everyone else are cited.</p>
+        <p><span class="comp-label">Companion paper</span>This is the argument. The sister essay, <a href="/blog/closing-the-seam/">Closing the Seam</a>, is the engineering: how Open-Rowan does cross-file taint on top of OpenGrep. This one answers the question that immediately follows: <em>if frontier models are this good, why build a taint engine at all?</em> Both Rowan and Open-Rowan are in private beta; claims about them are design and intent, and the claims about everyone else are cited.</p>
       </div>
 
       <h3>The shortcut everyone wants to take</h3>
@@ -81,7 +81,7 @@
 
       <h4>3. It sees the whole repo without going broke</h4>
 
-      <p>Cross-file taint is a whole-program question by definition. An engine just walks the entire call graph, and summary-based, compositional propagation is what keeps that tractable at scale: the industrial work on compositional taint analysis (CFTaint and kin) shows summaries scaling to large microservice systems [5]. (Our own SCC-decomposed convergence, covered in the <a href="../closing-the-seam/">companion paper</a>, is the same idea wearing a compiler-theory hat.) A model has a context window, so you chop the repo into prompt-sized pieces and lose the global picture at every cut, which is, awkwardly, the one thing cross-file analysis exists to preserve. And you pay per token, every scan, for the privilege of making the model re-read the world from scratch each time. The engine scans a thousand-file project in seconds, offline, for the price of electricity.</p>
+      <p>Cross-file taint is a whole-program question by definition. An engine just walks the entire call graph, and summary-based, compositional propagation is what keeps that tractable at scale: the industrial work on compositional taint analysis (CFTaint and kin) shows summaries scaling to large microservice systems [5]. (Our own SCC-decomposed convergence, covered in the <a href="/blog/closing-the-seam/">companion paper</a>, is the same idea wearing a compiler-theory hat.) A model has a context window, so you chop the repo into prompt-sized pieces and lose the global picture at every cut, which is, awkwardly, the one thing cross-file analysis exists to preserve. And you pay per token, every scan, for the privilege of making the model re-read the world from scratch each time. The engine scans a thousand-file project in seconds, offline, for the price of electricity.</p>
 
       <h4>4. You can <code>git blame</code> its brain</h4>
 
@@ -159,7 +159,7 @@
       </ol>
 
       <hr class="appendix-divider">
-      <p><em>Companion paper: <a href="../closing-the-seam/">Closing the Seam: Cross-File Taint Analysis Without the Pro License</a>, on how Open-Rowan layers repository-wide taint on top of OpenGrep. Both built by <a href="../../index.html">Hedgerow</a>.</em></p>
+      <p><em>Companion paper: <a href="/blog/closing-the-seam/">Closing the Seam: Cross-File Taint Analysis Without the Pro License</a>, on how Open-Rowan layers repository-wide taint on top of OpenGrep. Both built by <a href="../../index.html">Hedgerow</a>.</em></p>
 
     </div><!-- /.article-inner -->
   </div><!-- /.wrap -->
@@ -172,7 +172,7 @@
       <a href="../../index.html">Home</a>
       <a href="../../thicket/index.html">Thicket</a>
       <a href="../../rowan/index.html">Rowan</a>
-      <a href="../">Blog</a>
+      <a href="/blog/">Blog</a>
       <a href="mailto:hello@hedgerow.dev">Contact</a>
     </div>
   </div>
