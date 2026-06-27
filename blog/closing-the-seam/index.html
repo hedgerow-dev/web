@@ -68,7 +68,7 @@
       <p>This paper is about teaching one to. We took OpenGrep, which does excellent <em>intra-file</em> taint analysis, and bolted a cross-file pass on top so taint can follow a call from one file into another. The result is Open-Rowan. It&rsquo;s Python-only, it&rsquo;s pre-release, and (as you&rsquo;ll see below) it spent part of its early life confidently reporting nothing at all. We&rsquo;ll get to that. It&rsquo;s the best part.</p>
 
       <blockquote>
-        <p>Where things actually stand (June 2026): both Rowan (commercial) and Open-Rowan (the planned open-source edition) are in private beta. The engine described here is real, working code, but it isn&rsquo;t published yet. No PyPI package, no public repo to check this paper against. Everything said about OpenGrep, Semgrep, CodeQL, and Pysa is cited, because those you <em>can</em> check.</p>
+        <p>Where things actually stand (June 2026). Open-Rowan is in private beta and isn&rsquo;t published yet: no PyPI package, no public repo to check this paper against. So claims about Open-Rowan describe its current design and our intent to open-source it. Everything I say about OpenGrep, Semgrep, CodeQL, and Pysa is cited, because those you <em>can</em> check.</p>
       </blockquote>
 
       <h3>1. The gap</h3>
@@ -116,11 +116,11 @@ def handle_upload(blob):
 
       <p>To be clear about what I&rsquo;m <em>not</em> claiming: it&rsquo;s not that cross-file taint is some unsolved mystery. Pysa is open source and does it. Semgrep Code and CodeQL do it well and lots of people use them. The narrower, more annoying truth is that if you want cross-file taint in a <em>general-purpose, low-ceremony, fully open-source</em> scanner, something you can just run, the options thin out fast. That&rsquo;s the gap Open-Rowan aims at, and it&rsquo;s a gap, not a canyon.</p>
 
-      <h3>2. Architecture: index &rarr; resolve &rarr; propagate</h3>
+      <h3>2. Architecture: index, resolve, propagate</h3>
 
       <p>Open-Rowan uses OpenGrep as its intra-file taint engine and adds a cross-file pass on top. Three phases.</p>
 
-      <h4>Phase 1: Index</h4>
+      <h4>Phase 1: index</h4>
 
       <p>Walk every source file, parse it to an AST, and build two things:</p>
 
@@ -131,13 +131,13 @@ def handle_upload(blob):
 
       <p>Only the function <em>names</em> stay resident in memory; the heavier summaries get paged through a disk cache (&sect;5), so indexing a big monorepo doesn&rsquo;t quietly eat all your RAM.</p>
 
-      <h4>Phase 2: Resolve</h4>
+      <h4>Phase 2: resolve</h4>
 
       <p>Now annotate those summaries with what the earlier passes found. OpenGrep&rsquo;s intra-file taint tells us which functions hold a source and which hold a sink. The lightweight regex engine seeds a few more sinks. Out the other end comes a call graph whose nodes are tagged as sources, sinks, propagators, or some combination.</p>
 
       <p>One constraint shaped this whole design, and it&rsquo;s worth saying out loud because it surprised us too. What OpenGrep <em>hands you</em> from <code>--taint-intrafile</code> is the finished source-to-sink flows, not the reusable per-function summaries it built internally to get there. So we can&rsquo;t just grab OpenGrep&rsquo;s signatures and stitch them across files; we have to rebuild the call-graph structure ourselves from the AST and lay OpenGrep&rsquo;s results on top. That &ldquo;consume the results, re-derive the structure&rdquo; split isn&rsquo;t a choice we&rsquo;d have made for fun. It falls out of the fact that an intra-file engine only publishes its conclusions, not its scaffolding. It&rsquo;s also, more broadly, why cross-file taint keeps getting <em>re-implemented</em> instead of cheaply composed from existing tools: everyone&rsquo;s building blocks stay locked inside their own binary.</p>
 
-      <h4>Phase 3: Propagate</h4>
+      <h4>Phase 3: propagate</h4>
 
       <p>Run a fixpoint over the call graph until the taint facts stop changing, and emit a finding whenever a tainted source and a reachable sink end up on a path that crosses a file boundary. This is where the actual engineering happens, so it gets its own section.</p>
 
@@ -226,7 +226,7 @@ class FunctionSummary:
       <p>Open-Rowan is a static analyzer, and static analysis is undecidable in the general case, so anyone who tells you their engine is &ldquo;sound&rdquo; is selling something. We over-approximate in some places (favoring recall) and under-approximate in others. The honest list:</p>
 
       <ul>
-        <li><strong>Python only.</strong> The cross-file engine speaks Python and nothing else. It parses Python ASTs and understands Python&rsquo;s import rules. The index &rarr; resolve &rarr; propagate architecture would generalize, but the per-language parsing and import resolution simply aren&rsquo;t written for other languages in the open-source edition. Multi-language cross-file taint (Java, Go, JavaScript, C#) lives in commercial Rowan (&sect;7).</li>
+        <li><strong>Python only.</strong> The cross-file engine speaks Python and nothing else: it parses Python ASTs and understands Python&rsquo;s import rules. The index/resolve/propagate architecture would generalize, but the per-language parsing and import resolution simply aren&rsquo;t written for other languages yet.</li>
         <li><strong>Dynamic dispatch and reflection.</strong> Calls resolved at runtime (<code>getattr</code>, duck-typed dispatch, plugin registries that wire themselves up from config) are best-effort. We resolve by name and import structure, not by full type inference, so the cleverer your indirection, the more we shrug.</li>
         <li><strong>No path sensitivity.</strong> We don&rsquo;t reason about which branch condition gates a flow, so a flow guarded by a condition that can never be true still gets reported. We lean on sanitizer detection and confidence scoring to keep the resulting noise tolerable.</li>
         <li><strong>Confidence fades with distance.</strong> Long multi-hop chains come back with lower confidence, because every extra unverified hop is another chance for our over-approximation to be wrong about something.</li>
@@ -270,49 +270,30 @@ class FunctionSummary:
         </li>
         <li class="drop">
           <span class="vl-head"><span class="vl-icon">&times;</span> And here&rsquo;s the part that should scare you a little</span>
-          An earlier build of this exact engine found <strong>zero</strong> cross-file flows on this exact repo. Not because the flows weren&rsquo;t there (they were, all eleven) but because of a dumb wiring bug: a mismatched engine tag silently cut the cross-file annotation path, so the propagator had nothing to chew on. The engine was <em>perfectly deterministic the entire time.</em> It reproducibly returned the wrong answer, and would have kept doing so in CI until the heat death of the universe. The only reason we caught it is that the benchmark put a zero where a zero was impossible. Determinism gets you a repeatable answer; the benchmark is what makes it a repeatably <em>correct</em> one.
+          An earlier build of this exact engine found <strong>zero</strong> cross-file flows on this exact repo. Not because the flows weren&rsquo;t there (they were, all eleven) but because of a dumb wiring bug: a mismatched engine tag silently cut the cross-file annotation path, so the propagator had nothing to chew on. The engine was <em>perfectly deterministic the entire time.</em> It reproducibly returned the wrong answer, and would have kept doing so in CI until the heat death of the universe. The only reason we caught it is that the benchmark put a zero where a zero was impossible. Determinism gets you a repeatable answer; the benchmark is what makes it a repeatably <em>correct</em> one. We think that&rsquo;s the strongest argument for shipping the measurement harness next to the engine, not the most embarrassing one.
         </li>
       </ul>
 
-      <h3>7. The open-core line</h3>
+      <h3>7. A note on giving it away</h3>
 
-      <p>Open-Rowan is the planned open-source edition of <strong>Rowan</strong>, our commercial scanner. The split below is a product-and-licensing <em>policy</em> (our call about what to give away, not some law of nature) but it&rsquo;s worth spelling out so nobody has to guess.</p>
+      <p>Open-Rowan is the planned open-source edition of Rowan, our commercial scanner. The line we drew is simple: the well-understood, generic machinery (cross-file taint, SCC convergence, parameter-indexed summaries, the cache, the externalized rule config) is open. The tuned, agentic system we build on top of it (multi-language support, the LLM-driven orchestration, the exploit-reachability work) is the product. Nobody should have to pay us for Tarjan&rsquo;s algorithm from 1972.</p>
 
-      <ul class="verdict-list">
-        <li class="keep">
-          <span class="vl-head"><span class="vl-icon">&#10003;</span> Open: Open-Rowan</span>
-          Cross-file interprocedural taint, the thing OpenGrep doesn&rsquo;t have yet. SCC-based convergence (it&rsquo;s Tarjan&rsquo;s algorithm from 1972; nobody should pay us for Tarjan). Parameter-indexed summaries and the incremental cache. Externalized propagator / source / sink config, so adding coverage is a pull request instead of a fork.
-        </li>
-        <li class="keep">
-          <span class="vl-head"><span class="vl-icon">&#9733;</span> Commercial: Rowan</span>
-          An agentic layer that uses the taint graph to <em>drive</em> the analysis, running rules only where taint actually reaches (reach-then-scan, the opposite of scan-everything-then-suppress), and chaining recon, hypothesis, and exploit-synthesis stages. Multi-language tree-sitter taint across Java, Go, JavaScript, and C#. Dependency-reachability and exploit-generation heuristics we&rsquo;ve spent real time tuning.
-        </li>
-      </ul>
+      <p>Why open-source the engine at all? Mostly because cross-file taint is table stakes for honest vulnerability detection, and leaving <em>all</em> of it behind paywalls means every open-source maintainer is auditing their own seams with a tool that can&rsquo;t see seams. That seems like a bad equilibrium to prop up. Open config helps too: once propagators and sinks are just YAML, adding coverage for a new library is a pull request instead of a fork. And frankly it&rsquo;s the decent thing to do by OpenGrep, which handed us a solid intra-file engine under an open license; the neighborly move is to publish the layer that sits on top and write up the design so the capability can land upstream, not just in our corner. (Rowan exists and its broad positioning is public on hedgerow.dev; the specifics of the commercial build aren&rsquo;t independently audited, so take them as roadmap, not gospel.)</p>
 
-      <p>The line we drew: <strong>well-understood, generic techniques go open; the tuned, agentic system built on top is the product.</strong> That&rsquo;s a business decision, not a technical one, but giving away the former costs us almost nothing competitively and hands the open ecosystem a cross-file taint engine it&rsquo;s been missing. Seems like a fair trade.</p>
-
-      <h3>8. Why open-source it at all</h3>
-
-      <p>Three reasons.</p>
-
-      <ol>
-        <li><strong>This capability ought to exist in the open.</strong> Cross-file taint is table stakes for honest vulnerability detection. Locking <em>all</em> of it behind paywalls leaves every open-source maintainer auditing their own seams with a tool that can&rsquo;t see seams. That&rsquo;s a bad equilibrium and we&rsquo;d rather not contribute to it.</li>
-        <li><strong>Config is a contribution surface.</strong> Once propagators and rules are just external YAML, every new ML library or cloud SDK or framework sink is a small PR, not a fork. The coverage problem turns into a community problem, which is the only way a coverage problem ever actually gets solved at the speed this ecosystem moves.</li>
-        <li><strong>It&rsquo;s the decent thing to do by OpenGrep.</strong> OpenGrep handed us a credible intra-file engine under an open license. The neighborly response is to publish the cross-file layer that sits on top, and to write up the <em>design</em> of SCC-converged, summary-based cross-file taint so the capability can land in OpenGrep itself, not just in our corner of it.</li>
-      </ol>
-
-      <h3>9. Availability</h3>
+      <h3>8. Availability</h3>
 
       <div class="callout-action">
         <span class="ca-label">Status &middot; June 2026</span>
         <p>Open-Rowan is in private beta. It is <em>not</em> on PyPI and has <em>no</em> public GitHub repo yet. There is nothing to <code>pip install</code> today, no matter what a search turns up. This paper is the design, written ahead of the release.</p>
       </div>
 
-      <p>When it ships, we&rsquo;ll publish the engine, its issue tracker, and the propagator/rule corpus, and link them all from <a href="../../index.html">hedgerow.dev</a>. Until then, treat any package name or repo URL you stumble across as unverified.</p>
+      <p>When it ships, we&rsquo;ll publish the engine and link it from <a href="../../index.html">hedgerow.dev</a>. Until then, treat any package name or repo URL you stumble across as unverified.</p>
 
-      <p><strong>Want in early?</strong> Both Rowan and Open-Rowan are in private beta, and we&rsquo;re taking a limited number of beta users, especially folks with big Python codebases, gnarly import graphs, or AI/ML infrastructure where the cross-file flows are exactly where the bodies are buried. Email <a href="mailto:hello@hedgerow.dev">hello@hedgerow.dev</a> or come find us at <a href="../../index.html">hedgerow.dev</a>.</p>
+      <p><strong>Want in early?</strong> We&rsquo;re taking a limited number of beta users, especially folks with big Python codebases, gnarly import graphs, or AI/ML infrastructure where the cross-file flows are exactly where the bodies are buried. Email <a href="mailto:hello@hedgerow.dev">hello@hedgerow.dev</a> or come find us at <a href="../../index.html">hedgerow.dev</a>.</p>
 
       <p>And the thing we want most back from you is <em>seams</em>: a cross-file flow we missed, or a false positive we shouldn&rsquo;t have produced. Seams are the whole point.</p>
+
+      <p><em>Companion paper: <a href="../the-taint-microkernel/">Trust Me Is Not a Finding: The Taint Microkernel</a>, on why the deterministic engine should be the kernel and the language model the coprocessor.</em></p>
 
       <hr class="appendix-divider">
       <span class="appendix-kicker">References</span>
@@ -328,9 +309,6 @@ class FunctionSummary:
         <li>Semgrep Community Edition: open-source SAST engine (license reference).</li>
         <li>Semgrep: <em>Cross-file analysis taint traces.</em> <code>semgrep.dev/docs/semgrep-code/semgrep-pro-engine-data-flow</code></li>
       </ol>
-
-      <hr class="appendix-divider">
-      <p><em>Open-Rowan is built by <a href="../../index.html">Hedgerow</a>. Rowan, the commercial edition, adds the agentic taint-guided analysis and the multi-language support. Companion paper: <a href="../the-taint-microkernel/">Trust Me Is Not a Finding: The Taint Microkernel</a>.</em></p>
 
     </div><!-- /.article-inner -->
   </div><!-- /.wrap -->
