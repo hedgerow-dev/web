@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/hedgerow.css">
-<link rel="stylesheet" href="/blog/blog.css?v=4">
+<link rel="stylesheet" href="/blog/blog.css?v=5">
 </head>
 <body>
 
@@ -43,7 +43,43 @@
 
 <section class="post-list">
   <div class="wrap">
-    <a href="/blog/wrong-report" class="post-card">
+
+    <div class="tag-filter" id="tagFilter" role="group" aria-label="Filter posts by topic">
+      <button class="tag-filter-btn active" data-filter="all">All</button>
+      <button class="tag-filter-btn" data-filter="taint-analysis">Taint analysis</button>
+      <button class="tag-filter-btn" data-filter="static-analysis">Static analysis</button>
+      <button class="tag-filter-btn" data-filter="architecture">Architecture</button>
+      <button class="tag-filter-btn" data-filter="llm">LLM</button>
+      <button class="tag-filter-btn" data-filter="open-source">Open source</button>
+      <button class="tag-filter-btn" data-filter="bug-bounty">Bug bounty</button>
+      <button class="tag-filter-btn" data-filter="threat-modeling">Threat modeling</button>
+    </div>
+
+    <a href="/blog/closing-the-seam" class="post-card" data-tags="taint-analysis static-analysis open-source">
+      <div class="post-meta">
+        <span class="post-date">June 2026</span>
+        <span class="post-tag">Taint analysis</span>
+        <span class="post-tag">Static analysis</span>
+        <span class="post-tag">Open source</span>
+      </div>
+      <p class="post-title">Closing the Seam: Cross-File Taint Analysis Without the Pro License</p>
+      <p class="post-excerpt">How we layered repository-wide, cross-file taint analysis on top of OpenGrep&rsquo;s intra-file engine, so the bug that lives between two files stops being invisible. SCC-converged propagation, parameter-indexed summaries, an incremental cache, and the day the benchmark caught a zero that was impossible.</p>
+      <span class="post-read-more">Read &rarr;</span>
+    </a>
+
+    <a href="/blog/the-taint-microkernel" class="post-card" data-tags="architecture llm static-analysis">
+      <div class="post-meta">
+        <span class="post-date">June 2026</span>
+        <span class="post-tag">Architecture</span>
+        <span class="post-tag">LLM</span>
+        <span class="post-tag">Static analysis</span>
+      </div>
+      <p class="post-title">Trust Me Is Not a Finding: The Taint Microkernel</p>
+      <p class="post-excerpt">If frontier models are this good, why build a taint engine at all? Because a model can describe a vulnerability beautifully but can&rsquo;t hand you a reproducible, auditable proof. Put the deterministic engine at the center as the kernel and let the model ride shotgun as the coprocessor.</p>
+      <span class="post-read-more">Read &rarr;</span>
+    </a>
+
+    <a href="/blog/wrong-report" class="post-card" data-tags="bug-bounty threat-modeling">
       <div class="post-meta">
         <span class="post-date">June 2026</span>
         <span class="post-tag">Bug bounty</span>
@@ -53,6 +89,8 @@
       <p class="post-excerpt">When your scanner is faster than your threat model. A post-mortem on submitting a high-severity RCE report, getting it closed as expected behavior, and what we actually missed in the process.</p>
       <span class="post-read-more">Read &rarr;</span>
     </a>
+
+    <p class="post-list-empty" id="postListEmpty">No posts under that topic yet.</p>
   </div>
 </section>
 
@@ -73,5 +111,6 @@
 </footer>
 
 <script src="../nav.js" defer></script>
+<script src="/blog/blog.js" defer></script>
 </body>
 </html>
