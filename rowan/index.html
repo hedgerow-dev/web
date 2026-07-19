@@ -110,7 +110,11 @@
       </div>
       <div class="rw-grid-cell">
         <h3 class="rw-cell-title">Reachability-aware SCA</h3>
-        <p class="rw-cell-text">Only surfaces CVEs your code can actually reach. Most SCA tools report vulnerabilities in functions you never call. This doesn&rsquo;t.</p>
+        <p class="rw-cell-text">Only surfaces CVEs your code can actually reach. Most SCA tools report vulnerabilities in functions you never call. This doesn&rsquo;t &mdash; and it prioritises what remains with EPSS exploit-probability and a nearest-safe-version to upgrade to.</p>
+      </div>
+      <div class="rw-grid-cell">
+        <h3 class="rw-cell-title">Supply-chain threat detection</h3>
+        <p class="rw-cell-text">Beyond known CVEs: phantom (undeclared-but-imported) dependencies, typosquatted package names, known-malicious packages, and npm install hooks that fetch and run remote code. The attacks that ship before a CVE is ever filed.</p>
       </div>
       <div class="rw-grid-cell">
         <h3 class="rw-cell-title">Prompt injection paths</h3>
@@ -179,8 +183,8 @@
           <tr><td>SARIF 2.1</td><td>IDE and GitHub Advanced Security</td></tr>
           <tr><td>JSON</td><td>Programmatic integration</td></tr>
           <tr><td>HTML</td><td>Shareable report</td></tr>
-          <tr><td>CSV</td><td>Ticket import</td></tr>
-          <tr><td>CycloneDX AI-BOM</td><td>Supply chain attestation</td></tr>
+          <tr><td>CycloneDX SBOM</td><td>Dependency inventory / supply-chain attestation</td></tr>
+          <tr><td>OpenVEX</td><td>Reachability-driven exploitability status</td></tr>
         </table>
       </div>
     </div>
